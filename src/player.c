@@ -20,7 +20,7 @@ struct player player_White;
  * - the player name as an [a-zA-Z0-9 -_]* string
  */
 char const* get_player_name(){
-    player_black.player_name = "hamid";
+    player_black.player_name = "Dir_niya";
     return player_black.player_name;
 }
 

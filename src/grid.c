@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "dir.h"
+
 struct graph_t * initialize_graph(int n){
     gsl_spmatrix_uint *mat = gsl_spmatrix_uint_alloc(n, n);
     for (size_t i = 0; i < n; i++) {

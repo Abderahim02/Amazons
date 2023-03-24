@@ -11,14 +11,14 @@ void remove_node(int n,gsl_spmatrix_uint *mat){
         }
     }
 }
-//removes a list of nodes from the graph
-void hollow_matrix(gsl_spmatrix_uint *mat,int *t, int len ){
+//removes a list "t" of nodes from the graph the shape of the hole depends on the elements of the list
+void hollow_matrix(gsl_spmatrix_uint *mat,int t[], int len ){
     for (int i = 0; i < len; i++) {
     remove_node(t[i],mat);
     }
 }
 //for testing
 int main(){
-    initialize_graph();
+    //initialize_graph();
     return 0;
 }

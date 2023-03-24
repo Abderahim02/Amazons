@@ -1,28 +1,33 @@
 #GSL_PATH ?= /net/ens/renault/save/gsl-2.6/install
-GSL_PATH ?= L/usr/lib/x86_64-linux-gnu
+GSL_PATH ?= -L/usr/lib/x86_64-linux-gnu
 CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include
 LDFLAGS = -lm -lgsl -lgslcblas -ldl \
 	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \
 	-Wl,--rpath=${GSL_PATH}/lib
+SRCS = $(wildcard src/*.c)
 OBJS = $(SRCS:.c=.o)
+# all: build
 
-all: build
+# build: server client
 
-build: server client
+# server: 
 
-server: 
-#	gcc -o executable fichier1.c fichier2.c fichier3.c ...  `gsl-config --cflags --libs`
+# client:
 
-client: $(OBJS)
-	$(CFLAGS) 
-alltests: test.o $(OBJS)
-	gcc $(CFLAGS) $^  -o alltests
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-test: alltests
+grid: src/grid.c
+	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS)
+  
+# alltests: test.o $(OBJS)
+# 	gcc $(CFLAGS) $^  -o alltests
 
-install: server client test
+# test: alltests
+
+# install: server client test
 
 clean:
 	@rm -f *~ src/*~
 
-.PHONY: client install test clean
+# .PHONY: client install test clean

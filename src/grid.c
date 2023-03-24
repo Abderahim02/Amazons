@@ -20,19 +20,19 @@ void print_sparse_matrix(gsl_spmatrix_uint *mat) {
     printf("Sparse matrix:\n");
     printf("size1 = %zu, size2 = %zu\n", mat->size1, mat->size2);
 
-    for (size_t i = 0; i < mat->size1; i++) {
-        for (gsl_spmatrix_uint_const_iter row_iter = gsl_spmatrix_uint_const_row_iterator(mat, i);!gsl_spmatrix_uint_iter_end(row_iter);gsl_spmatrix_uint_const_iter_next(row_iter)) {
-            size_t j = gsl_spmatrix_uint_iter_col(row_iter);
-            unsigned int val = gsl_spmatrix_uint_iter_get(row_iter);
-            printf("(%u)\n",val);
-        }
+// Loop over all pairs of vertices (n*n iterations)
+for (unsigned int i = 0; i < mat->size1; i++) {
+    for (unsigned int j = 0; j < mat->size2; j++) {
+      printf("(%u)\n",gsl_spmatrix_uint_get(mat, i, j));  
     }
-}
+  }
+    }
+
+
 void print_graph(struct graph_t * graph);
 int main(){
 struct graph_t * g = initialize_graph(4,4);
-print_graph(g->t);
-    
+print_graph(g->t);   
 }
 
 int main(){

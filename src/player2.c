@@ -29,5 +29,9 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
     player_black.num_queens=num_queens;
     *player_black.queens=queens;
  }
+ int main(){
+    printf("%s\n",get_player_name());
+    return 0;
+ }
 
 

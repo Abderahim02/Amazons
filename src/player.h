@@ -4,6 +4,7 @@
 #define NUM_PLAYERS 2
 
 #include "graph.h"
+#include "move.h"
 
 /* Access to player informations
  * RETURNS:

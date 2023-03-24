@@ -8,7 +8,8 @@ all: build
 
 build: server client
 
-server:
+server: 
+#	gcc -o executable fichier1.c fichier2.c fichier3.c ...  `gsl-config --cflags --libs`
 
 client:
 

@@ -16,8 +16,6 @@ struct graph_t * initialize_graph(int n){
     grid->t = mat;
     return grid;
 }
-<<<<<<< HEAD
-=======
 void print_sparse_matrix(gsl_spmatrix_uint *mat) {
     printf("Sparse matrix:\n");
     printf("size1 = %zu, size2 = %zu\n", mat->size1, mat->size2);
@@ -36,4 +34,7 @@ struct graph_t * g = initialize_graph(4,4);
 print_graph(g->t);
     
 }
->>>>>>> 3b097aa00922cf571c87ef9464f7dc913c55d14a
+
+int main(){
+    return 1;
+}

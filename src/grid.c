@@ -39,7 +39,7 @@ void free_graph(struct graph_t* g){
     free(g);
 }
 
-//this function fill n epty graph with relachionships
+//this function fill an empty graph with relachionships
 void initialize_graph_positions_classic(struct graph_t* g){ 
     size_t graph_size = g->t->size1;
     for (size_t i = 0; i < graph_size*graph_size ; i++) { //On parcourt toute la liste des graph_size**2 

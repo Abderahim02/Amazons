@@ -23,15 +23,15 @@ all: build
 
 build: server client
 
-server: src/serveur.c libplayer1.so libplayer2.so
-	gcc src/serveur.c -L. -lplayer2 -ldl -o $@
+server: src/server.c libplayer1.so libplayer2.so
+	gcc src/server.c -L. -lplayer2 -ldl -o $@
 #	gcc -o executable fichier1.c fichier2.c fichier3.c ...  `gsl-config --cflags --libs`
 
-client: #$(OBJS)
+client: 
 
 alltests: 
 
-test: tst/test_grid.o grid.o
+test: tst/test_grid.o grid.o 
 	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS) 
 	
 
@@ -45,6 +45,6 @@ test_grid.o: tst/test_grid.c src/grid.c src/grid.h
 install: server client test
 
 clean:
-	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*~
+	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o
 
 .PHONY: client install test clean

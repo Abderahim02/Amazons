@@ -42,7 +42,7 @@ void free_graph(struct graph_t* g){
 //this function fill n epty graph with relachionships
 void initialize_graph_positions_classic(struct graph_t* g){ 
     size_t graph_size = g->t->size1;
-    for (size_t i = 0; i < graph_size**2 ; i++) { //On parcourt toute la liste des graph_size**2 
+    for (size_t i = 0; i < graph_size*graph_size ; i++) { //On parcourt toute la liste des graph_size**2 
         //si on est sur l'extremité gauche
         if( i % graph_size == 0){
            if( i == 0 ){ //la premiere case
@@ -50,7 +50,7 @@ void initialize_graph_positions_classic(struct graph_t* g){
                 gsl_spmatrix_uint_set(g->t, i, i+ graph_size, DIR_SOUTH);
                 gsl_spmatrix_uint_set(g->t, i, i+ graph_size+1, DIR_SE);
            }
-           else if (i == graph_size**2 - graph_size){ //la case au coin gauche bas
+           else if (i == graph_size*graph_size - graph_size){ //la case au coin gauche bas
                 gsl_spmatrix_uint_set(g->t, i,i+1, DIR_EAST);
                 gsl_spmatrix_uint_set(g->t, i, i+ graph_size, DIR_NORTH);
                 gsl_spmatrix_uint_set(g->t, i, i+ graph_size+1, DIR_NE);
@@ -69,7 +69,7 @@ void initialize_graph_positions_classic(struct graph_t* g){
                 gsl_spmatrix_uint_set(g->t, i, i + graph_size, DIR_SOUTH);
                 gsl_spmatrix_uint_set(g->t, i, i+ graph_size - 1, DIR_SW);
             }
-            else if (i == graph_size**2 - 1 ){// si on est sur le coin droit bas
+            else if (i == graph_size*graph_size - 1 ){// si on est sur le coin droit bas
                 gsl_spmatrix_uint_set(g->t, i, i- graph_size, DIR_NORTH);
                 gsl_spmatrix_uint_set(g->t, i, i - 1, DIR_WEST);
                 gsl_spmatrix_uint_set(g->t, i, i - graph_size -1 , DIR_NW);
@@ -90,7 +90,7 @@ void initialize_graph_positions_classic(struct graph_t* g){
                 gsl_spmatrix_uint_set(g->t, i, i + graph_size - 1 , DIR_SW);
                 gsl_spmatrix_uint_set(g->t, i, i + graph_size + 1 , DIR_SE);
             }
-            else if( graph_size**2 - graph_size < i ){ //la derniere ligne
+            else if( graph_size*graph_size - graph_size < i ){ //la derniere ligne
                 gsl_spmatrix_uint_set(g->t, i, i- graph_size, DIR_NORTH);
                 gsl_spmatrix_uint_set(g->t, i, i - 1, DIR_WEST);
                 gsl_spmatrix_uint_set(g->t, i, i + 1 , DIR_EAST);
@@ -108,10 +108,4 @@ void initialize_graph_positions_classic(struct graph_t* g){
             }
         }
     }  
-}
-
-int main(){
-    struct graph_t * g = initialize_graph(4);
-    print_graph(g->t);
-    return 1;
 }

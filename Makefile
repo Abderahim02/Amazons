@@ -2,12 +2,12 @@
 LENGHT ?= 8
 AMAZONS_FLAGS = -DLENGHT=$(LENGHT)
 GSL_PATH ?= L/usr/lib/x86_64-linux-gnu
-CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include 
+CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include -Isrc
 LDFLAGS = -lm -lgsl -lgslcblas -ldl \
 	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \
 	-Wl,--rpath=${GSL_PATH}/lib
 OBJS = $(SRCS:.c=.o)
-BIN = test_grid
+BIN = test_grid test
 
 player2.o: src/player2.c
 	gcc -c -fPIC $<
@@ -29,26 +29,22 @@ server: src/serveur.c libplayer1.so libplayer2.so
 
 client: #$(OBJS)
 
-alltests: test.o $(OBJS)
-	gcc $(CFLAGS) $^  -o alltests
+alltests: 
 
-test: alltests
-	@echo "-- run tests:"
-	@for e in ${BIN}; do \
-	echo -n "-- $${e} -> "; ./$${e}; \
-	done
+test: tst/test_grid.o grid.o
+	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS) 
+	
+
 grid.o: src/grid.c src/grid.h
 	gcc $(CFLAGS) -I src -I tst src/grid.c -c
 
 test_grid.o: tst/test_grid.c src/grid.c src/grid.h
 	gcc $(CFLAGS) -I src -I tst tst/test_grid.c -c
 
-test_grid: test_grid.o grid.o
-	gcc test_grid.o grid.o -o $@ ${LDFLAGS}
 
 install: server client test
 
 clean:
-	@rm -f *~ *.so *.o ${BIN} *~ */*~ src/*~
+	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*~
 
 .PHONY: client install test clean

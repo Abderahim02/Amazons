@@ -7,6 +7,7 @@ LDFLAGS = -lm -lgsl -lgslcblas -ldl \
 	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \
 	-Wl,--rpath=${GSL_PATH}/lib
 OBJS = $(SRCS:.c=.o)
+BIN = test_grid
 
 player2.o: src/player2.c
 	gcc -c -fPIC $<
@@ -36,16 +37,18 @@ test: alltests
 	@for e in ${BIN}; do \
 	echo -n "-- $${e} -> "; ./$${e}; \
 	done
+grid.o: src/grid.c src/grid.h
+	gcc $(CFLAGS) -I src -I tst src/grid.c -c
 
-test_grid.o: tst/test_grid.c src/grid.h
+test_grid.o: tst/test_grid.c src/grid.c src/grid.h
 	gcc $(CFLAGS) -I src -I tst tst/test_grid.c -c
 
-test_grid: test_grid.o 
-	gcc test_grid.o -o $@ ${LDFLAGS}
+test_grid: test_grid.o grid.o
+	gcc test_grid.o grid.o -o $@ ${LDFLAGS}
 
 install: server client test
 
 clean:
-	@rm -f *~ *.so *.o src/*~
+	@rm -f *~ *.so *.o ${BIN} *~ */*~ src/*~
 
 .PHONY: client install test clean

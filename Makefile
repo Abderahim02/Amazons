@@ -21,7 +21,7 @@ libplayer1.so: player1.o
 
 all: build
 
-build: server client
+build: server client install test
 
 server: src/server.c libplayer1.so libplayer2.so
 	gcc src/server.c -L. -lplayer2 -ldl -o $@
@@ -44,7 +44,7 @@ test_grid.o: tst/test_grid.c src/grid.c src/grid.h
 
 
 install: 
-	cp server  libplayer1.so libplayer2.so ./install
+	cp server  libplayer1.so libplayer2.so ${PWD}/install
 
 clean:
 	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o install/* server

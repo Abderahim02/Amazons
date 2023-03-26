@@ -45,7 +45,7 @@ test_grid.o: tst/test_grid.c src/grid.c src/grid.h
 
 install: 
 	cp libplayer1.so libplayer2.so ${PWD}/install
-	cp server ${PWD}/install
+	cp server ${PWD}/install/server
 
 clean:
 	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o install/* server

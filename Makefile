@@ -34,6 +34,7 @@ alltests:
 test: tst/test_grid.o grid.o 
 	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS) 
 	
+alltests: 
 
 grid.o: src/grid.c src/grid.h
 	gcc $(CFLAGS) -I src -I tst src/grid.c -c
@@ -42,9 +43,10 @@ test_grid.o: tst/test_grid.c src/grid.c src/grid.h
 	gcc $(CFLAGS) -I src -I tst tst/test_grid.c -c
 
 
-install: server client test
+install: 
+	cp server  libplayer1.so libplayer2.so ./install
 
 clean:
-	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o
+	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o install/* server
 
 .PHONY: client install test clean

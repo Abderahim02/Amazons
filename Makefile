@@ -48,6 +48,6 @@ install:
 	cp server ${PWD}/install/server
 
 clean:
-	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o install/* server
+	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o install/server/* server install/*.so
 
 .PHONY: client install test clean

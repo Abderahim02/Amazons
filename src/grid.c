@@ -4,6 +4,16 @@
 #include <stddef.h>
 #include "dir.h"
 
+/** The height (number of rows or columns) of the world */
+#ifndef LENGHT
+  #define LENGHT 8
+#endif
+
+/** The number of possible places in the world */
+#define GRID_SIZE (LENGHT*LENGHT)
+#define WHITE 1
+#define BLACK 0
+#define CASE -1
 
 //this function create an empty graph 
 struct graph_t * initialize_graph(int n){  
@@ -109,3 +119,4 @@ void initialize_graph_positions_classic(struct graph_t* g){
         }
     }  
 }
+

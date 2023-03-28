@@ -5,13 +5,6 @@
 #include "dir.h"
 
 
-/** The height (number of rows or columns) of the world */
-#ifndef LENGHT
-  #define LENGHT 8
-#endif
-
-/** The number of possible places in the world */
-#define GRID_SIZE (LENGHT*LENGHT)
 
 struct graph_t * initialize_graph(int n);
 

@@ -14,4 +14,5 @@ struct moves_t {
   unsigned int current;
 };
 
+
 #endif // _AMAZON_MOVE_H_

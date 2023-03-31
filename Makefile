@@ -1,10 +1,13 @@
 #GSL_PATH ?= /net/ens/renault/save/gsl-2.6/install
+LENGHT ?= 8
+AMAZONS_FLAGS = -DLENGHT=$(LENGHT)
 GSL_PATH ?= L/usr/lib/x86_64-linux-gnu
-CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include
+CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include -Isrc
 LDFLAGS = -lm -lgsl -lgslcblas -ldl \
 	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \
 	-Wl,--rpath=${GSL_PATH}/lib
 OBJS = $(SRCS:.c=.o)
+BIN = test_grid test
 
 player2.o: src/player2.c
 	gcc -c -fPIC $<
@@ -18,22 +21,33 @@ libplayer1.so: player1.o
 
 all: build
 
-build: server client
+build: server client install test
 
-server: src/serveur.c  libplayer2.so
-	gcc src/serveur.c -L. -lplayer2 -ldl -o $@
+server: src/server.c  libplayer2.so
+	gcc src/server.c -L. -lplayer2 -ldl -o $@
 #	gcc -o executable fichier1.c fichier2.c fichier3.c ...  `gsl-config --cflags --libs`
 
-client: $(OBJS)
-	$(CFLAGS) 
-alltests: test.o $(OBJS)
-	gcc $(CFLAGS) $^  -o alltests
+client: 
 
-test: alltests
+alltests: 
 
-install: server client test
+test: tst/test_grid.o grid.o 
+	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS) 
+
+alltests: 
+
+grid.o: src/grid.c src/grid.h
+	gcc $(CFLAGS) -I src -I tst src/grid.c -c
+
+test_grid.o: tst/test_grid.c src/grid.c src/grid.h
+	gcc $(CFLAGS) -I src -I tst tst/test_grid.c -c
+
+
+install: 
+	cp libplayer1.so libplayer2.so ${PWD}/install
+	cp server ${PWD}/install/server
 
 clean:
-	@rm -f *~ *.so *.o src/*~
+	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o install/server/* server install/*.so
 
 .PHONY: client install test clean

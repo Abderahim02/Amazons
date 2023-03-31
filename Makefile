@@ -1,5 +1,6 @@
-#GSL_PATH ?= /net/ens/renault/save/gsl-2.6/install
-GSL_PATH ?= L/usr/lib/x86_64-linux-gnu
+# GSL_PATH ?= /net/ens/renault/save/gsl-2.6/install
+GSL_PATH ?= -L/usr/lib/x86_64-linux-gnu
+#GSL_PATH ?= -L/usr/include/gsl
 CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include
 LDFLAGS = -lm -lgsl -lgslcblas -ldl \
 	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \
@@ -15,14 +16,17 @@ libplayer2.so: player2.o
 libplayer1.so: player1.o
 	gcc -shared $< -o $@
 
+grid.o:	src/grid.c
+	gcc $(CFLAGS) src/grid.c
 
+grid: src/grid.c 
+	gcc $(CFLAGS) src/grid.c -o grid
 all: build
 
 build: server client
 
 server: src/serveur.c libplayer1.so libplayer2.so
 	gcc src/serveur.c -L. -lplayer2 -ldl -o $@
-#	gcc -o executable fichier1.c fichier2.c fichier3.c ...  `gsl-config --cflags --libs`
 
 client: $(OBJS)
 	$(CFLAGS) 

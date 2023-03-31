@@ -19,7 +19,7 @@ struct player player_black;
  * - the player name as an [a-zA-Z0-9 -_]* string
  */
 char const* get_player_name(){
-    player_black.name = "seeer_seeer";
+    player_black.name = "seeer_seeeer";
     return player_black.name;
 }
 
@@ -27,7 +27,9 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
     player_black.id=player_id;
     player_black.graph=graph;
     player_black.num_queens=num_queens;
-  //  *player_black.queens=queens;
+    for(int i = 1; i < NUM_PLAYERS; i++){
+        player_black.queens[i] = queens[i];
+    }
  }
  /*int main(){
     printf("%s\n",get_player_name());

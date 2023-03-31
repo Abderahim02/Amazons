@@ -20,7 +20,7 @@ all: build
 
 build: server client
 
-server: src/serveur.c libplayer1.so libplayer2.so
+server: src/serveur.c  libplayer2.so
 	gcc src/serveur.c -L. -lplayer2 -ldl -o $@
 #	gcc -o executable fichier1.c fichier2.c fichier3.c ...  `gsl-config --cflags --libs`
 

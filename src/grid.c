@@ -16,15 +16,15 @@
 #define CASE -1
 
 //this function create an empty graph 
-struct graph_t * initialize_graph(int n){  
-    gsl_spmatrix_uint *mat = gsl_spmatrix_uint_alloc(n, n);
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
+struct graph_t * initialize_graph(){  
+    gsl_spmatrix_uint *mat = gsl_spmatrix_uint_alloc(LENGHT, LENGHT);
+    for (int i = 0; i < LENGHT; i++) {
+        for (int j = 0; j < LENGHT; j++) {
             gsl_spmatrix_uint_set(mat, i, j, NO_DIR);
         }
     }
     struct graph_t * grid=malloc(sizeof(struct graph_t)); 
-    grid->num_vertices = n*n;
+    grid->num_vertices = LENGHT*LENGHT;
     grid->t = mat;
     return grid;
 }

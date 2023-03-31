@@ -6,7 +6,7 @@
 
 
 
-struct graph_t * initialize_graph(int n);
+struct graph_t * initialize_graph();
 
 void free_graph(struct graph_t* g);
 

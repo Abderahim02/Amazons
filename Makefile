@@ -2,7 +2,7 @@
 LENGHT ?= 8
 AMAZONS_FLAGS = -DLENGHT=$(LENGHT)
 GSL_PATH ?= L/usr/lib/x86_64-linux-gnu
-CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include -Isrc
+CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include -Isrc 
 LDFLAGS = -lm -lgsl -lgslcblas -ldl \
 	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \
 	-Wl,--rpath=${GSL_PATH}/lib

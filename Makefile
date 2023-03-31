@@ -23,8 +23,8 @@ all: build
 
 build: server client install test
 
-server: src/server.c  libplayer2.so
-	gcc src/server.c -L. -lplayer2 -ldl -o $@
+server: src/server.c  libplayer2.so libplayer1.so
+	gcc src/server.c -L. -lplayer2 -lplayer1 -ldl -o $@
 #	gcc -o executable fichier1.c fichier2.c fichier3.c ...  `gsl-config --cflags --libs`
 
 client: 

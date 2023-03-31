@@ -19,7 +19,7 @@ struct player player_black;
  * - the player name as an [a-zA-Z0-9 -_]* string
  */
 char const* get_player_name(){
-    player_black.name = "seeer_seeer";
+    player_black.name = "seeer_seeeer";
     return player_black.name;
 }
 

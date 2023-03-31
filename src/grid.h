@@ -18,6 +18,6 @@ void free_graph(struct graph_t* g);
 void print_sparse_matrix(gsl_spmatrix_uint *mat);
 
 //this function fill n epty graph with relachionships
-void initialize_graph_positions_classic(struct graph_t* g, int graph_size);
+void initialize_graph_positions_classic(struct graph_t* g);
 
 #endif // _AMAZON_GRAPH_H_

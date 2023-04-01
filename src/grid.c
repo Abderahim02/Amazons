@@ -4,7 +4,9 @@
 #include <stddef.h>
 #include "dir.h"
 #include <math.h> 
-
+#include <gsl/gsl_spmatrix.h>
+#include <gsl/gsl_spmatrix_uint.h>
+#include <gsl/gsl_spblas.h>
 /** The height (number of rows or columns) of the world */
 #ifndef LENGHT
   #define LENGHT 16

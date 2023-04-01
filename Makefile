@@ -1,7 +1,9 @@
 #GSL_PATH ?= /net/ens/renault/save/gsl-2.6/install
 LENGHT ?= 8
 AMAZONS_FLAGS = -DLENGHT=$(LENGHT)
-GSL_PATH ?= L/usr/lib/x86_64-linux-gnu
+GSL_PATH = -I/usr/local/include
+#GSL_PATH ?= L/usr/lib/x86_64-linux-gnu
+# CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include -Isrc
 CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include -Isrc 
 LDFLAGS = -lm -lgsl -lgslcblas -ldl \
 	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \
@@ -40,8 +42,8 @@ test: tst/test_grid.o grid.o
 
 alltests: 
 
-grid.o: src/grid.c src/grid.h
-	gcc $(CFLAGS) -I src -I tst src/grid.c -c
+# grid.o: src/grid.c src/grid.h
+# 	gcc $(CFLAGS) -I src -I tst src/grid.c -c
 
 test_grid.o: tst/test_grid.c src/grid.c src/grid.h
 	gcc $(CFLAGS) -I src -I tst tst/test_grid.c -c

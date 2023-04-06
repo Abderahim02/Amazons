@@ -1,10 +1,12 @@
 #GSL_PATH ?= /net/ens/renault/save/gsl-2.6/install
 LENGHT ?= 8
 AMAZONS_FLAGS = -DLENGHT=$(LENGHT)
-GSL_PATH = -I/usr/local/include
-#GSL_PATH ?= L/usr/lib/x86_64-linux-gnu
-# CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include -Isrc
-CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include -Isrc 
+GSL_PATH ?=/usr/local
+
+#-L/usr/local/lib -lgsl -lgslcblas -lm
+
+#L/usr/lib/x86_64-linux-gnu
+CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include 
 LDFLAGS = -lm -lgsl -lgslcblas -ldl \
 	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \
 	-Wl,--rpath=${GSL_PATH}/lib
@@ -20,17 +22,21 @@ libplayer2.so: player2.o
 libplayer1.so: player1.o
 	gcc -shared $< -o $@
 
-grid.o:	src/grid.c
-	gcc $(CFLAGS) src/grid.c
+grid.o:	src/grid.c  src/graph.h 
+	gcc $(CFLAGS) -c src/grid.c
 
+
+#gcc -L/usr/local/lib grid.o -o grid -lgsl -lgslcblas -lm
 grid: src/grid.c 
-	gcc $(CFLAGS) src/grid.c -o grid
+	gcc -L$(GSL_PATH)/lib src/grid.c -o grid -lgsl -lgslcblas -lm
 all: build
 
 build: server client install test
-
-server: src/server.c  libplayer2.so libplayer1.so
-	gcc src/server.c -L. -lplayer2 -lplayer1 -ldl -o $@
+server.o: src/server.c src/player.h
+	gcc $(CFLAGS) -c src/server.c
+	
+server: src/server.o  src/grid.o src/player.h libplayer1.so libplayer2.so
+	gcc -L$(GSL_PATH)/lib src/server.o src/grid.o  -lgsl -lgslcblas -lm -ldl -o $@
 #	gcc -o executable fichier1.c fichier2.c fichier3.c ...  `gsl-config --cflags --libs`
 
 client: 
@@ -42,8 +48,8 @@ test: tst/test_grid.o grid.o
 
 alltests: 
 
-# grid.o: src/grid.c src/grid.h
-# 	gcc $(CFLAGS) -I src -I tst src/grid.c -c
+grid.o: src/grid.c src/grid.h
+	gcc $(CFLAGS) -I src -I tst src/grid.c -c
 
 test_grid.o: tst/test_grid.c src/grid.c src/grid.h
 	gcc $(CFLAGS) -I src -I tst tst/test_grid.c -c

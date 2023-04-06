@@ -36,8 +36,6 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
     player_blanc.current_queens[i]=queens[player_id][i];
     player_blanc.other_queens[i]=queens[(player_id+1)%2][i];
     }
-  
-
  }
  
 

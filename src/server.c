@@ -3,12 +3,13 @@
 #include "grid.h"
 #include "dir.h"
 #include <dlfcn.h>
+#include <math.h>
 
 #ifndef NUM_PLAYERS
 #define NUM_PLAYERS 2
 #endif
 #ifndef N
-#define N 16
+#define N 8
 #endif
 
 void begining_position(unsigned int* queens[NUM_PLAYERS]){
@@ -25,7 +26,7 @@ void begining_position(unsigned int* queens[NUM_PLAYERS]){
     for(int i=1;i<=m/4;i++){
         t[tmp]=N*(N-1)-N*2*i;
         tmp++;
-        t[tmp]=N*(N-1)-N*2*i+N;
+        t[tmp]=N*(N-1)-N*2*i+N-1;
         tmp++;
     }
     // int *t2=malloc(sizeof(int)*m);
@@ -39,12 +40,37 @@ void begining_position(unsigned int* queens[NUM_PLAYERS]){
     for(int i=1;i<=m/4;i++){
         t2[tmp]=N*2*i;
         tmp++;
-        t2[tmp]=N*2*i+N;
+        t2[tmp]=N*2*i+N-1;
         tmp++;
     }
 
 }
+int *graph_table(struct graph_t *graph){
+    int *t=malloc(sizeof(int)*graph->num_vertices);
+    for(int i=0;i<(int)graph->num_vertices;i++){
+        t[i]=0;
+    }
+    return t;
+}
+void table(unsigned int* queens[NUM_PLAYERS], int *t, int queens_number){
+    for(int i=0;i<queens_number;i++){
+        t[queens[0][i]]=1;
+        t[queens[1][i]]=2;
+    }
+    
+}
+void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number){
 
+int *t=graph_table(graph);
+table(queens,t,queens_number);
+for(int i=0;i<(int)graph->num_vertices;i++){
+    if(i!=0 && i%(int)sqrt((double)graph->num_vertices)==0) 
+        printf("\n");
+    printf("%d ",t[i] );
+}
+printf("\n");
+
+}
 
 int main(){
     void *handle1;
@@ -83,9 +109,9 @@ int main(){
         unsigned int queens_palyer2[m];
         unsigned int *queens[NUM_PLAYERS]={queens_player1,queens_palyer2};
         begining_position(queens);
-        initialize1(0,graph1,m,queens);
+       initialize1(0,graph1,m,queens);
         initialize2(1,graph2,m,queens);
-
+        display(graph,queens,m);
 
 
 

@@ -2,7 +2,6 @@
 #define _AMAZON_GRAPH_H_
 
 #include <gsl/gsl_spmatrix.h>
-#include <gsl/gsl_spmatrix_uint.h>
 #include <gsl/gsl_spblas.h>
 #include <stddef.h>
 

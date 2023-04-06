@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "player.h"
+#include "graph.h"
 
 
 struct player {
@@ -10,7 +11,8 @@ struct player {
     char const* name;
     struct graph_t* graph;
     unsigned int num_queens;
-    unsigned int* queens[NUM_PLAYERS];
+    unsigned int* current_queens;
+    unsigned int* other_queens;
 };
 
 struct player player_black;
@@ -24,16 +26,18 @@ char const* get_player_name(){
 }
 
 void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]){
-    player_black.id=player_id;
+   player_black.id=player_id;
     player_black.graph=graph;
     player_black.num_queens=num_queens;
-    for(int i = 1; i < NUM_PLAYERS; i++){
-        player_black.queens[i] = queens[i];
+    int m=((graph->num_vertices/10)+1)*4;
+    player_black.current_queens=malloc(sizeof(unsigned int));
+
+    player_black.other_queens=malloc(sizeof(unsigned int)*m);
+    for(int i=0;i<m;i++){
+    player_black.current_queens[i]=queens[player_id][i];
+    player_black.other_queens[i]=queens[(player_id+1)%2][i];
     }
- }
- /*int main(){
-    printf("%s\n",get_player_name());
-    return 0;
- }*/
+  
+}
 
 

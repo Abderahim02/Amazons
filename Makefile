@@ -34,7 +34,7 @@ all: build
 build: server client install test
 server.o: src/server.c src/player.h
 	gcc $(CFLAGS) -c src/server.c
-	
+
 server: src/server.o  src/grid.o src/player.h libplayer1.so libplayer2.so
 	gcc -L$(GSL_PATH)/lib src/server.o src/grid.o  -lgsl -lgslcblas -lm -ldl -o $@
 #	gcc -o executable fichier1.c fichier2.c fichier3.c ...  `gsl-config --cflags --libs`

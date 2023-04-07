@@ -1,9 +1,10 @@
 #include<stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "moteur.h" 
 #include "player.h"
 #include "graph.h"
+#include <time.h>
 
 
 struct player {
@@ -38,6 +39,14 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
     player_black.other_queens[i]=queens[(player_id+1)%2][i];
     }
   
+}
+
+
+struct move_t play(struct move_t previous_move){
+    srand(600);
+    execute_move(previous_move,player_black.graph,player_black.other_queens);
+    int r=rand()%player_black.num_queens;
+    
 }
 
 

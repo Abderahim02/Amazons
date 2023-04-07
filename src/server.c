@@ -4,7 +4,7 @@
 #include "dir.h"
 #include <dlfcn.h>
 #include <math.h>
-
+#include "hole.h"
 
 #include <gsl/gsl_spmatrix.h>
 #include <gsl/gsl_spmatrix_uint.h>
@@ -108,6 +108,7 @@ int main(){
         }
         struct graph_t* graph = initialize_graph();
         initialize_graph_positions_classic(graph);
+        make_hole(graph,graph->num_vertices/2,2);
         struct graph_t* graph1 = initialize_graph();
         initialize_graph_positions_classic(graph1);
         struct graph_t* graph2 = initialize_graph();

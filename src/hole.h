@@ -3,6 +3,7 @@
 
 #include "graph.h"
 #include "move.h"
+void  make_hole(struct graph_t *g, int id, int size);
 
 void remove_node(int n,gsl_spmatrix_uint *mat);
 

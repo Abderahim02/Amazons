@@ -20,9 +20,9 @@
 
 //this function create an empty graph 
 struct graph_t * initialize_graph(){  
-    gsl_spmatrix_uint *mat = gsl_spmatrix_uint_alloc(LENGHT*LENGHT, LENGHT*LENGHT);
-    for (int i = 0; i < LENGHT; i++) {
-        for (int j = 0; j < LENGHT; j++) {
+    gsl_spmatrix_uint *mat = gsl_spmatrix_uint_alloc(LENGHT* LENGHT, LENGHT*LENGHT);
+    for (int i = 0; i < LENGHT*LENGHT; i++) {
+        for (int j = 0; j < LENGHT* LENGHT; j++) {
             gsl_spmatrix_uint_set(mat, i, j, NO_DIR);
         }
     }
@@ -158,12 +158,8 @@ void initialize_graph_positions_classic(struct graph_t* g){
 
 
 void test_initializegraph_positions(){
-    struct graph_t* graph = initialize_graph(LENGHT);
+    struct graph_t* graph = initialize_graph();
     initialize_graph_positions_classic(graph);
     print_sparse_matrix(graph->t);
 }
 
-/*int main(){
-    test_initializegraph_positions();
-    return 1;
-}*/

@@ -7,16 +7,16 @@
 #include <gsl/gsl_spmatrix.h>
 #include <gsl/gsl_spmatrix_uint.h>
 #include <gsl/gsl_spblas.h>
-/** The height (number of rows or columns) of the world */
-#ifndef LENGHT
-  #define LENGHT 8
-#endif
+// /** The height (number of rows or columns) of the world */
+// #ifndef LENGHT
+//   #define LENGHT 8
+// #endif
 
-/** The number of possible places in the world */
-#define GRID_SIZE (LENGHT*LENGHT)
-#define WHITE 1
-#define BLACK 0
-#define CASE -1
+// /** The number of possible places in the world */
+// #define GRID_SIZE (LENGHT*LENGHT)
+// #define WHITE 1
+// #define BLACK 0
+// #define CASE -1
 
 //this function create an empty graph 
 struct graph_t * initialize_graph(){  

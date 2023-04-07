@@ -9,7 +9,7 @@
 #include <gsl/gsl_spblas.h>
 /** The height (number of rows or columns) of the world */
 #ifndef LENGHT
-  #define LENGHT 4
+  #define LENGHT 8
 #endif
 
 /** The number of possible places in the world */
@@ -163,7 +163,3 @@ void test_initializegraph_positions(){
     print_sparse_matrix(graph->t);
 }
 
-//  int main(){
-//     test_initializegraph_positions();
-//     return 1;
-//  }

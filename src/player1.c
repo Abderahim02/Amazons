@@ -10,7 +10,7 @@ struct player {
     char const* name;
     struct graph_t* graph;
     unsigned int num_queens;
-   unsigned int* current_queens;
+    unsigned int* current_queens;
     unsigned int* other_queens;
 };
 

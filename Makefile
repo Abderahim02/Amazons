@@ -1,7 +1,7 @@
 #GSL_PATH ?= /net/ens/renault/save/gsl-2.6/install
 LENGHT ?= 8
 AMAZONS_FLAGS = -DLENGHT=$(LENGHT)
-GSL_PATH = -I/usr/local/include
+GSL_PATH = /usr/local
 #GSL_PATH ?= L/usr/lib/x86_64-linux-gnu
 # CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include -Isrc
 CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include -Isrc 

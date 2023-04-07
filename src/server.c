@@ -109,13 +109,9 @@ int main(){
         unsigned int queens_palyer2[m];
         unsigned int *queens[NUM_PLAYERS]={queens_player1,queens_palyer2};
         begining_position(queens);
-       initialize1(0,graph1,m,queens);
+        initialize1(0,graph1,m,queens);
         initialize2(1,graph2,m,queens);
         display(graph,queens,m);
-
-
-
-
         dlclose(handle1);
         dlclose(handle2);
         

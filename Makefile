@@ -26,8 +26,11 @@ grid.o:	src/grid.c  src/graph.h
 	gcc $(CFLAGS) -c src/grid.c
 
 
+hole.o:	src/hole.c  src/graph.h 
+	gcc $(CFLAGS) -c src/hole.c
+
 #gcc -L/usr/local/lib grid.o -o grid -lgsl -lgslcblas -lm
-grid: src/grid.c 
+grid: src/grid.c src/hole.c
 	gcc -L$(GSL_PATH)/lib src/grid.c -o grid -lgsl -lgslcblas -lm
 all: build
 
@@ -35,8 +38,8 @@ build: server client install test
 server.o: src/server.c src/player.h
 	gcc $(CFLAGS) -c src/server.c
 
-server: src/server.o  src/grid.o src/player.h libplayer1.so libplayer2.so
-	gcc -L$(GSL_PATH)/lib src/server.o src/grid.o  -lgsl -lgslcblas -lm -ldl -o $@
+server: src/server.o  src/grid.o src/player.h src/hole.o libplayer1.so libplayer2.so
+	gcc -L$(GSL_PATH)/lib src/server.o src/grid.o src/hole.o -lgsl -lgslcblas -lm -ldl -o $@
 #	gcc -o executable fichier1.c fichier2.c fichier3.c ...  `gsl-config --cflags --libs`
 
 client: 

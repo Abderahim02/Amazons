@@ -20,7 +20,7 @@
 
 //this function create an empty graph 
 struct graph_t * initialize_graph(){  
-    gsl_spmatrix_uint *mat = gsl_spmatrix_uint_alloc(LENGHT, LENGHT);
+    gsl_spmatrix_uint *mat = gsl_spmatrix_uint_alloc(LENGHT*LENGHT, LENGHT*LENGHT);
     for (int i = 0; i < LENGHT; i++) {
         for (int j = 0; j < LENGHT; j++) {
             gsl_spmatrix_uint_set(mat, i, j, NO_DIR);

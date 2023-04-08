@@ -4,13 +4,30 @@
 #include "dir.h"
 #include <dlfcn.h>
 #include <math.h>
+#include "hole.h"
+#include "moteur.h"
+
+#include <gsl/gsl_spmatrix.h>
+#include <gsl/gsl_spmatrix_uint.h>
+#include <gsl/gsl_spblas.h>
 
 #ifndef NUM_PLAYERS
-#define NUM_PLAYERS 2
+    #define NUM_PLAYERS 2
 #endif
 #ifndef N
-#define N 8
+    #define N 8
 #endif
+
+struct player {
+    unsigned int id;
+    char const* name;
+    struct graph_t* graph;
+    unsigned int num_queens;
+    unsigned int* current_queens;
+    unsigned int* other_queens;
+};
+
+struct player player_blanc;
 
 void begining_position(unsigned int* queens[NUM_PLAYERS]){
     unsigned int *t=queens[0];
@@ -38,7 +55,7 @@ void begining_position(unsigned int* queens[NUM_PLAYERS]){
         tmp++;
     }
     for(int i=1;i<=m/4;i++){
-        t2[tmp]=N*2*i;
+        t2[tmp]=N*2*(i);
         tmp++;
         t2[tmp]=N*2*i+N-1;
         tmp++;
@@ -47,8 +64,11 @@ void begining_position(unsigned int* queens[NUM_PLAYERS]){
 }
 int *graph_table(struct graph_t *graph){
     int *t=malloc(sizeof(int)*graph->num_vertices);
-    for(int i=0;i<(int)graph->num_vertices;i++){
-        t[i]=0;
+    t[0]=0;
+    for(int i=0;i<N*N-1;i++){
+        if(gsl_spmatrix_uint_get(graph->t, i, i+1)!=0 || (i+1)%N==0)
+            t[i+1]=0;
+        else t[i+1]=-1;
     }
     return t;
 }
@@ -97,7 +117,22 @@ void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS], int queen
     printf("\n");
 }
 
+// void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number){
+//     int *t=graph_table(graph);
+//     table(queens,t,queens_number);
+//     for(int i=0;i<N*N;i++){
+//         if(i!=0 && i%N==0) printf("\n");
+//         if(t[i]==-1) printf("  ");
+//     else printf("%d ",t[i] );
+//     }
+//     printf("\n");
+// }
 
+void print_queens(struct player p ){
+    for(int i=0; i < LENGHT ; ++i){
+        printf("current [%d] = %d /// other[%d] = %d\n", i,p.current_queens[i] ,i, p.other_queens[i]);
+    }
+}
 int main(){
     void *handle1;
     void *handle2;
@@ -126,6 +161,7 @@ int main(){
         }
         struct graph_t* graph = initialize_graph();
         initialize_graph_positions_classic(graph);
+        make_hole(graph,graph->num_vertices/2,2);
         struct graph_t* graph1 = initialize_graph();
         initialize_graph_positions_classic(graph1);
         struct graph_t* graph2 = initialize_graph();
@@ -135,7 +171,7 @@ int main(){
         unsigned int queens_palyer2[m];
         unsigned int *queens[NUM_PLAYERS]={queens_player1,queens_palyer2};
         begining_position(queens);
-       initialize1(0,graph1,m,queens);
+        initialize1(0,graph1,m,queens);
         initialize2(1,graph2,m,queens);
         display(graph,queens,m);
         printf("%u \n", graph->num_vertices);
@@ -144,14 +180,8 @@ int main(){
 
         dlclose(handle1);
         dlclose(handle2);
-        
-    
     return 0;
 }
-
-
-
-
 
 
 

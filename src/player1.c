@@ -10,7 +10,7 @@ struct player {
     char const* name;
     struct graph_t* graph;
     unsigned int num_queens;
-   unsigned int* current_queens;
+    unsigned int* current_queens;
     unsigned int* other_queens;
 };
 
@@ -31,12 +31,13 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
     int m=((graph->num_vertices/10)+1)*4;
     player_blanc.current_queens=malloc(sizeof(unsigned int)*num_queens);
 
-     player_blanc.other_queens=malloc(sizeof(unsigned int)*num_queens);
+    player_blanc.other_queens=malloc(sizeof(unsigned int)*num_queens);
     for(int i=0;i<num_queens;i++){
-    player_blanc.current_queens[i]=queens[player_id][i];
-    player_blanc.other_queens[i]=queens[(player_id+1)%2][i];
+        player_blanc.current_queens[i]=queens[player_id][i];
+        player_blanc.other_queens[i]=queens[(player_id+1)%2][i];
     }
- }
+}
+
  
 
 

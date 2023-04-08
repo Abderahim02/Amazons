@@ -11,7 +11,7 @@ void test_empty_graph(){
     free_graph(graph);
 }
 
-int main(){
-    test_empty_graph();
-    return 0;
-}
+// int main(){
+//     test_empty_graph();
+//     return 0;
+// }

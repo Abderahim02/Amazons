@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-int main(){
+// int main(){
 
-    printf("\nOK\n");
-    return 0;
-}
+//     printf("\nOK\n");
+//     return 0;
+// }

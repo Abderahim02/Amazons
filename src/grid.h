@@ -9,12 +9,19 @@
 #include "graph.h"
 #include "dir.h"
 
-
-
-
+/** The height (number of rows or columns) of the world */
 #ifndef LENGHT
   #define LENGHT 8
 #endif
+
+/** The number of possible places in the world */
+#define GRID_SIZE (LENGHT*LENGHT)
+#define WHITE 1
+#define BLACK 0
+#define CASE -1
+
+
+
 
 
 

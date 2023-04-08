@@ -8,9 +8,6 @@
 #include <gsl/gsl_spmatrix_uint.h>
 #include <gsl/gsl_spblas.h>
 /** The height (number of rows or columns) of the world */
-#ifndef LENGHT
-  #define LENGHT 8
-#endif
 
 /** The number of possible places in the world */
 #define GRID_SIZE (LENGHT*LENGHT)

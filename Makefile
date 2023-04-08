@@ -43,7 +43,7 @@ client:
 
 alltests: 
 
-test: tst/test_grid.o grid.o 
+test: tst/test_graph.o grid.o 
 	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS) 
 
 alltests: 
@@ -51,7 +51,7 @@ alltests:
 grid.o: src/grid.c src/grid.h
 	gcc $(CFLAGS) -I src -I tst src/grid.c -c
 
-test_grid.o: tst/test_grid.c src/grid.c src/grid.h
+test_grid.o: tst/test_raph.c src/grid.c src/grid.h
 	gcc $(CFLAGS) -I src -I tst tst/test_grid.c -c
 
 

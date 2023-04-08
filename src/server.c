@@ -59,18 +59,44 @@ void table(unsigned int* queens[NUM_PLAYERS], int *t, int queens_number){
     }
     
 }
-void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number){
 
-int *t=graph_table(graph);
-table(queens,t,queens_number);
-for(int i=0;i<(int)graph->num_vertices;i++){
-    if(i!=0 && i%(int)sqrt((double)graph->num_vertices)==0) 
+
+void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS], int queens_number) {
+
+    int *t = graph_table(graph);
+    table(queens, t, queens_number);
+
+    unsigned int max_val = 0;
+    for (int i = 0; i < graph->num_vertices; i++) {
+        unsigned int val = t[i];
+        if (val > max_val) {
+            max_val = val;
+        }
+    }
+
+    unsigned int field_width = snprintf(NULL, 0, "%u", max_val) + 1; // +1 for the space
+
+    printf("\n");
+    for (int i = 0; i < sqrt(graph->num_vertices); i++) {
+        for (int j = 0; j < sqrt(graph->num_vertices); j++) {
+            if (j % 2 == 0 && i % 2 == 0) {
+                printf("\x1b[107m %*d \x1b[0m", field_width, t[i]);
+            }
+            else if (j % 2 != 0 && i % 2 == 0) {
+                printf("\x1b[48;2;165;42;42m %*d \x1b[0m", field_width, t[i]);
+            }
+            if (j % 2 != 0 && i % 2 != 0) {
+                printf("\x1b[107m %*d \x1b[0m", field_width, t[i]);
+            }
+            else if (j % 2 == 0 && i % 2 != 0) {
+                printf("\x1b[48;2;165;42;42m %*d \x1b[0m", field_width, t[i]);
+            }
+        }
         printf("\n");
-    printf("%d ",t[i] );
+    }
+    printf("\n");
 }
-printf("\n");
 
-}
 
 int main(){
     void *handle1;
@@ -112,7 +138,7 @@ int main(){
        initialize1(0,graph1,m,queens);
         initialize2(1,graph2,m,queens);
         display(graph,queens,m);
-
+        printf("%u \n", graph->num_vertices);
 
 
 

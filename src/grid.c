@@ -7,6 +7,7 @@
 #include <gsl/gsl_spmatrix.h>
 #include <gsl/gsl_spmatrix_uint.h>
 #include <gsl/gsl_spblas.h>
+#include "hole.h"
 /** The height (number of rows or columns) of the world */
 #ifndef LENGHT
   #define LENGHT 8
@@ -155,11 +156,14 @@ void initialize_graph_positions_classic(struct graph_t* g){
     }
 }
 
+// struct graph_t * initialize_graph_middle_hole(){  
+// struct graph_t * g = initialize_graph();
+// make_hole()
+// }
 
-
-void test_initializegraph_positions(){
-    struct graph_t* graph = initialize_graph();
-    initialize_graph_positions_classic(graph);
-    print_sparse_matrix(graph->t);
-}
+// void test_initializegraph_positions(){
+//     struct graph_t* graph = initialize_graph();
+//     initialize_graph_positions_classic(graph);
+//     print_sparse_matrix(graph->t);
+// }
 

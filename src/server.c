@@ -108,7 +108,9 @@ int main(){
         }
         struct graph_t* graph = initialize_graph();
         initialize_graph_positions_classic(graph);
-        make_hole(graph,graph->num_vertices/2,2);
+        //make_hole(graph,graph->num_vertices/2 +  (int)(sqrt(graph->num_vertices))/2  -((int)(sqrt(graph->num_vertices)/6) + (int)(sqrt(graph->num_vertices)/3)),(int)(sqrt(graph->num_vertices)/3));
+        make_hole(graph,N*(N/3) + N/3,(N/3));
+        
         struct graph_t* graph1 = initialize_graph();
         initialize_graph_positions_classic(graph1);
         struct graph_t* graph2 = initialize_graph();

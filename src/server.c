@@ -5,6 +5,7 @@
 #include <dlfcn.h>
 #include <math.h>
 #include "hole.h"
+#include "moteur.h"
 
 #include <gsl/gsl_spmatrix.h>
 #include <gsl/gsl_spmatrix_uint.h>
@@ -15,6 +16,17 @@
 #ifndef N
 #define N 8
 #endif
+
+struct player {
+    unsigned int id;
+    char const* name;
+    struct graph_t* graph;
+    unsigned int num_queens;
+    unsigned int* current_queens;
+    unsigned int* other_queens;
+};
+
+struct player player_blanc;
 
 void begining_position(unsigned int* queens[NUM_PLAYERS]){
     unsigned int *t=queens[0];
@@ -67,19 +79,21 @@ void table(unsigned int* queens[NUM_PLAYERS], int *t, int queens_number){
     
 }
 void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number){
-
-int *t=graph_table(graph);
-table(queens,t,queens_number);
-for(int i=0;i<N*N;i++){
-    if(i!=0 && i%N==0) 
+    int *t=graph_table(graph);
+    table(queens,t,queens_number);
+    for(int i=0;i<N*N;i++){
+        if(i!=0 && i%N==0) printf("\n");
+        if(t[i]==-1) printf("  ");
+    else printf("%d ",t[i] );
+    }
     printf("\n");
-    if(t[i]==-1) printf("  ");
-   else printf("%d ",t[i] );
-}
-printf("\n");
-
 }
 
+void print_queens(struct player p ){
+    for(int i=0; i < LENGHT ; ++i){
+        printf("current [%d] = %d /// other[%d] = %d\n", i,p.current_queens[i] ,i, p.other_queens[i]);
+    }
+}
 int main(){
     void *handle1;
     void *handle2;
@@ -120,23 +134,13 @@ int main(){
         unsigned int queens_palyer2[m];
         unsigned int *queens[NUM_PLAYERS]={queens_player1,queens_palyer2};
         begining_position(queens);
-       initialize1(0,graph1,m,queens);
+        initialize1(0,graph1,m,queens);
         initialize2(1,graph2,m,queens);
         display(graph,queens,m);
-
-
-
-
         dlclose(handle1);
         dlclose(handle2);
-        
-    
     return 0;
 }
-
-
-
-
 
 
 

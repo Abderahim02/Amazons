@@ -33,10 +33,6 @@ hole.o:	src/hole.c  src/graph.h
 moteur.o:	src/moteur.c  src/graph.h 
 	gcc $(CFLAGS) -c src/moteur.c
 
-#gcc -L/usr/local/lib grid.o -o grid -lgsl -lgslcblas -lm
-# grid: src/grid.c src/moteur.c
-# 	gcc -L$(GSL_PATH)/lib src/grid.c src/moteur.c -o grid -lgsl -lgslcblas -lm
-
 all: build
 
 build: server client install test
@@ -45,23 +41,24 @@ server.o: src/server.c src/player.h
 
 server: src/server.o  src/grid.o src/player.h src/hole.o src/moteur.o libplayer1.so libplayer2.so
 	gcc -L$(GSL_PATH)/lib src/server.o src/grid.o src/hole.o src/moteur.o  -lgsl -lgslcblas -lm -ldl -o $@
-#	gcc -o executable fichier1.c fichier2.c fichier3.c ...  `gsl-config --cflags --libs`
 
 client: 
 
 alltests: 
 
-test: tst/test_grid.o grid.o 
+# test: tst/test_grid.o grid.o test_execute_move.o 
+# 	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS) 
+
+test: moteur.o server.o grid.o test_execute_move.o hole.o
 	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS) 
 
 alltests: 
 
-# grid.o: src/grid.c src/grid.h
-# 	gcc $(CFLAGS) -I src -I tst src/grid.c -c
-
 test_grid.o: tst/test_grid.c src/grid.c src/grid.h
 	gcc $(CFLAGS) -I src -I tst tst/test_grid.c -c
 
+test_execute_move.o: tst/test_execute_move.c src/grid.c src/grid.h
+	gcc $(CFLAGS) -I src -I tst tst/test_execute_move.c -c
 
 install: 
 	cp libplayer1.so libplayer2.so ${PWD}/install

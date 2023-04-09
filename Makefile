@@ -13,6 +13,11 @@ LDFLAGS = -lm -lgsl -lgslcblas -ldl \
 OBJS = $(SRCS:.c=.o)
 BIN = test_grid test
 
+
+all: build
+build: server client install test
+
+
 player2.o: src/player2.c
 	gcc -c -fPIC $<
 player1.o: src/player1.c
@@ -30,9 +35,7 @@ hole.o: src/hole.c  src/graph.h
 moteur.o: src/moteur.c  src/graph.h 
 	gcc $(CFLAGS) -c src/moteur.c
 
-all: build
 
-build: server client install test
 server.o: src/server.c src/player.h
 	gcc $(CFLAGS) -c src/server.c
 

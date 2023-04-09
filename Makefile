@@ -1,4 +1,4 @@
-#GSL_PATH ?= /net/ens/renault/save/gsl-2.6/install
+GSL_PATH ?= /net/ens/renault/save/gsl-2.6/install
 LENGHT ?= 8
 AMAZONS_FLAGS = -DLENGHT=$(LENGHT)
 GSL_PATH ?=/usr/local
@@ -8,8 +8,8 @@ GSL_PATH ?=/usr/local
 #L/usr/lib/x86_64-linux-gnu
 CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include 
 LDFLAGS = -lm -lgsl -lgslcblas -ldl \
-	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \
-	-Wl,--rpath=${GSL_PATH}/lib
+        -L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \
+        -Wl,--rpath=${GSL_PATH}/lib
 OBJS = $(SRCS:.c=.o)
 BIN = test_grid test
 
@@ -22,15 +22,12 @@ libplayer2.so: player2.o
 libplayer1.so: player1.o
 	gcc -shared $< -o $@
 
-grid.o:	src/grid.c  src/graph.h 
-	gcc $(CFLAGS) -c src/grid.c
 
-
-hole.o:	src/hole.c  src/graph.h 
+hole.o: src/hole.c  src/graph.h 
 	gcc $(CFLAGS) -c src/hole.c
 
 
-moteur.o:	src/moteur.c  src/graph.h 
+moteur.o: src/moteur.c  src/graph.h 
 	gcc $(CFLAGS) -c src/moteur.c
 
 all: build
@@ -65,6 +62,6 @@ install:
 	cp server ${PWD}/install/server
 
 clean:
-	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o install/server/* server install/*.so
+	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o install/server/* server install/*.so install/server
 
 .PHONY: client install test clean

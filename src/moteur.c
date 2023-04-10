@@ -2,30 +2,34 @@
 #include "moteur.h"
 #include "grid.h"
 
-#ifndef LENGHT
-  #define LENGHT 8
-#endif
+#include <gsl/gsl_spmatrix.h>
+#include <gsl/gsl_spmatrix_uint.h>
+#include <gsl/gsl_spblas.h>
+#include <stddef.h>
 
-// struct move_t {
-//   unsigned int queen_src;
-//   unsigned int queen_dst;
-//   unsigned int arrow_dst;
-// };
+/*this function puts an arrow in the position idx in the graph, it puts NO_DIT with all of its neighbors*/
+void put_arrow(struct graph_t* graph, unsigned int idx){
+    for(int i=0; i < LENGHT*LENGHT; ++i){
+        if(gsl_spmatrix_uint_get(graph->t, idx, i) != NO_DIR ){
+            gsl_spmatrix_uint_set(graph->t, idx, i, NO_DIR );
+            gsl_spmatrix_uint_set(graph->t, i, idx, NO_DIR);
+        }
+    }
+}
 
+/*this function updates the graph taken as argument and the array of positions queens with the new 
+position of the queen after the move*/
 void execute_move(struct move_t move, struct graph_t *graph, unsigned int *queens){
     int queen_number = 4*(LENGHT/10 + 1 );
     for(int  i =0; i < queen_number ; ++i ){
-        if ( queens[i] == move.queen_src ){
-            printf("found");
+        if ( queens[i] == move.queen_src ){ //we look for the ex_position and then we put the new position
             queens[i] = move.queen_dst;
             break;
         }
     }
-    unsigned int pos_i = move.arrow_dst / LENGHT ;
-    unsigned int pos_j = move.arrow_dst %LENGHT ;
-    gsl_spmatrix_uint_set(graph->t,  pos_i ,pos_j, -1 );
-    gsl_spmatrix_uint_set(graph->t, pos_j, pos_i, -1 );
-
+    // print_sparse_matrix(graph->t);
+    put_arrow(graph, move.arrow_dst); //here we updates the graph, we make the position arrow_dst isolated
+    // print_sparse_matrix(graph->t);
 }
 
 

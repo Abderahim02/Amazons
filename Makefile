@@ -1,4 +1,3 @@
-GSL_PATH ?= /net/ens/renault/save/gsl-2.6/install
 LENGHT ?= 8
 AMAZONS_FLAGS = -DLENGHT=$(LENGHT)
 GSL_PATH ?=/usr/local
@@ -6,7 +5,7 @@ GSL_PATH ?=/usr/local
 #-L/usr/local/lib -lgsl -lgslcblas -lm
 
 #L/usr/lib/x86_64-linux-gnu
-CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include 
+CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I $(GSL_PATH)/include 
 LDFLAGS = -lm -lgsl -lgslcblas -ldl \
         -L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \
         -Wl,--rpath=${GSL_PATH}/lib
@@ -27,7 +26,8 @@ libplayer2.so: player2.o
 libplayer1.so: player1.o
 	gcc -shared $< -o $@
 
-
+grid.o: src/grid.c src/grid.h
+	gcc -Wall -I/usr/local/include -c src/grid.c
 hole.o: src/hole.c  src/graph.h 
 	gcc $(CFLAGS) -c src/hole.c
 
@@ -36,12 +36,11 @@ moteur.o: src/moteur.c  src/graph.h
 	gcc $(CFLAGS) -c src/moteur.c
 
 
-server.o: src/server.c src/player.h
-	gcc $(CFLAGS) -c src/server.c
+server.o: src/server.c src/player.h src/graph.h
+	gcc $(CFLAGS) -c src/server.c -ldl
 
-server: src/server.o  src/grid.o src/player.h src/hole.o src/moteur.o libplayer1.so libplayer2.so
-	gcc -L$(GSL_PATH)/lib src/server.o src/grid.o src/hole.o src/moteur.o  -lgsl -lgslcblas -lm -ldl -o $@
-
+server: server.o  grid.o  libplayer1.so libplayer2.so
+	gcc -L${GSL_PATH}/lib server.o grid.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl
 client: 
 
 alltests: 
@@ -51,8 +50,6 @@ test: tst/test_graph.o grid.o
 
 alltests: 
 
-grid.o: src/grid.c src/grid.h
-	gcc $(CFLAGS) -I src -I tst src/grid.c -c
 
 test_grid.o: tst/test_raph.c src/grid.c src/grid.h
 	gcc $(CFLAGS) -I src -I tst tst/test_grid.c -c

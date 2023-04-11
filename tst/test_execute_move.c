@@ -1,12 +1,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "grid.h"
-#include "dir.h"
 #include <dlfcn.h>
 #include <math.h>
-#include "hole.h"
-#include "moteur.h"
+#include "../src/grid.h"
+#include "../src/dir.h"
+#include "../src/hole.h"
+#include "../src/moteur.h"
 
 #include <gsl/gsl_spmatrix.h>
 #include <gsl/gsl_spmatrix_uint.h>
@@ -15,7 +15,7 @@
 #define NUM_PLAYERS 2
 #endif
 #ifndef N
-#define N 8
+    #define N 8
 #endif
 struct player {
     unsigned int id;

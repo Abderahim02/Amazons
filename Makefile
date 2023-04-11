@@ -45,17 +45,17 @@ client:
 
 alltests: 
 
-test: tst/test_graph.o grid.o 
+test: tst/test_graph.o grid.o tst/test_execute_move.o server.o moteur.o hole.o
 	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS) 
 
 alltests: 
 
 
-test_grid.o: tst/test_raph.c src/grid.c src/grid.h
-	gcc $(CFLAGS) -I src -I tst tst/test_grid.c -c
+# test_grid.o: tst/test_graph.c src/grid.c src/grid.h hole.o moteur.o server.o 
+# 	gcc $(CFLAGS) -I src -I tst tst/test_grid.c -c
 
-test_execute_move.o: tst/test_execute_move.c src/grid.c src/grid.h
-	gcc $(CFLAGS) -I src -I tst tst/test_execute_move.c -c
+# test_execute_move.o: tst/test_execute_move.c src/grid.c src/grid.h hole.o moteur.o server.o 
+# 	gcc $(CFLAGS) -I src -I tst tst/test_execute_move.c moteur.o -c
 
 install: 
 	cp libplayer1.so libplayer2.so ${PWD}/install

@@ -7,19 +7,10 @@
 #include <gsl/gsl_spmatrix.h>
 #include <gsl/gsl_spmatrix_uint.h>
 #include <gsl/gsl_spblas.h>
-#include "hole.h"
-// /** The height (number of rows or columns) of the world */
-// #ifndef LENGHT
-//   #define LENGHT 8
-// #endif
 
-// /** The number of possible places in the world */
-// #define GRID_SIZE (LENGHT*LENGHT)
-// #define WHITE 1
-// #define BLACK 0
-// #define CASE -1
 
-//this function create an empty graph 
+/*this function create an empty graph  with the size LENGHT*LENGHT, a matrix of size LENGHT*LENGHT
+is needed to store a graph of size LENGHT */
 struct graph_t * initialize_graph(){  
     gsl_spmatrix_uint *mat = gsl_spmatrix_uint_alloc(LENGHT* LENGHT, LENGHT*LENGHT);
     for (int i = 0; i < LENGHT*LENGHT; i++) {
@@ -41,9 +32,6 @@ void print_sparse_matrix(gsl_spmatrix_uint *mat) {
         for ( unsigned int j = 0; j < mat->size2; j++) {
             printf("(%u) ",gsl_spmatrix_uint_get(mat, i, j)); 
             }
-        if (((i%mat->size2) == 0)&&(i!=0)){
-            printf("\n");
-        }
         printf("\n");
     }
     }
@@ -161,9 +149,4 @@ void initialize_graph_positions_classic(struct graph_t* g){
 // make_hole()
 // }
 
-// void test_initializegraph_positions(){
-//     struct graph_t* graph = initialize_graph();
-//     initialize_graph_positions_classic(graph);
-//     print_sparse_matrix(graph->t);
-// }
 

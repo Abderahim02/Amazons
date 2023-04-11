@@ -151,3 +151,7 @@ void test_initializegraph_positions(){
     print_sparse_matrix(graph->t);
 }
 
+/*int main(){
+    return 0;
+}*/
+

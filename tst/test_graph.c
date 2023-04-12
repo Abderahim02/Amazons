@@ -15,7 +15,13 @@ void test_empty_graph(){
     free_graph(graph);
 }
 
-int main(){
-    test_empty_graph();
-    return 0;
+void test_initializegraph_positions(){
+    struct graph_t* graph = initialize_graph();
+    initialize_graph_positions_classic(graph);
+    print_sparse_matrix(graph->t);
 }
+
+// int main(){
+//     test_empty_graph();
+//     return 0;
+// }

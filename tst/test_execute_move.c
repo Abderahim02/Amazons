@@ -71,12 +71,10 @@ void test_execute_move(){
 
         struct player p = {.id = 0, .graph = graph1, .name = "player1", .num_queens = m, .current_queens = queens[0], .other_queens = queens[1]};
         print_queens(p);
-        display(graph1,queens,m);
         struct move_t move = {.queen_dst = 2 + LENGHT, .queen_src = 2, .arrow_dst = 4 };
         execute_move(move, graph1, p.other_queens);
         print_queens(p);
         printf("\n");
-        display(graph1, queens, m);
 }
 // int main(){
 //     test_execute_move();

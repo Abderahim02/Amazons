@@ -46,8 +46,6 @@ void begining_position(unsigned int* queens[NUM_PLAYERS]){
         t[tmp]=N*(N-1)-N*2*i+N-1;
         tmp++;
     }
-    printf("tmp1= %d \n",tmp);
-    // int *t2=malloc(sizeof(int)*m);
      tmp=0;
     for(int i=1;i<=m/4;i++){
         t2[tmp]=2*i;
@@ -61,10 +59,10 @@ void begining_position(unsigned int* queens[NUM_PLAYERS]){
         t2[tmp]=N*2*i+N-1;
         tmp++;
     }
-    printf("tmp2=%d \n",tmp);
+    //printf("tmp2=%d \n",tmp);
 
 }
-/*
+
 int *graph_table(struct graph_t *graph){
     int *t=malloc(sizeof(int)*graph->num_vertices);
     t[0]=0;
@@ -83,7 +81,7 @@ void table(unsigned int* queens[NUM_PLAYERS], int *t, int queens_number){
     
 }
 
-
+/*
 void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS], int queens_number) {
 
     int *t = graph_table(graph);
@@ -121,19 +119,19 @@ void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS], int queen
 }
 
 */
-// void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number){
-//     int *t=graph_table(graph);
-//     table(queens,t,queens_number);
-//     for(int i=0;i<N*N;i++){
-//         if(i!=0 && i%N==0) printf("\n");
-//         if(t[i]==-1) printf("  ");
-//     else printf("%d ",t[i] );
-//     }
-//     printf("\n");
-// }
+void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number){
+    int *t=graph_table(graph);
+    table(queens,t,queens_number);
+    for(int i=0;i<N*N;i++){
+        if(i!=0 && i%N==0) printf("\n");
+        if(t[i]==-1) printf("  ");
+    else printf("%d ",t[i] );
+    }
+    printf("\n");
+}
 
-void print_queens(struct player p ){
-    for(int i=0; i < LENGHT ; ++i){
+void print_queens(struct player p, int num_queens ){
+    for(int i=0; i < num_queens ; ++i){
         printf("current [%d] = %d /// other[%d] = %d\n", i,p.current_queens[i] ,i, p.other_queens[i]);
     }
 }
@@ -142,6 +140,8 @@ int main(){
     void *handle1;
     void *handle2;
         char*(*player_name1)(void);
+        struct move_t(*play1)(struct move_t previous_move);
+        struct move_t(*play2)(struct move_t previous_move);
         char*(*player_name2)(void);
         char*(*initialize1)(unsigned int player_id, struct graph_t* graph,
                 unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]);
@@ -159,7 +159,8 @@ int main(){
         player_name2 = dlsym(handle2,"get_player_name");
         initialize1 = dlsym(handle1,"initialize");
         initialize2 = dlsym(handle2,"initialize");
-        
+        play1=dlsym(handle1,"play");
+        play2=dlsym(handle2,"play");        
         if ((error = dlerror()) != NULL)  {
             fputs(error, stderr);
             exit(1);
@@ -176,11 +177,24 @@ int main(){
         unsigned int queens_palyer2[m];
         unsigned int *queens[NUM_PLAYERS]={queens_player1,queens_palyer2};
         begining_position(queens);
-        //initialize1(0,graph1,m,queens);
-        //initialize2(1,graph2,m,queens);
-        //display(graph,queens,m);
+        initialize1(0,graph1,m,queens);
+        initialize2(1,graph2,m,queens);
+        display(graph,queens,m);
         //printf("%u \n", graph->num_vertices);
+      /*  struct move_t move={-1,-1,-1};
+        for(int i=0;i<1;i++){
+        move=play2(move);
+        printf("%d\n",move.arrow_dst);
 
+        printf("%d\n",move.queen_src);
+
+        printf("%d\n",move.queen_dst);
+        // execute_move(move,graph,queens[0]);
+        // move=play2(move);
+        // execute_move(move,graph,queens[1]);
+        //display(graph,queens,m);
+        }
+*/
 
 
         dlclose(handle1);

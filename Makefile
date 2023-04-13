@@ -21,10 +21,10 @@ player2.o: src/player2.c
 	gcc -c -fPIC $<
 player1.o: src/player1.c
 	gcc -c -fPIC $<
-libplayer2.so: player2.o
-	gcc -shared $< -o $@
-libplayer1.so: player1.o
-	gcc -shared $< -o $@
+libplayer2.so: player2.o moteur.o
+	gcc -shared player2.o moteur.o -o $@
+libplayer1.so: player1.o moteur.o
+	gcc -shared player1.o moteur.o -o $@
 
 grid.o: src/grid.c src/grid.h
 	gcc -Wall -I/usr/local/include -c src/grid.c
@@ -33,14 +33,14 @@ hole.o: src/hole.c  src/graph.h
 
 
 moteur.o: src/moteur.c  src/graph.h 
-	gcc $(CFLAGS) -c src/moteur.c
+	gcc $(CFLAGS) -fPIC -c src/moteur.c
 
 
 server.o: src/server.c src/player.h src/graph.h
 	gcc $(CFLAGS) -c src/server.c -ldl
 
-server: server.o  grid.o  libplayer1.so libplayer2.so
-	gcc -L${GSL_PATH}/lib server.o grid.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl
+server: server.o  grid.o moteur.o libplayer1.so libplayer2.so
+	gcc -L${GSL_PATH}/lib server.o grid.o moteur.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl
 client: 
 
 alltests: 

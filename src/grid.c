@@ -144,7 +144,10 @@ void initialize_graph_positions_classic(struct graph_t* g){
     }
 }
 
-
+// struct graph_t * initialize_graph_middle_hole(){  
+// struct graph_t * g = initialize_graph();
+// make_hole()
+// }
 
 
 /*int main(){

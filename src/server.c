@@ -46,6 +46,7 @@ void begining_position(unsigned int* queens[NUM_PLAYERS]){
         t[tmp]=N*(N-1)-N*2*i+N-1;
         tmp++;
     }
+    printf("tmp1= %d \n",tmp);
     // int *t2=malloc(sizeof(int)*m);
      tmp=0;
     for(int i=1;i<=m/4;i++){
@@ -60,8 +61,10 @@ void begining_position(unsigned int* queens[NUM_PLAYERS]){
         t2[tmp]=N*2*i+N-1;
         tmp++;
     }
+    printf("tmp2=%d \n",tmp);
 
 }
+/*
 int *graph_table(struct graph_t *graph){
     int *t=malloc(sizeof(int)*graph->num_vertices);
     t[0]=0;
@@ -117,6 +120,7 @@ void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS], int queen
     printf("\n");
 }
 
+*/
 // void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number){
 //     int *t=graph_table(graph);
 //     table(queens,t,queens_number);
@@ -133,6 +137,7 @@ void print_queens(struct player p ){
         printf("current [%d] = %d /// other[%d] = %d\n", i,p.current_queens[i] ,i, p.other_queens[i]);
     }
 }
+
 int main(){
     void *handle1;
     void *handle2;
@@ -161,9 +166,7 @@ int main(){
         }
         struct graph_t* graph = initialize_graph();
         initialize_graph_positions_classic(graph);
-        //make_hole(graph,graph->num_vertices/2 +  (int)(sqrt(graph->num_vertices))/2  -((int)(sqrt(graph->num_vertices)/6) + (int)(sqrt(graph->num_vertices)/3)),(int)(sqrt(graph->num_vertices)/3));
-        make_hole(graph,N*(N/3) + N/3,(N/3));
-        
+        //make_hole(graph,graph->num_vertices/2,2);
         struct graph_t* graph1 = initialize_graph();
         initialize_graph_positions_classic(graph1);
         struct graph_t* graph2 = initialize_graph();
@@ -173,10 +176,10 @@ int main(){
         unsigned int queens_palyer2[m];
         unsigned int *queens[NUM_PLAYERS]={queens_player1,queens_palyer2};
         begining_position(queens);
-        initialize1(0,graph1,m,queens);
-        initialize2(1,graph2,m,queens);
-        display(graph,queens,m);
-        printf("%u \n", graph->num_vertices);
+        //initialize1(0,graph1,m,queens);
+        //initialize2(1,graph2,m,queens);
+        //display(graph,queens,m);
+        //printf("%u \n", graph->num_vertices);
 
 
 

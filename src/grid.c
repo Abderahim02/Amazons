@@ -150,3 +150,7 @@ void initialize_graph_positions_classic(struct graph_t* g){
 // }
 
 
+/*int main(){
+    return 0;
+}*/
+

@@ -1,31 +1,14 @@
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "grid.h"
-#include "dir.h"
-#include <dlfcn.h>
-#include <math.h>
-#include "hole.h"
-#include "moteur.h"
 
 #include <gsl/gsl_spmatrix.h>
 #include <gsl/gsl_spmatrix_uint.h>
 #include <gsl/gsl_spblas.h>
 
-#ifndef NUM_PLAYERS
-    #define NUM_PLAYERS 2
-#endif
-#ifndef N
-    #define N 8
-#endif
+#include "server.h"
 
-struct player {
-    unsigned int id;
-    char const* name;
-    struct graph_t* graph;
-    unsigned int num_queens;
-    unsigned int* current_queens;
-    unsigned int* other_queens;
-};
+
 
 struct player player_blanc;
 

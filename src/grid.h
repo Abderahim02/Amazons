@@ -20,6 +20,16 @@
 #define BLACK 0
 #define CASE -1
 
+#ifndef NUM_PLAYERS
+    #define NUM_PLAYERS 2
+#endif
+#ifndef N
+    #define N 8
+#endif
+
+
+
+
 /*this function create an empty graph  with the size LENGHT*LENGHT, a matrix of size LENGHT*LENGHT
 is needed to store a graph of size LENGHT */
 struct graph_t * initialize_graph();

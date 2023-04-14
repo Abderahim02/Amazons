@@ -1,0 +1,17 @@
+{
+    "files.associations": {
+        "move.h": "c",
+        "player.h": "c",
+        "grid.h": "c",
+        "graph.h": "c",
+        "dir.h": "c",
+        "hole.h": "c",
+        "moteur.h": "c",
+        "iterator": "c"
+    },
+
+    "C_Cpp.default.includePath": [
+        "src"
+    ],
+    "C_Cpp.errorSquiggles": "Disabled",
+}

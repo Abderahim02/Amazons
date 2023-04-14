@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "move.h"
 #include "grid.h"
 
@@ -8,7 +11,4 @@ struct set{
 };
 
 void available_moves(struct graph_t * graph, struct set* set);
-
-
-
 

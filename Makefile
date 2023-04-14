@@ -13,7 +13,7 @@ BIN = test_grid test grid
 
 
 all: build
-build: server client install test
+build: #server client install test
 
 
 player2.o: src/player2.c
@@ -25,27 +25,27 @@ libplayer2.so: player2.o moteur.o
 libplayer1.so: player1.o moteur.o
 	gcc -shared player1.o moteur.o -o $@
 
-grid.o: src/grid.c src/grid.h
-	gcc -Wall -I/usr/local/include -c src/grid.c
-hole.o: src/hole.c  src/graph.h 
-	gcc $(CFLAGS) -c src/hole.c
+# grid.o: src/grid.c src/grid.h
+# 	gcc -Wall -I/usr/local/include -c src/grid.c
+# hole.o: src/hole.c  src/graph.h 
+# 	gcc $(CFLAGS) -c src/hole.c
 
 
-moteur.o: src/moteur.c  src/graph.h 
-	gcc $(CFLAGS) -fPIC -c src/moteur.c
+# moteur.o: src/moteur.c  src/graph.h 
+# 	gcc $(CFLAGS) -fPIC -c src/moteur.c
 
 
-server.o: src/server.c src/player.h src/graph.h
-	gcc $(CFLAGS) -c src/server.c -ldl
+# server.o: src/server.c src/player.h src/graph.h
+# 	gcc $(CFLAGS) -c src/server.c -ldl
 
-server: server.o  grid.o moteur.o libplayer1.so libplayer2.so
-	gcc -L${GSL_PATH}/lib server.o grid.o moteur.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl
+# server: server.o  grid.o moteur.o libplayer1.so libplayer2.so
+# 	gcc -L${GSL_PATH}/lib server.o grid.o moteur.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl
 client: 
 
 alltests: 
 
-test: tst/test_graph.o grid.o tst/test_execute_move.o server.o moteur.o hole.o
-	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS) 
+# test: tst/test_graph.o grid.o tst/test_execute_move.o server.o moteur.o hole.o
+# 	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS) 
 
 alltests: 
 

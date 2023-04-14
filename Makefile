@@ -1,7 +1,6 @@
 LENGHT ?= 8
 AMAZONS_FLAGS = -DLENGHT=$(LENGHT)
-GSL_PATH ?=/usr
-
+GSL_PATH ?= /net/ens/renault/save/gsl-2.6/install
 #-L/usr/local/lib -lgsl -lgslcblas -lm
 
 #L/usr/lib/x86_64-linux-gnu

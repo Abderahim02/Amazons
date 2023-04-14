@@ -60,7 +60,7 @@ int random_dst(struct graph_t *graph, enum dir_t dir, int pos){
 
 struct move_t play(struct move_t previous_move){
    //    srand(300);
-     if(previous_move.queen_dst!=-1)
+    if(previous_move.queen_dst!=-1)
          execute_move(previous_move,player_blanc.graph,player_blanc.other_queens);
     struct move_t move;
     //execute_move(previous_move,player_blanc.graph,player_blanc.other_queens);
@@ -74,7 +74,7 @@ struct move_t play(struct move_t previous_move){
      move.queen_src=queen;
      move.queen_dst=random_dst(player_blanc.graph,dir,queen);
     enum dir_t dir2=rand()%8+1;
-    while(get_neighbor(queen,dir,player_blanc.graph)==-1 || dir2==dir){
+    while(get_neighbor(queen,dir,player_blanc.graph) == -1 || dir2 == dir){
         dir=(dir+1)%8;
         if(dir==0) dir++;
     }
@@ -129,6 +129,7 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
     }
     return -1;
 }
+
 
 
 

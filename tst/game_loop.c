@@ -41,48 +41,48 @@ int random_or_config(){
 
 }
 
-int main(){
-      int start_player = random_or_config();
-      //INITIALISATION DES JOUEURS AVEC LES LIBPLAYERS.SO
-      void *player1 = dlopen ("libplayer1.so", RTLD_LAZY);
-      void *player2 = dlopen ("libplayer1.so", RTLD_LAZY);
-      if (!player2 || !player1  ){
-            fputs (dlerror(), stderr);
-            exit(1);
-      }
-      char*(*initialize1)(unsigned int player_id, struct graph_t* graph,
-                unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]) = dlsym(player1,"initialize");
-      char*(*initialize2)(unsigned int player_id, struct graph_t* graph,
-                unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]) = dlsym(player2,"initialize");
-      char *error;
-      if ((error = dlerror()) != NULL)  {
-            fputs(error, stderr);
-            exit(1);
-      }
-      //FIN D'INITIALISATION DES JOUEURS AVEC LES LIBPLAYERS.SO
+// int main(){
+//       int start_player = random_or_config();
+//       //INITIALISATION DES JOUEURS AVEC LES LIBPLAYERS.SO
+//       void *player1 = dlopen ("libplayer1.so", RTLD_LAZY);
+//       void *player2 = dlopen ("libplayer1.so", RTLD_LAZY);
+//       if (!player2 || !player1  ){
+//             fputs (dlerror(), stderr);
+//             exit(1);
+//       }
+//       char*(*initialize1)(unsigned int player_id, struct graph_t* graph,
+//                 unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]) = dlsym(player1,"initialize");
+//       char*(*initialize2)(unsigned int player_id, struct graph_t* graph,
+//                 unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]) = dlsym(player2,"initialize");
+//       char *error;
+//       if ((error = dlerror()) != NULL)  {
+//             fputs(error, stderr);
+//             exit(1);
+//       }
+//       //FIN D'INITIALISATION DES JOUEURS AVEC LES LIBPLAYERS.SO
 
-      //INITIALISATION DES GRAPHES
-      struct graph_t* graph = initialize_graph();
-      initialize_graph_positions_classic(graph);
-      struct graph_t* graph1 = initialize_graph();
-      initialize_graph_positions_classic(graph1);
-      struct graph_t* graph2 = initialize_graph();
-      initialize_graph_positions_classic(graph2);
-      int m=((N/10)+1)*4;
-      unsigned int queens_player1[m], queens_palyer2[m];
-      unsigned int *queens[NUM_PLAYERS]={queens_player1,queens_palyer2};
-      begining_position(queens);
-      initialize1(0,graph1,m,queens);
-      initialize2(1,graph2,m,queens);
-      display(graph,queens,m);
-      //FIN D'INITIALISATION DES GRAPHES
+//       //INITIALISATION DES GRAPHES
+//       struct graph_t* graph = initialize_graph();
+//       initialize_graph_positions_classic(graph);
+//       struct graph_t* graph1 = initialize_graph();
+//       initialize_graph_positions_classic(graph1);
+//       struct graph_t* graph2 = initialize_graph();
+//       initialize_graph_positions_classic(graph2);
+//       int m=((N/10)+1)*4;
+//       unsigned int queens_player1[m], queens_palyer2[m];
+//       unsigned int *queens[NUM_PLAYERS]={queens_player1,queens_palyer2};
+//       begining_position(queens);
+//       initialize1(0,graph1,m,queens);
+//       initialize2(1,graph2,m,queens);
+//       display(graph,queens,m);
+//       //FIN D'INITIALISATION DES GRAPHES
 
-      for(int i = 0; i<3; i++){
+//       for(int i = 0; i<3; i++){
 
-      }
-      dlclose(player1);
-      dlclose(player2);
-      printf("\tOK\n");
-      return 0;
-}
+//       }
+//       dlclose(player1);
+//       dlclose(player2);
+//       printf("\tOK\n");
+//       return 0;
+// }
   

@@ -118,7 +118,9 @@ void print_queens(struct player p, int num_queens ){
         printf("current [%d] = %d /// other[%d] = %d\n", i,p.current_queens[i] ,i, p.other_queens[i]);
     }
 }
-
+int main(){
+    return 1;
+}
 
 
 

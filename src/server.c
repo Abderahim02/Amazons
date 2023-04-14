@@ -1,31 +1,14 @@
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "grid.h"
-#include "dir.h"
-#include <dlfcn.h>
-#include <math.h>
-#include "hole.h"
-#include "moteur.h"
 
 #include <gsl/gsl_spmatrix.h>
 #include <gsl/gsl_spmatrix_uint.h>
 #include <gsl/gsl_spblas.h>
 
-#ifndef NUM_PLAYERS
-    #define NUM_PLAYERS 2
-#endif
-#ifndef N
-    #define N 8
-#endif
+#include "server.h"
 
-struct player {
-    unsigned int id;
-    char const* name;
-    struct graph_t* graph;
-    unsigned int num_queens;
-    unsigned int* current_queens;
-    unsigned int* other_queens;
-};
+
 
 struct player player_blanc;
 
@@ -134,72 +117,6 @@ void print_queens(struct player p, int num_queens ){
     for(int i=0; i < num_queens ; ++i){
         printf("current [%d] = %d /// other[%d] = %d\n", i,p.current_queens[i] ,i, p.other_queens[i]);
     }
-}
-
-int main(){
-    void *handle1;
-    void *handle2;
-        char*(*player_name1)(void);
-        struct move_t(*play1)(struct move_t previous_move);
-        struct move_t(*play2)(struct move_t previous_move);
-        char*(*player_name2)(void);
-        char*(*initialize1)(unsigned int player_id, struct graph_t* graph,
-                unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]);
-        char*(*initialize2)(unsigned int player_id, struct graph_t* graph,
-                unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]);
-
-        char *error;
-        handle2 = dlopen ("libplayer2.so", RTLD_LAZY);
-        handle1 = dlopen("libplayer1.so",RTLD_LAZY);
-        if (!handle2 || !handle1  ) {
-            fputs (dlerror(), stderr);
-            exit(1);
-        }
-        player_name1 = dlsym(handle1,"get_player_name");
-        player_name2 = dlsym(handle2,"get_player_name");
-        initialize1 = dlsym(handle1,"initialize");
-        initialize2 = dlsym(handle2,"initialize");
-        play1=dlsym(handle1,"play");
-        play2=dlsym(handle2,"play");        
-        if ((error = dlerror()) != NULL)  {
-            fputs(error, stderr);
-            exit(1);
-        }
-        struct graph_t* graph = initialize_graph();
-        initialize_graph_positions_classic(graph);
-        //make_hole(graph,graph->num_vertices/2,2);
-        struct graph_t* graph1 = initialize_graph();
-        initialize_graph_positions_classic(graph1);
-        struct graph_t* graph2 = initialize_graph();
-        initialize_graph_positions_classic(graph2);
-        int m=((N/10)+1)*4;
-        unsigned int queens_player1[m];
-        unsigned int queens_palyer2[m];
-        unsigned int *queens[NUM_PLAYERS]={queens_player1,queens_palyer2};
-        begining_position(queens);
-        initialize1(0,graph1,m,queens);
-        initialize2(1,graph2,m,queens);
-        display(graph,queens,m);
-        //printf("%u \n", graph->num_vertices);
-      /*  struct move_t move={-1,-1,-1};
-        for(int i=0;i<1;i++){
-        move=play2(move);
-        printf("%d\n",move.arrow_dst);
-
-        printf("%d\n",move.queen_src);
-
-        printf("%d\n",move.queen_dst);
-        // execute_move(move,graph,queens[0]);
-        // move=play2(move);
-        // execute_move(move,graph,queens[1]);
-        //display(graph,queens,m);
-        }
-*/
-
-
-        dlclose(handle1);
-        dlclose(handle2);
-    return 0;
 }
 
 

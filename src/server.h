@@ -24,7 +24,7 @@ struct player {
 void begining_position(unsigned int* queens[NUM_PLAYERS]);
 
 
-void print_queens(struct player p, int num_queens );
+// void print_queens(struct player p, int num_queens );
 
 void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number);
 

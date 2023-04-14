@@ -9,8 +9,8 @@
 #include "server.h"
 
 
-
 struct player player_blanc;
+struct player player_black;
 
 void begining_position(unsigned int* queens[NUM_PLAYERS]){
     unsigned int *t=queens[0];
@@ -103,7 +103,7 @@ void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS], int queen
 
 */
 void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number){
-    int *t=graph_table(graph);
+    int *t = graph_table(graph);
     table(queens,t,queens_number);
     for(int i=0;i<N*N;i++){
         if(i!=0 && i%N==0) printf("\n");
@@ -118,9 +118,145 @@ void print_queens(struct player p, int num_queens ){
         printf("current [%d] = %d /// other[%d] = %d\n", i,p.current_queens[i] ,i, p.other_queens[i]);
     }
 }
-int main(){
-    return 1;
+
+////////////////////////////
+
+
+
+
+int element_in_array(int *t, int size, int x){
+    for(int i=0; i<size; i++){
+        if(t[i]==x) return 1;
+    }
+    return 0;
 }
+
+
+int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
+    if( pos < LENGHT*LENGHT  && pos >=0){
+            int m=4*(LENGHT/10 + 1);
+        switch (dir)
+        {
+        case 1:
+            if(pos - LENGHT >= 0 && gsl_spmatrix_uint_get(graph->t, pos, pos-LENGHT) > 0  && !element_in_array(player_black.other_queens, m, pos-LENGHT))
+                return pos-LENGHT;
+            break;
+        case 3:
+            if(pos-1 >= 0 && gsl_spmatrix_uint_get(graph->t, pos, pos-1)>0  && !element_in_array(player_black.other_queens,m,pos-1))
+                return pos-1;
+            break;
+        case 5:
+            if(pos+LENGHT<= LENGHT*LENGHT-1 && gsl_spmatrix_uint_get(graph->t, pos, pos+LENGHT)>0 && !element_in_array(player_black.other_queens,m,pos+LENGHT))
+                // printf("lelement pos =%d %d\n",!element_in_array(player_black.other_queens,m,pos+LENGHT), pos);
+                return pos+LENGHT;
+            break;
+        case 7:
+            if(pos+1<=LENGHT*LENGHT-1 && gsl_spmatrix_uint_get(graph->t, pos, pos+1)>0 && !element_in_array(player_black.other_queens,m,pos+1))
+                return pos+1;
+            break;
+        case 2:
+            if(pos-LENGHT+1>=0 && gsl_spmatrix_uint_get(graph->t, pos, pos-LENGHT+1)>0 && !element_in_array(player_black.other_queens,m,pos-LENGHT+1) )
+                return pos-LENGHT+1;
+                break;
+        case 4:
+            if(pos+LENGHT+1<=LENGHT*LENGHT-1 && gsl_spmatrix_uint_get(graph->t, pos, pos+LENGHT+1) > 0 && !element_in_array(player_black.other_queens,m,pos+LENGHT+1))
+                return pos+LENGHT+1;
+                break;
+        case 6:
+            if(pos+LENGHT-1<=LENGHT*LENGHT-1 && gsl_spmatrix_uint_get(graph->t, pos, pos+LENGHT-1) > 0 && !element_in_array(player_black.other_queens,m,pos+LENGHT-1))
+                return pos+LENGHT-1;
+                break;
+        case 8:
+            if(pos-LENGHT-1>=0 && gsl_spmatrix_uint_get(graph->t, pos, pos-LENGHT-1) > 0 && !element_in_array(player_black.other_queens,m,pos-LENGHT-1))
+                return pos-LENGHT-1;
+                break;
+        default:
+            break;
+        }
+    //  printf("je suis là\n");
+    }
+    return -1;
+}
+//////////////////////////////////////////////
+
+int main(){
+    void *handle1;
+    void *handle2;
+        char*(*player_name1)(void);
+        struct move_t(*play1)(struct move_t previous_move);
+        struct move_t(*play2)(struct move_t previous_move);
+        char*(*player_name2)(void);
+        char*(*initialize1)(unsigned int player_id, struct graph_t* graph,
+                unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]);
+        char*(*initialize2)(unsigned int player_id, struct graph_t* graph,
+                unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]);
+
+        char *error;
+        handle2 = dlopen ("libplayer2.so", RTLD_LAZY);
+        handle1 = dlopen("libplayer1.so",RTLD_LAZY);
+        if (!handle2 || !handle1  ) {
+            fputs (dlerror(), stderr);
+            exit(1);
+        }
+        player_name1 = dlsym(handle1,"get_player_name");
+        player_name2 = dlsym(handle2,"get_player_name");
+        initialize1 = dlsym(handle1,"initialize");
+        initialize2 = dlsym(handle2,"initialize");
+        play1=dlsym(handle1,"play");
+        play2=dlsym(handle2,"play");        
+        if ((error = dlerror()) != NULL)  {
+            fputs(error, stderr);
+            exit(1);
+        }
+        struct graph_t* graph = initialize_graph();
+        initialize_graph_positions_classic(graph);
+        //make_hole(graph,graph->num_vertices/2,2);
+        struct graph_t* graph1 = initialize_graph();
+        initialize_graph_positions_classic(graph1);
+        struct graph_t* graph2 = initialize_graph();
+        initialize_graph_positions_classic(graph2);
+        int m=((N/10)+1)*4;
+        unsigned int queens_player1[m];
+        unsigned int queens_palyer2[m];
+        unsigned int *queens[NUM_PLAYERS] = {queens_player1,queens_palyer2};
+        begining_position(queens);
+        initialize1(0,graph1,m,queens);
+        initialize2(1,graph2,m,queens);
+        display(graph,queens,m);
+        struct move_t move = {-1,-1,-1};
+        player_black.other_queens = queens[0]; 
+        move = play2(move);
+        execute_move(move, graph, queens[0]);
+        printf("\n");
+        display(graph, queens, m);
+        // for(int i=0;i<1;i++){
+        //     //  move=play2(move);
+        //     //  printf("%d\n",move.arrow_dst);
+
+        //     //  printf("%d\n",move.queen_src);
+
+        //     //  printf("%d\n",move.queen_dst);
+        //     // execute_move(move,graph,queens[0]);
+        //     move=play2(move);
+        //     execute_move(move,graph,queens[1]);
+        //     display(graph,queens,m);
+        // }
+        
+        // for(int i=0; i< m; ++i){
+        //     printf("%d \t ", player_black.other_queens[i]);
+        // }
+        int tmp = 59;
+        enum dir_t i = 1; 
+        while(i < 9 ){
+            printf("%d in direction : %d\n", get_neighbor(tmp, i, graph ), i);
+            i++;
+        }
+
+        dlclose(handle1);
+        dlclose(handle2);
+    return 0;
+}
+
 
 
 

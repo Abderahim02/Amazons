@@ -1,6 +1,6 @@
 LENGHT ?= 8
 AMAZONS_FLAGS = -DLENGHT=$(LENGHT)
-GSL_PATH ?=/usr
+GSL_PATH ?=/usr/local
 
 #-L/usr/local/lib -lgsl -lgslcblas -lm
 

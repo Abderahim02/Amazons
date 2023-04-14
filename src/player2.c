@@ -48,12 +48,21 @@ int random_dst(struct graph_t *graph, enum dir_t dir, int pos){
     int t[LENGHT*2];
     int i=0;
     int tmp=pos;
-    while(get_neighbor(tmp,dir,graph)!=-1){
+    printf("Size : %d\n", LENGHT*2);
+    while(get_neighbor(tmp,dir,graph)!=-1 && tmp<LENGHT*LENGHT){
         t[i]=get_neighbor(tmp,dir,graph);
+    //    printf("i=%d t|i]=%d",i, t[i]);
+        printf("index tmp while : %d\n", i);
         tmp=t[i];
         i++;
     }
-    return t[rand()%i];
+    if(i==0) return pos;
+  //  printf("ifinale=%d\n",i);
+    const int index = rand()%i;
+    printf("index out while : %d\n", index);
+    int tmp2=t[index];
+   // printf("i=%d\n",tmp2);
+    return tmp2;
 
 }
 
@@ -65,22 +74,28 @@ struct move_t play(struct move_t previous_move){
    // execute_move(previous_move,player_black.graph,player_black.other_queens);
     int r=rand()%player_black.num_queens;
     int queen=player_black.current_queens[r];
+    //printf("hadi hya lqueen%d\n",queen);
     enum dir_t dir=rand()%8+1;
     while(get_neighbor(queen,dir,player_black.graph)==-1){
         dir=(dir+1)%8;
         if(dir==0) dir++;
     }
+   printf("dir=%d\n",dir);
      move.queen_src=queen;
+   // printf("return %d\n",random_dst(player_black.graph,dir,queen));
      move.queen_dst=random_dst(player_black.graph,dir,queen);
-    enum dir_t dir2=rand()%8+1;
-    while(get_neighbor(queen,dir,player_black.graph)==-1 || dir2==dir){
-        dir=(dir+1)%8;
-        if(dir==0) dir++;
+   // printf("dst=%d ",move.queen_dst);
+     enum dir_t dir2=rand()%8+1;
+    while(get_neighbor(queen,dir2,player_black.graph)==-1 || dir2==dir){
+        dir2=(dir2+1)%8;
+        if(dir2==0) dir2++;
     }
+      //printf("dir2=%d\n",dir2);
     int arrow_dst=random_dst(player_black.graph,dir2,queen);
     move.arrow_dst=arrow_dst;
     ///to make hole in the position move.arrow_dst
     execute_move(move,player_black.graph,player_black.current_queens);
+    
     return move;  
 }
 
@@ -106,6 +121,7 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
         break;
     case 5:
         if(pos+LENGHT<= LENGHT*LENGHT-1 && gsl_spmatrix_uint_get(graph->t, pos, pos+LENGHT) && !element_in_array(player_black.other_queens,m,pos+LENGHT))
+            printf("lelement pos =%d %d\n",!element_in_array(player_black.other_queens,m,pos+LENGHT), pos);
             return pos+LENGHT;
         break;
     case 7:
@@ -131,6 +147,7 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
     default:
     break;
     }
-    printf("je suis là\n");
+  //  printf("je suis là\n");
     return -1;
 }
+

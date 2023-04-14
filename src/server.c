@@ -181,20 +181,21 @@ int main(){
         initialize2(1,graph2,m,queens);
         display(graph,queens,m);
         //printf("%u \n", graph->num_vertices);
-      /*  struct move_t move={-1,-1,-1};
+        struct move_t move={-1,-1,-1};
+        //display(graph,queens,m);
         for(int i=0;i<1;i++){
         move=play2(move);
-        printf("%d\n",move.arrow_dst);
+         printf("%d\n",move.arrow_dst);
 
-        printf("%d\n",move.queen_src);
+         printf("%d\n",move.queen_src);
 
-        printf("%d\n",move.queen_dst);
-        // execute_move(move,graph,queens[0]);
+         printf("%d\n",move.queen_dst);
+        // // execute_move(move,graph,queens[0]);
         // move=play2(move);
         // execute_move(move,graph,queens[1]);
         //display(graph,queens,m);
         }
-*/
+
 
 
         dlclose(handle1);

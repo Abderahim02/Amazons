@@ -6,6 +6,7 @@
 #include "graph.h"
 #include "dir.h"
 #include "grid.h"
+#include "move.h"
 #include <time.h>
 
 
@@ -86,44 +87,37 @@ struct move_t play(struct move_t previous_move){
 
 
 
-int element_in_array(int *t, int size, int x){
-    for(int i=0;i<size;i++){
-        if(t[i]==x) return 1;
-    }
-    return 0;
-}
-
 int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
     int m=4*(LENGHT/10 + 1);
     switch (dir)
     {
     case 1:
-        if(pos-LENGHT >= 0 && gsl_spmatrix_uint_get(graph->t, pos, pos-LENGHT) && !element_in_array(player_blanc.other_queens,m,pos-LENGHT))
+        if(pos-LENGHT >= 0 && gsl_spmatrix_uint_get(graph->t, pos, pos-LENGHT) && !is_in_set(player_blanc.other_queens,m,pos-LENGHT))
             return pos-LENGHT;
         break;
     case 3:
-        if(pos-1>= 0 && gsl_spmatrix_uint_get(graph->t, pos, pos-1) && !element_in_array(player_blanc.other_queens,m,pos-1))
+        if(pos-1>= 0 && gsl_spmatrix_uint_get(graph->t, pos, pos-1) && !is_in_set(player_blanc.other_queens,m,pos-1))
             return pos-1;
         break;
     case 5:
-        if(pos+LENGHT<= LENGHT*LENGHT-1 && gsl_spmatrix_uint_get(graph->t, pos, pos+LENGHT) && !element_in_array(player_blanc.other_queens,m,pos+LENGHT))
+        if(pos+LENGHT<= LENGHT*LENGHT-1 && gsl_spmatrix_uint_get(graph->t, pos, pos+LENGHT) && !is_in_set(player_blanc.other_queens,m,pos+LENGHT))
             return pos+LENGHT;
         break;
     case 7:
-        if(pos+1<=LENGHT*LENGHT-1 && gsl_spmatrix_uint_get(graph->t, pos, pos+1) && !element_in_array(player_blanc.other_queens,m,pos+1))
+        if(pos+1<=LENGHT*LENGHT-1 && gsl_spmatrix_uint_get(graph->t, pos, pos+1) && !is_in_set(player_blanc.other_queens,m,pos+1))
             return pos+1;
         break;
     case 2:
-        if(pos-LENGHT+1>=0 && gsl_spmatrix_uint_get(graph->t, pos, pos-LENGHT+1) && !element_in_array(player_blanc.other_queens,m,pos-LENGHT+1) )
+        if(pos-LENGHT+1>=0 && gsl_spmatrix_uint_get(graph->t, pos, pos-LENGHT+1) && !is_in_set(player_blanc.other_queens,m,pos-LENGHT+1) )
             return pos-LENGHT+1;
     case 4:
-        if(pos+LENGHT+1<=LENGHT*LENGHT-1 && gsl_spmatrix_uint_get(graph->t, pos, pos+LENGHT+1) && !element_in_array(player_blanc.other_queens,m,pos+LENGHT+1))
+        if(pos+LENGHT+1<=LENGHT*LENGHT-1 && gsl_spmatrix_uint_get(graph->t, pos, pos+LENGHT+1) && !is_in_set(player_blanc.other_queens,m,pos+LENGHT+1))
             return pos+LENGHT+1;
     case 6:
-        if(pos+LENGHT-1<=LENGHT*LENGHT-1 && gsl_spmatrix_uint_get(graph->t, pos, pos+LENGHT-1) && !element_in_array(player_blanc.other_queens,m,pos+LENGHT-1))
+        if(pos+LENGHT-1<=LENGHT*LENGHT-1 && gsl_spmatrix_uint_get(graph->t, pos, pos+LENGHT-1) && !is_in_set(player_blanc.other_queens,m,pos+LENGHT-1))
             return pos+LENGHT-1;
     case 8:
-        if(pos-LENGHT-1>=0 && gsl_spmatrix_uint_get(graph->t, pos, pos-LENGHT-1) && !element_in_array(player_blanc.other_queens,m,pos-LENGHT-1))
+        if(pos-LENGHT-1>=0 && gsl_spmatrix_uint_get(graph->t, pos, pos-LENGHT-1) && !is_in_set(player_blanc.other_queens,m,pos-LENGHT-1))
             return pos-LENGHT-1;
     default:
         break;

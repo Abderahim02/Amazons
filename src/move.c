@@ -3,9 +3,43 @@
 
 #include "move.h"
 #include "grid.h"
-#include "server.h"
 
 
+struct set{
+    unsigned int taille;
+    struct move_t positions[GRID_SIZE];
+};
+
+//Initializes a set
+void positions_init(struct set* pi ) {
+    pi->taille = 0 ;
+}
+
+//Add a position to a set
+void add_position(struct set* p ,unsigned int place ){
+    p->positions[p->taille]=place ;
+    p->taille+=1;
+}
+
+//Verify the existence of a place in a set  and return 1 if it does 0 if it doesn't
+int is_in_set(struct set* ens, unsigned int place ){
+    
+    for (unsigned int i =0; i < ens->taille; i++){
+        if (place == ens->positions[i]){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+//
+void available_moves(struct graph_t* graph, struct set* set){
+    enum dir_t array[8]={DIR_NORTH=1, DIR_NE=2,
+                         DIR_WEST=3,  DIR_SE=4,
+                         DIR_SOUTH=5, DIR_SW=6,
+                         DIR_EAST=7,  DIR_NW=8,};
+    
+}
 
 
 //Initializes a set
@@ -38,7 +72,7 @@ void available_moves(struct graph_t* graph, struct set* set){
                          DIR_EAST,  DIR_NW};
     int* t = graph_table(struct graph_t* graph);
     for(int i=; i<graph->num_vertices; i++){
-        printf("%d", t[i]);
+        printf("%d", t[i])
     }
     
 }

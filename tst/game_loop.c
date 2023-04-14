@@ -5,7 +5,6 @@
 
 
 #include "../src/grid.h"
-#include "../src/move.h"
 
 void get_opt(int argc, char* argv[]){
   int turns;
@@ -77,10 +76,10 @@ int main(){
       initialize2(1,graph2,m,queens);
       display(graph,queens,m);
       //FIN D'INITIALISATION DES GRAPHES
-      struct set set;
-      positions_init(&set);
-      available_moves(graph, set);
-      
+
+      for(int i = 0; i<3; i++){
+
+      }
       dlclose(player1);
       dlclose(player2);
       printf("\tOK\n");

@@ -9,13 +9,12 @@ CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I $(GSL_PATH)/include
 LDFLAGS = -lm -lgsl -lgslcblas -ldl \
         -L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \
         -Wl,--rpath=${GSL_PATH}/lib
-		
 OBJS = $(SRCS:.c=.o)
-BIN = test_grid test grid game_loop
+BIN = test_grid test grid
 
 
 all: build
-build: game_loop
+build: server client install test
 
 
 player2.o: src/player2.c
@@ -36,29 +35,31 @@ hole.o: src/hole.c  src/graph.h
 moteur.o: src/moteur.c  src/graph.h 
 	gcc $(CFLAGS) -fPIC -c src/moteur.c
 
-move.o: src/move.c src/grid.c
-	gcc $(CFLAGS) -fPIC -c src/move.c
 
-server.o: src/server.c src/server.h src/player.h src/graph.h
-	gcc -Wall -I/usr/local/include -c src/server.c
+server.o: src/server.c src/player.h src/graph.h
+	gcc $(CFLAGS) -c src/server.c -ldl
 
-# server: server.o  grid.o moteur.o libplayer1.so libplayer2.so
-# 	gcc -L${GSL_PATH}/lib server.o grid.o moteur.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl
-
+server: server.o  grid.o moteur.o libplayer1.so libplayer2.so
+	gcc -L${GSL_PATH}/lib server.o grid.o moteur.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl
 client: 
 
 alltests: 
 
-test: tst/test_graph.o grid.o  server.o  hole.o
+test: tst/test_graph.o grid.o tst/test_execute_move.o server.o moteur.o hole.o
 	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS) 
 
-game_loop: tst/game_loop.o libplayer1.so libplayer2.so grid.o server.o move.o
-	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS)
+alltests: 
 
+
+# test_grid.o: tst/test_graph.c src/grid.c src/grid.h hole.o moteur.o server.o 
+# 	gcc $(CFLAGS) -I src -I tst tst/test_grid.c -c
+
+# test_execute_move.o: tst/test_execute_move.c src/grid.c src/grid.h hole.o moteur.o server.o 
+# 	gcc $(CFLAGS) -I src -I tst tst/test_execute_move.c moteur.o -c
 
 install: 
-	# cp libplayer1.so libplayer2.so ${PWD}/install
-	# cp server ${PWD}/install/server
+	cp libplayer1.so libplayer2.so ${PWD}/install
+	cp server ${PWD}/install/server
 
 clean:
 	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o install/server/* server install/*.so install/server

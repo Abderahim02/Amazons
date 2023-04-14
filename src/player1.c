@@ -85,7 +85,12 @@ struct move_t play(struct move_t previous_move){
     return move;  
 }
 
-
+int is_in_set(int *t, int size, int x){
+    for(int i=0;i<size;i++){
+        if(t[i]==x) return 1;
+    }
+    return 0;
+}
 
 int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
     int m=4*(LENGHT/10 + 1);

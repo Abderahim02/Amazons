@@ -15,13 +15,4 @@ struct moves_t {
   unsigned int current;
 };
 
-struct set{
-    unsigned int taille;
-    unsigned int positions[GRID_SIZE];
-};
-
-void positions_init(struct set* set);
-
-void available_moves(struct graph_t* graph, struct set* set)
-
 #endif // _AMAZON_MOVE_H_

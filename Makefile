@@ -50,9 +50,9 @@ server: server.o  grid.o moteur.o libplayer1.so libplayer2.so
 
 client: 
 
-alltests: test
+#alltests: test
 
-test: tst/test_graph.o grid.o tst/test_execute_move.o server.o moteur.o hole.o game_loop.o
+alltests: tst/test_graph.o grid.o tst/test_execute_move.o server.o moteur.o hole.o game_loop.o
 	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS) 
 
 
@@ -64,13 +64,10 @@ test: tst/test_graph.o grid.o tst/test_execute_move.o server.o moteur.o hole.o g
 # 	gcc $(CFLAGS) -I src -I tst tst/test_execute_move.c moteur.o -c
 
 install: server
-	 #alltests
-	#libplayer1.so
-	#libplayer2.so
-	cp *.so server install
+	cp *.so server alltests install 
 	make clean
 
 clean:
-	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o server
+	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o server alltests
 
 .PHONY: client install test clean

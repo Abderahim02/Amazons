@@ -45,17 +45,24 @@ void begining_position(unsigned int* queens[NUM_PLAYERS]){
     //printf("tmp2=%d \n",tmp);
 
 }
+int empty_cell(struct graph_t *graph, int x, int size){
+    for(int i=0;i<size;i++){
+
+        if(gsl_spmatrix_uint_get(graph->t, x, i)!=NO_DIR) return 0;
+    }
+    return 1;
+}
 
 int *graph_table(struct graph_t *graph){
-    int *t=malloc(sizeof(int)*graph->num_vertices);
-    t[0]=0;
-    for(int i=0;i<N*N-1;i++){
-        if(gsl_spmatrix_uint_get(graph->t, i, i+1)!=0 || (i+1)%N==0)
-            t[i+1]=0;
-        else t[i+1]=-1;
+    int *t=malloc(sizeof(int)*LENGHT*LENGHT);
+    for(int i=0;i<N*N;i++){
+     if(empty_cell(graph,i,N*N))   
+            t[i]=-1;
+        else t[i]=0;
     }
     return t;
 }
+
 void table(unsigned int* queens[NUM_PLAYERS], int *t, int queens_number){
     for(int i=0;i<queens_number;i++){
         t[queens[0][i]]=1;
@@ -119,11 +126,15 @@ void print_queens(struct player p, int num_queens ){
     }
 }
 
+
 int main(){
     void *handle1;
     void *handle2;
         char*(*player_name1)(void);
         struct move_t(*play1)(struct move_t previous_move);
+    int (*get_neighbor)(int pos, enum dir_t dir, struct graph_t* graph);
+
+
         struct move_t(*play2)(struct move_t previous_move);
         char*(*player_name2)(void);
         char*(*initialize1)(unsigned int player_id, struct graph_t* graph,
@@ -142,6 +153,7 @@ int main(){
         player_name2 = dlsym(handle2,"get_player_name");
         initialize1 = dlsym(handle1,"initialize");
         initialize2 = dlsym(handle2,"initialize");
+        get_neighbor=dlsym(handle2,"get_neighbor");
         play1=dlsym(handle1,"play");
         play2=dlsym(handle2,"play");        
         if ((error = dlerror()) != NULL)  {
@@ -165,19 +177,43 @@ int main(){
         display(graph,queens,m);
         //printf("%u \n", graph->num_vertices);
         struct move_t move={-1,-1,-1};
+
+        // for(int i=1;i<=8;i++){
+        //     enum dir_t dir=i;
+        //     printf("dir=%d neighbor=%d\n",i, get_neighbor(9,dir,graph));
+        // }
         //display(graph,queens,m);
-        for(int i=0;i<1;i++){
+        for(int i=0;i<40;i++){
         move=play2(move);
-         printf("%d\n",move.arrow_dst);
-
-         printf("%d\n",move.queen_src);
-
-         printf("%d\n",move.queen_dst);
-        // // execute_move(move,graph,queens[0]);
-        // move=play2(move);
-        // execute_move(move,graph,queens[1]);
-        //display(graph,queens,m);
+        if(move.queen_dst==-2){
+            printf("game finished2\n");
+            break;
         }
+        //  printf("%d\n",move.arrow_dst);
+
+        //  printf("%d\n",move.queen_src);
+
+        //  printf("%d\n",move.queen_dst);
+        //  //execute_move(move,graph,queens[0]);
+        
+        execute_move(move,graph,queens[1]);
+        printf("player2\n");
+        display(graph,queens,m);
+        move=play1(move);
+         if(move.queen_dst==-2){
+            printf("%d game finished1 \n",move.queen_dst);
+            break;
+        }
+         execute_move(move,graph,queens[0]);
+        // printf("%d\n",move.arrow_dst);
+
+        //  printf("%d\n",move.queen_src);
+
+        //  printf("%d\n",move.queen_dst);
+        printf("player1\n");
+        display(graph,queens,m);
+        }
+        //}
 
 
 

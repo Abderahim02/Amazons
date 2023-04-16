@@ -1,10 +1,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <getopt.h>
 
-#include <gsl/gsl_spmatrix.h>
-#include <gsl/gsl_spmatrix_uint.h>
-#include <gsl/gsl_spblas.h>
+// #include <gsl/gsl_spmatrix.h>
+// #include <gsl/gsl_spmatrix_uint.h>
+// #include <gsl/gsl_spblas.h>
 
 #include "server.h"
 
@@ -126,7 +127,23 @@ void print_queens(struct player p, int num_queens ){
     }
 }
 
-int main(){
+int main(int argc,char* argv[]){
+    // int param;
+    // int m=8;
+    // char t='c';
+    // while((param = getopt(argc, argv, "m:t")) != -1){   
+    //     switch(param){ 
+    //   case 'm': 
+    //     m = atoi(optarg); 
+    //     break; 
+    //   case 't':
+    //     t=*optarg;
+    //     break;  
+    //   default: 
+    //     abort(); 
+    //  } 
+    // }
+
     void *handle1;
     void *handle2;
         char*(*player_name1)(void);
@@ -174,26 +191,14 @@ int main(){
         initialize1(0,graph1,m,queens);
         initialize2(1,graph2,m,queens);
         display(graph,queens,m);
-        //printf("%u \n", graph->num_vertices);
         struct move_t move={-1,-1,-1};
-
-        // for(int i=1;i<=8;i++){
-        //     enum dir_t dir=i;
-        //     printf("dir=%d neighbor=%d\n",i, get_neighbor(9,dir,graph));
-        // }
-        //display(graph,queens,m);
         for(int i=0;i<40;i++){
         move=play2(move);
         if(move.queen_dst==-2){
             printf("game finished2\n");
             break;
         }
-        //  printf("%d\n",move.arrow_dst);
-
-        //  printf("%d\n",move.queen_src);
-
-        //  printf("%d\n",move.queen_dst);
-        //  //execute_move(move,graph,queens[0]);
+    
         
         execute_move(move,graph,queens[1]);
         printf("player2\n");

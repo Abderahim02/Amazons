@@ -9,8 +9,8 @@
 #include "server.h"
 
 
-
 struct player player_blanc;
+struct player player_black;
 
 void begining_position(unsigned int* queens[NUM_PLAYERS]){
     unsigned int *t=queens[0];
@@ -110,7 +110,7 @@ void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS], int queen
 
 */
 void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number){
-    int *t=graph_table(graph);
+    int *t = graph_table(graph);
     table(queens,t,queens_number);
     for(int i=0;i<N*N;i++){
         if(i!=0 && i%N==0) printf("\n");
@@ -125,7 +125,6 @@ void print_queens(struct player p, int num_queens ){
         printf("current [%d] = %d /// other[%d] = %d\n", i,p.current_queens[i] ,i, p.other_queens[i]);
     }
 }
-
 
 int main(){
     void *handle1;
@@ -170,7 +169,7 @@ int main(){
         int m=((N/10)+1)*4;
         unsigned int queens_player1[m];
         unsigned int queens_palyer2[m];
-        unsigned int *queens[NUM_PLAYERS]={queens_player1,queens_palyer2};
+        unsigned int *queens[NUM_PLAYERS] = {queens_player1,queens_palyer2};
         begining_position(queens);
         initialize1(0,graph1,m,queens);
         initialize2(1,graph2,m,queens);
@@ -214,8 +213,6 @@ int main(){
         display(graph,queens,m);
         }
         //}
-
-
 
         dlclose(handle1);
         dlclose(handle2);

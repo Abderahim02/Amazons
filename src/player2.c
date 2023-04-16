@@ -74,6 +74,21 @@ enum dir_t available_dir(int queen, struct graph_t *graph, enum dir_t direction)
 
 }
 
+// int random_dst(struct graph_t *graph, enum dir_t dir, int pos){
+//     int t[8];
+//     int p=0;
+//     int tmp = 59;
+//     enum dir_t i = rand() % 8; 
+//     //int i=0;
+//     while(1 ){
+//         int n = get_neighbor(tmp, i, graph );
+//         if(n != -1) return n;
+//         // printf("%d in direction : %d\n", get_neighbor(tmp, i, graph ), i);
+//          i = rand()%8;
+//     }
+//     return pos;
+// }
+
 struct move_t play(struct move_t previous_move){
    //    srand(300);
     if(previous_move.queen_dst!=-1 && previous_move.queen_dst!=-1 )
@@ -199,9 +214,13 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
         if(pos-LENGHT-1>=0 && gsl_spmatrix_uint_get(graph->t, pos, pos-LENGHT-1) && !element_in_array(player_black.other_queens,m,pos-LENGHT-1) && !element_in_array(player_black.current_queens,m,pos-LENGHT-1))
             return pos-LENGHT-1;
             break;
+        
     default:
+    return -1;
     break;
+    //  printf("je suis là\n");
     }
     return -1;
 }
+
 

@@ -28,7 +28,7 @@ libplayer1.so: player1.o moteur.o
 	gcc -shared player1.o moteur.o -o $@
 
 grid.o: src/grid.c src/grid.h
-	gcc -Wall -I/usr/local/include -c src/grid.c
+	gcc -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c src/grid.c
 
 hole.o: src/hole.c  src/graph.h 
 	gcc $(CFLAGS) -c src/hole.c

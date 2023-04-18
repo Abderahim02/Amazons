@@ -46,33 +46,6 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
     player_black.other_queens[i]=queens[(player_id+1)%2][i];
     }
 }
-int random_dst(struct graph_t *graph, enum dir_t dir, int pos){
-    int t[LENGHT*2];
-    int i=0;
-    int tmp=pos;
-    while(get_neighbor(tmp,dir,graph)!=-1){
-        t[i]=get_neighbor(tmp,dir,graph);
-        tmp=t[i];
-        i++;
-    }
-    return t[rand()%i];
-
-}
-
-
-enum dir_t available_dir(int queen, struct graph_t *graph, enum dir_t direction){
-    enum dir_t dir=rand()%8+1;
-    int cmp=0;
-    while((get_neighbor(queen,dir,graph)==-1 || dir==direction) && cmp<9){
-        dir++;
-        dir=dir%9;
-        cmp++;
-    }
-    if(cmp==9){
-        return NO_DIR;
-    }
-    return dir;
-}
 
 
 struct move_t play(struct move_t previous_move){

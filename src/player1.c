@@ -47,42 +47,6 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
 
 
 
-
-int random_dst(struct graph_t *graph, enum dir_t dir, int pos){
-    int t[LENGHT*4];
-    int i=0;
-    int tmp=pos;
-    printf("position: %d \n [", pos);
-    while(get_neighbor(tmp,dir,graph)!=-1){
-        t[i]=get_neighbor(tmp,dir,graph);
-        tmp=t[i];
-       // if(tmp>LENGHT*LENGHT-1)
-         //   break;
-        printf("v:%d ", t[i]);
-        i++;
-    }
-    printf("]\n");
-    
-     return t[rand()%i];
-
-}
-
-
-
-enum dir_t available_dir(int queen, struct graph_t *graph, enum dir_t direction){
-    enum dir_t dir=rand()%8+1;
-    int cmp=0;
-    while((get_neighbor(queen,dir,graph)==-1 || dir==direction) && cmp<9){
-        dir++;
-        dir=dir%9;
-        cmp++;
-    }
-    if(cmp==9){
-        return NO_DIR;
-    }
-    return dir;
-}
-
 struct move_t play(struct move_t previous_move){
     if(previous_move.queen_dst!=-1 && previous_move.queen_dst!=-1){
         execute_move(previous_move,player_blanc.graph,player_blanc.other_queens);

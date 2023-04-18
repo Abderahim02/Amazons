@@ -47,23 +47,22 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
 
 
 
+
 int random_dst(struct graph_t *graph, enum dir_t dir, int pos){
-   // if(pos==61) printf("hna wls\n");
-    int t[LENGHT*2];
+    int t[LENGHT*4];
     int i=0;
     int tmp=pos;
+    printf("position: %d \n [", pos);
     while(get_neighbor(tmp,dir,graph)!=-1){
-       //  printf("dkhl %d dir=%d queen=%d\n",tmp,dir,pos);
-
-        // printf("dirrrrrrrrrr %d tmp=%d\n",dir, tmp);
         t[i]=get_neighbor(tmp,dir,graph);
         tmp=t[i];
-        i++;
        // if(tmp>LENGHT*LENGHT-1)
          //   break;
+        printf("v:%d ", t[i]);
+        i++;
     }
-    // printf("ha direction %d\n");    
-    // printf("madkhlx\n");
+    printf("]\n");
+    
      return t[rand()%i];
 
 }
@@ -72,55 +71,47 @@ int random_dst(struct graph_t *graph, enum dir_t dir, int pos){
 
 enum dir_t available_dir(int queen, struct graph_t *graph, enum dir_t direction){
     enum dir_t dir=rand()%8+1;
-  //  printf("dir ------- %d\n", dir);
     int cmp=0;
     while((get_neighbor(queen,dir,graph)==-1 || dir==direction) && cmp<9){
-        dir=(dir+1)%8;
+        dir++;
+        dir=dir%9;
         cmp++;
-        if(dir==0) dir++;
     }
- //   printf("cmp--------------%d\n",cmp);
-    if(cmp==9) return NO_DIR;
-   //  printf("dir ------------------ %d\n", dir);
-
+    if(cmp==9){
+        return NO_DIR;
+    }
     return dir;
-
 }
 
 struct move_t play(struct move_t previous_move){
-   //    srand(300);
-    if(previous_move.queen_dst!=-1 && previous_move.queen_dst!=-1 )
+    if(previous_move.queen_dst!=-1 && previous_move.queen_dst!=-1){
         execute_move(previous_move,player_blanc.graph,player_blanc.other_queens);
+    }
     struct move_t move={-2,-2,-2};
     int r=rand()%player_blanc.num_queens;
     int queen=player_blanc.current_queens[r];
-    enum dir_t dir=available_dir(queen,player_blanc.graph,NO_DIR);
-   // printf("dir bash jay %d\n", dir);
+    
+    enum dir_t dir=NO_DIR;
     int cmp=0;
-    if(dir==NO_DIR){
-        //printf("_____________________________________________________\n");
     while(dir==NO_DIR && cmp<player_blanc.num_queens){
-        cmp++;
-        r=(r+1)%player_blanc.num_queens;
         queen=player_blanc.current_queens[r];
         dir=available_dir(queen,player_blanc.graph,NO_DIR);
-    }
+        r=(r+1)%player_blanc.num_queens;
+        cmp++;
     }
     
-    // printf("queen %d\n",queen);
-    if(cmp==player_blanc.num_queens ){
-      //  printf("    aaaaaaaaaaaaa\n");
+    if(dir==NO_DIR){
         return move;
     }
-  // printf("dir=%d\n",dir);
      move.queen_src=queen;
      move.queen_dst=random_dst(player_blanc.graph,dir,queen);
+     player_blanc.current_queens[r-1]=move.queen_dst;
+     queen=move.queen_dst;
      enum dir_t dir2=available_dir(queen,player_blanc.graph,dir);
      if(dir2==NO_DIR){
         move.arrow_dst=-1;
      }
      else {
-        //printf("queen %d\n",queen);
          move.arrow_dst=random_dst(player_blanc.graph,dir2,queen);
      }
     execute_move(move,player_blanc.graph,player_blanc.current_queens);
@@ -130,7 +121,7 @@ struct move_t play(struct move_t previous_move){
 
 int element_in_array(int *t, int size, int x){
     for(int i=0;i<size;i++){
-        if(t[i]==x) return i;
+        if(t[i]==x) return 1;
     }
     return 0;
 }

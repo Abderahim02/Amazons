@@ -1,4 +1,4 @@
-
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
@@ -141,12 +141,12 @@ int next_player(int player){
 }
 
 
-int main(int argc,char* argv[]){
+int main(){
     void *handle1;
     void *handle2;
         char*(*White_player)(void);
         struct move_t(*white_move)(struct move_t previous_move);
-    int (*get_neighbor)(int pos, enum dir_t dir, struct graph_t* graph);
+    //int (*get_neighbor)(int pos, enum dir_t dir, struct graph_t* graph);
 
 
         struct move_t(*black_move)(struct move_t previous_move);
@@ -168,7 +168,7 @@ int main(int argc,char* argv[]){
         black_player = dlsym(handle2,"get_player_name");
         initiamize_white_player = dlsym(handle1,"initialize");
         initiamize_black_player = dlsym(handle2,"initialize");
-        get_neighbor=dlsym(handle2,"get_neighbor");
+        //get_neighbor=dlsym(handle2,"get_neighbor");
         white_move=dlsym(handle1,"play");
         black_move=dlsym(handle2,"play");        
         if ((error = dlerror()) != NULL)  {
@@ -197,16 +197,23 @@ int main(int argc,char* argv[]){
         struct move_t move={-1,-1,-1};
         int player = start_player();
         //The game loop
-        for(int i=0;i<5;i++){
+        for(int i=0;i<200;i++){
         if(player==BLACK){
             move=black_move(move);
-            printf("Joueur: %s\n", (char *)black_player);
+            printf("Joueur: black2\n");//, (char *)black_player);
             execute_move(move,graph,queens[1]);
         }
         else{
             move=white_move(move);
-            printf("Joueur: %s\n", (char *)White_player);
+            printf("Joueur: white1\n");//, (char *)White_player);
             execute_move(move,graph,queens[0]);
+        }
+        if(move.queen_dst==-2){
+            printf("\n game is finished: %d wins\n", next_player(player));
+            display(graph,queens,m);
+            dlclose(handle1);
+            dlclose(handle2);
+            return 0;
         }
         player=next_player(player);
         display(graph,queens,m);

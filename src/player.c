@@ -16,6 +16,7 @@ struct move_t play(struct move_t previous_move){
     
 }
 
+
 /* Announces the end of the game to the player, and cleans up the
    memory he may have been using.
  * POSTCOND:

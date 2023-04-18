@@ -6,15 +6,13 @@ GSL_PATH ?=/usr/local
 
 #L/usr/lib/x86_64-linux-gnu
 CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I $(GSL_PATH)/include 
-LDFLAGS = -lm -lgsl -lgslcblas -ldl \
-        -L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \
-        -Wl,--rpath=${GSL_PATH}/lib
+LDFLAGS = -lm -lgsl -lgslcblas -ldl -L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 -Wl,--rpath=${GSL_PATH}/lib
 OBJS = $(SRCS:.c=.o)
 BIN = test_grid test grid
 
 
 all: build
-build: server client install test
+build: server client install test alltests
 
 
 player2.o: src/player2.c
@@ -50,10 +48,9 @@ server: server.o  grid.o moteur.o libplayer1.so libplayer2.so
 
 client: 
 
-#alltests: test
 
-alltests: tst/test_graph.o grid.o tst/test_execute_move.o server.o moteur.o hole.o game_loop.o
-	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS) 
+alltests: #tst/test_graph.o grid.o tst/test_execute_move.o server.o moteur.o hole.o game_loop.o
+# 	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS) 
 
 
 
@@ -64,10 +61,10 @@ alltests: tst/test_graph.o grid.o tst/test_execute_move.o server.o moteur.o hole
 # 	gcc $(CFLAGS) -I src -I tst tst/test_execute_move.c moteur.o -c
 
 install: server
-	cp *.so server alltests install 
+	cp *.so server install
 	make clean
 
 clean:
-	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o server alltests 
+	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o server alltests
 
 .PHONY: client install test clean

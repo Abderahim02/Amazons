@@ -23,3 +23,4 @@ struct move_t play(struct move_t previous_move){
  *   functions must have been freed
  */
 void finalize();
+

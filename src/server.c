@@ -127,35 +127,33 @@ void print_queens(struct player p, int num_queens ){
     }
 }
 
-int main(int argc,char* argv[]){
-    // int param;
-    // int m=8;
-    // char t='c';
-    // while((param = getopt(argc, argv, "m:t")) != -1){   
-    //     switch(param){ 
-    //   case 'm': 
-    //     m = atoi(optarg); 
-    //     break; 
-    //   case 't':
-    //     t=*optarg;
-    //     break;  
-    //   default: 
-    //     abort(); 
-    //  } 
-    // }
+int start_player(){
+  srand(time(NULL));
+  int ran=rand();
+  return ran%2;
+}
 
+int next_player(int player){
+    if(player==BLACK){
+        return WHITE;
+    }
+    return BLACK;
+}
+
+
+int main(int argc,char* argv[]){
     void *handle1;
     void *handle2;
-        char*(*player_name1)(void);
-        struct move_t(*play1)(struct move_t previous_move);
+        char*(*White_player)(void);
+        struct move_t(*white_move)(struct move_t previous_move);
     int (*get_neighbor)(int pos, enum dir_t dir, struct graph_t* graph);
 
 
-        struct move_t(*play2)(struct move_t previous_move);
-        char*(*player_name2)(void);
-        char*(*initialize1)(unsigned int player_id, struct graph_t* graph,
+        struct move_t(*black_move)(struct move_t previous_move);
+        char*(*black_player)(void);
+        char*(*initiamize_white_player)(unsigned int player_id, struct graph_t* graph,
                 unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]);
-        char*(*initialize2)(unsigned int player_id, struct graph_t* graph,
+        char*(*initiamize_black_player)(unsigned int player_id, struct graph_t* graph,
                 unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]);
 
         char *error;
@@ -165,60 +163,54 @@ int main(int argc,char* argv[]){
             fputs (dlerror(), stderr);
             exit(1);
         }
-        player_name1 = dlsym(handle1,"get_player_name");
-        player_name2 = dlsym(handle2,"get_player_name");
-        initialize1 = dlsym(handle1,"initialize");
-        initialize2 = dlsym(handle2,"initialize");
+        //Initialize players
+        White_player = dlsym(handle1,"get_player_name");
+        black_player = dlsym(handle2,"get_player_name");
+        initiamize_white_player = dlsym(handle1,"initialize");
+        initiamize_black_player = dlsym(handle2,"initialize");
         get_neighbor=dlsym(handle2,"get_neighbor");
-        play1=dlsym(handle1,"play");
-        play2=dlsym(handle2,"play");        
+        white_move=dlsym(handle1,"play");
+        black_move=dlsym(handle2,"play");        
         if ((error = dlerror()) != NULL)  {
             fputs(error, stderr);
             exit(1);
         }
+        //Initialize graphs
         struct graph_t* graph = initialize_graph();
         initialize_graph_positions_classic(graph);
         //make_hole(graph,graph->num_vertices/2,2);
-        struct graph_t* graph1 = initialize_graph();
-        initialize_graph_positions_classic(graph1);
-        struct graph_t* graph2 = initialize_graph();
-        initialize_graph_positions_classic(graph2);
+        struct graph_t* white_graph = initialize_graph();
+        initialize_graph_positions_classic(white_graph);
+        struct graph_t* black_graph = initialize_graph();
+        initialize_graph_positions_classic(black_graph);
+
+        //Initialize queens for each player
         int m=((N/10)+1)*4;
-        unsigned int queens_player1[m];
-        unsigned int queens_palyer2[m];
-        unsigned int *queens[NUM_PLAYERS] = {queens_player1,queens_palyer2};
+        unsigned int white_queens[m];
+        unsigned int black_queens[m];
+        unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
         begining_position(queens);
-        initialize1(0,graph1,m,queens);
-        initialize2(1,graph2,m,queens);
+        initiamize_white_player(0,white_graph,m,queens);
+        initiamize_black_player(1,black_graph,m,queens);
+        //The starting board
         display(graph,queens,m);
         struct move_t move={-1,-1,-1};
-        for(int i=0;i<40;i++){
-        move=play2(move);
-        if(move.queen_dst==-2){
-            printf("game finished2\n");
-            break;
+        int player = start_player();
+        //The game loop
+        for(int i=0;i<5;i++){
+        if(player==BLACK){
+            move=black_move(move);
+            printf("Joueur: %s\n", (char *)black_player);
+            execute_move(move,graph,queens[1]);
         }
-    
-        
-        execute_move(move,graph,queens[1]);
-        printf("player2\n");
+        else{
+            move=white_move(move);
+            printf("Joueur: %s\n", (char *)White_player);
+            execute_move(move,graph,queens[0]);
+        }
         display(graph,queens,m);
-        move=play1(move);
-         if(move.queen_dst==-2){
-            printf("%d game finished1 \n",move.queen_dst);
-            break;
+
         }
-         execute_move(move,graph,queens[0]);
-        // printf("%d\n",move.arrow_dst);
-
-        //  printf("%d\n",move.queen_src);
-
-        //  printf("%d\n",move.queen_dst);
-        printf("player1\n");
-        display(graph,queens,m);
-        }
-        //}
-
         dlclose(handle1);
         dlclose(handle2);
     return 0;

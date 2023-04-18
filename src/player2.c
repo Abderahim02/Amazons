@@ -80,7 +80,7 @@ struct move_t play(struct move_t previous_move){
    //    srand(300);
     if(previous_move.queen_dst!=-1 && previous_move.queen_dst!=-1 )
         execute_move(previous_move,player_black.graph,player_black.other_queens);
-    struct move_t move={-2,-2,-2};
+    struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
     int r=rand()%player_black.num_queens;
     int queen=player_black.current_queens[r];
 

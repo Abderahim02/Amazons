@@ -30,9 +30,8 @@ void execute_move(struct move_t move, struct graph_t *graph, unsigned int *queen
             break;
         }
     }
-    if(move.arrow_dst!=-1 && move.arrow_dst!=-2){
- // print_sparse_matrix(graph->t);
-    put_arrow(graph, move.arrow_dst);
+    if(move.arrow_dst!=-1 || move.arrow_dst!=UINT_MAX){
+        put_arrow(graph, move.arrow_dst);
     }
      //here we updates the graph, we make the position arrow_dst isolated
     // print_sparse_matrix(graph->t);

@@ -144,13 +144,12 @@ int next_player(int player){
 int main(){
     void *handle1;
     void *handle2;
-        char*(*White_player)(void);
+        char *(*get_white_player_name)(void);
+        char *(*get_black_player_name)(void);
         struct move_t(*white_move)(struct move_t previous_move);
-    //int (*get_neighbor)(int pos, enum dir_t dir, struct graph_t* graph);
 
 
         struct move_t(*black_move)(struct move_t previous_move);
-        char*(*black_player)(void);
         char*(*initiamize_white_player)(unsigned int player_id, struct graph_t* graph,
                 unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]);
         char*(*initiamize_black_player)(unsigned int player_id, struct graph_t* graph,
@@ -164,11 +163,12 @@ int main(){
             exit(1);
         }
         //Initialize players
-        White_player = dlsym(handle1,"get_player_name");
-        black_player = dlsym(handle2,"get_player_name");
+        get_white_player_name = dlsym(handle1,"get_player_name");
+        get_black_player_name = dlsym(handle2,"get_player_name");
+        char *white_player = get_white_player_name();
+        char *black_player = get_black_player_name();
         initiamize_white_player = dlsym(handle1,"initialize");
         initiamize_black_player = dlsym(handle2,"initialize");
-        //get_neighbor=dlsym(handle2,"get_neighbor");
         white_move=dlsym(handle1,"play");
         black_move=dlsym(handle2,"play");        
         if ((error = dlerror()) != NULL)  {
@@ -197,20 +197,20 @@ int main(){
         struct move_t move={-1,-1,-1};
         int player = start_player();
         //The game loop
-        for(int i=0;i<2;i++){
+        for(int i=0;i<200;i++){
             printf("########## TOUR: %d ##########\n", i+1);
         if(player==BLACK){
             move=black_move(move);
-            printf("Joueur: black2\n");//, (char *)black_player);
+            printf("Joueur: %s\n", black_player);
             execute_move(move,graph,queens[1]);
         }
         else{
             move=white_move(move);
-            printf("Joueur: white1\n");//, (char *)White_player);
+            printf("Joueur: %s\n", white_player);
             execute_move(move,graph,queens[0]);
         }
-        if(move.queen_dst==-2){
-            printf("\n game is finished: %d wins(0:black 1: white)\n", next_player(player));
+        if(move.queen_dst==UINT_MAX){
+            printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
             display(graph,queens,m);
             dlclose(handle1);
             dlclose(handle2);

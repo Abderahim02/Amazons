@@ -197,7 +197,7 @@ int main(){
         struct move_t move={-1,-1,-1};
         int player = start_player();
         //The game loop
-        for(int i=0;i<200;i++){
+        for(int i=0;i<10;i++){
         if(player==BLACK){
             move=black_move(move);
             printf("Joueur: black2\n");//, (char *)black_player);

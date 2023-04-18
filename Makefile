@@ -50,6 +50,7 @@ client:
 
 
 alltests: tst/test_graph.o grid.o tst/test_execute_move.o server.o moteur.o hole.o game_loop.o
+	make server
 	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS) 
 
 
@@ -61,7 +62,8 @@ alltests: tst/test_graph.o grid.o tst/test_execute_move.o server.o moteur.o hole
 # 	gcc $(CFLAGS) -I src -I tst tst/test_execute_move.c moteur.o -c
 
 install: server
-	cp *.so server alltests install 
+	if [ -f server ]; then cp server install/; fi
+	if [ -f alltests ]; then cp alltests install/; fi
 	make clean
 
 clean:

@@ -208,6 +208,7 @@ int main(int argc,char* argv[]){
             printf("Joueur: %s\n", (char *)White_player);
             execute_move(move,graph,queens[0]);
         }
+        player=next_player(player);
         display(graph,queens,m);
 
         }

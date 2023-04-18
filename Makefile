@@ -68,6 +68,6 @@ install: server
 	make clean
 
 clean:
-	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o server alltests install/*
+	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o server alltests 
 
 .PHONY: client install test clean

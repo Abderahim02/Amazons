@@ -1,14 +1,13 @@
 LENGHT ?= 8
 AMAZONS_FLAGS = -DLENGHT=$(LENGHT)
 GSL_PATH ?=/usr/local
+CC = gcc
 
-#-L/usr/local/lib -lgsl -lgslcblas -lm
-
-#L/usr/lib/x86_64-linux-gnu
-CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I $(GSL_PATH)/include 
-LDFLAGS = -lm -lgsl -lgslcblas -ldl -L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 -Wl,--rpath=${GSL_PATH}/lib
+CFLAGS = -Wall -Wextra -std=c99 -g3 -I ${GSL_PATH}/include 
+LDFLAGS = #-lm -lgsl -lgslcblas -ldl -L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 -Wl,--rpath=${GSL_PATH}/lib
 OBJS = $(SRCS:.c=.o)
-BIN = test_grid test grid
+BIN = server
+TEST = test_arrows
 
 
 
@@ -50,11 +49,16 @@ server: server.o  grid.o moteur.o libplayer1.so libplayer2.so
 client: 
 
 
-alltests: tst/test_graph.o grid.o tst/test_execute_move.o server.o moteur.o hole.o game_loop.o
+alltests:  
+
+test: 
+
+test_arrows.o: tst/test_arrows.c src/grid.c
+	gcc $(CFLAGS) -c tst/test_arrows.c -ldl
+
+test_arrows: tst/test_arrows.o grid.o
 	make server
-	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS) 
-
-
+	gcc -L${GSL_PATH}/lib tst/test_arrows.o grid.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
 
 # test_grid.o: tst/test_graph.c src/grid.c src/grid.h hole.o moteur.o server.o 
 # 	gcc $(CFLAGS) -I src -I tst tst/test_grid.c -c
@@ -63,11 +67,12 @@ alltests: tst/test_graph.o grid.o tst/test_execute_move.o server.o moteur.o hole
 # 	gcc $(CFLAGS) -I src -I tst tst/test_execute_move.c moteur.o -c
 
 install: server
+	make server
 	if [ -f server ]; then cp server install/; fi
 	if [ -f alltests ]; then cp alltests install/; fi
 	make clean
 
 clean:
-	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o server alltests
+	@rm -f *~ *.so *.o  tst/*.o ${BIN} *~ */*~ src/*.o server alltests ${TEST}
 
 .PHONY: client install test clean

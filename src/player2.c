@@ -100,13 +100,14 @@ struct move_t play(struct move_t previous_move){
      move.queen_src=queen;
      move.queen_dst=random_dst(player_black.graph,dir,queen);
      player_black.current_queens[r-1]=move.queen_dst;
+     queen=move.queen_dst;
      enum dir_t dir2=available_dir(queen,player_black.graph,dir);
      if(dir2==NO_DIR){
         move.arrow_dst=-1;
      }
      else {
         //printf("queen %d\n",queen);
-         move.arrow_dst=random_dst(player_black.graph,dir2,move.queen_src);
+         move.arrow_dst=random_dst(player_black.graph,dir2,queen);
      }
     execute_move(move,player_black.graph,player_black.current_queens);
     return move;  

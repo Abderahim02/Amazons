@@ -39,6 +39,8 @@ void free_graph(struct graph_t* g);
 
 void print_sparse_matrix(gsl_spmatrix_uint *mat);
 
+void print_board(struct graph_t* graph);
+
 /*this function fill an empty graph with relachionships, it means we puts the right
 values in the matrix representing the graph (la matrice d'adjacence)we consider that 
 every sommit of the graph has a maximum of 8 neighbors*/

@@ -44,14 +44,6 @@ void begining_position(unsigned int* queens[NUM_PLAYERS]){
         tmp++;
     }
     //printf("tmp2=%d \n",tmp);
-
-}
-int empty_cell(struct graph_t *graph, int x, int size){
-    for(int i=0;i<size;i++){
-
-        if(gsl_spmatrix_uint_get(graph->t, x, i)!=NO_DIR) return 0;
-    }
-    return 1;
 }
 
 int *graph_table(struct graph_t *graph){

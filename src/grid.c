@@ -141,13 +141,30 @@ void initialize_graph_positions_classic(struct graph_t* g){
     }
 }
 
-// struct graph_t * initialize_graph_middle_hole(){  
-// struct graph_t * g = initialize_graph();
-// make_hole()
-// }
+int empty_cell(struct graph_t *graph, int x, int size){
+    for(int i=0;i<size;i++){
+        if(gsl_spmatrix_uint_get(graph->t, x, i)!=NO_DIR) return 0;
+    }
+    return 1;
+}
 
-
-/*int main(){
-    return 0;
-}*/
-
+void print_board(struct graph_t* graph){
+    int *t=malloc(sizeof(int)*LENGHT*LENGHT);
+    for(int i=0;i<LENGHT*LENGHT;i++){
+        if(empty_cell(graph,i,LENGHT*LENGHT))   
+            t[i]=-1;
+        else t[i]=0;
+    }
+    for(int i=0; i<LENGHT*LENGHT; i++){
+        if(i!=0 && i%LENGHT==0){
+            printf("\n");
+        }
+        if(t[i]==-1){
+            printf(" 1 ");
+        }
+        else{
+            printf("%d ", t[i]);
+        }
+    }
+    printf("\n");
+}

@@ -6,7 +6,7 @@ GSL_PATH ?=/usr/local
 
 #L/usr/lib/x86_64-linux-gnu
 CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I $(GSL_PATH)/include 
-LDFLAGS = -lm -lgsl -lgslcblas -ldl -L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 -Wl,--rpath=${GSL_PATH}/lib
+LDFLAGS = -lm -lgsl -lgslcblas -ldl -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 -Wl,--rpath=${GSL_PATH}/lib
 OBJS = $(SRCS:.c=.o)
 BIN = test_grid test grid
 

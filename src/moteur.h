@@ -10,6 +10,8 @@ void put_arrow(struct graph_t* graph, unsigned int idx);
 position of the queen after the move*/
 void execute_move(struct move_t move, struct graph_t *graph, unsigned int *queens);
 
+int element_in_array(int *t, int size, int x);
+
 /*a test function */
 void test_execute_move();
 #endif

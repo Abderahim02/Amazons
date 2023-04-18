@@ -40,4 +40,16 @@ void execute_move(struct move_t move, struct graph_t *graph, unsigned int *queen
 }
 
 
+int element_in_array(int *t, int size, int x){
+    for(int i=0;i<size;i++){
+        if(t[i]==x) return 1;
+    }
+    return 0;
+}
+
+// void print(int *t, int size){
+//     for(int i=0;i<size;i++)
+//         printf("i=%d t[i]=%d\n", i, t[i]);
+// }
+
 

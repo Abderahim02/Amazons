@@ -4,9 +4,6 @@
 #include <stddef.h>
 #include "dir.h"
 #include <math.h> 
-#include <gsl/gsl_spmatrix.h>
-#include <gsl/gsl_spmatrix_uint.h>
-#include <gsl/gsl_spblas.h>
 
 
 /*this function create an empty graph  with the size LENGHT*LENGHT, a matrix of size LENGHT*LENGHT

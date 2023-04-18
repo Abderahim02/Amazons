@@ -197,7 +197,7 @@ int main(){
         struct move_t move={-1,-1,-1};
         int player = start_player();
         //The game loop
-        for(int i=0;i<10;i++){
+        for(int i=0;i<200;i++){
         if(player==BLACK){
             move=black_move(move);
             printf("Joueur: black2\n");//, (char *)black_player);
@@ -209,7 +209,7 @@ int main(){
             execute_move(move,graph,queens[0]);
         }
         if(move.queen_dst==-2){
-            printf("\n game is finished: %d wins\n", next_player(player));
+            printf("\n game is finished: %d wins(0:black 1: white)\n", next_player(player));
             display(graph,queens,m);
             dlclose(handle1);
             dlclose(handle2);

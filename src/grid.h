@@ -10,10 +10,11 @@
 #include "dir.h"
 
 /** The height (number of rows or columns) of the world */
-#ifndef LENGHT
-  #define LENGHT 8
-#endif
+// #ifndef LENGHT
+//   #define LENGHT 8
+// #endif
 
+#define LENGHT 8
 /** The number of possible places in the world */
 #define GRID_SIZE (LENGHT*LENGHT)
 #define WHITE 1

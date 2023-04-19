@@ -15,56 +15,58 @@ all: build
 build: server client install test alltests
 
 
+test:
+
+test_arrows.o: tst/test_arrows.c src/grid.c
+	${CC} $(CFLAGS) -c tst/test_arrows.c -ldl
+
+test_arrows: tst/test_arrows.o grid.o
+	make server
+	${CC} -L${GSL_PATH}/lib tst/test_arrows.o grid.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
+
+
 player2.o: src/player2.c
-	gcc -c -fPIC $<
+	${CC} -c -fPIC $<
 
 player1.o: src/player1.c
-	gcc -c -fPIC $<
+	${CC} -c -fPIC $<
 
 libplayer2.so: player2.o moteur.o
-	gcc -shared player2.o moteur.o -o $@ 
+	${CC} -shared player2.o moteur.o -o $@ 
 
 libplayer1.so: player1.o moteur.o
-	gcc -shared player1.o moteur.o -o $@
+	${CC} -shared player1.o moteur.o -o $@
 
 grid.o: src/grid.c src/grid.h
-	gcc -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c src/grid.c
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c src/grid.c
 
 hole.o: src/hole.c  src/graph.h 
-	gcc $(CFLAGS) -c src/hole.c
+	${CC} $(CFLAGS) -c src/hole.c
 
 moteur.o: src/moteur.c  src/graph.h 
-	gcc $(CFLAGS) -fPIC -c src/moteur.c
+	${CC} $(CFLAGS) -fPIC -c src/moteur.c
 
 game_loop.o: tst/game_loop.c  
-	gcc $(CFLAGS) -fPIC -c tst/game_loop.c
+	${CC} $(CFLAGS) -fPIC -c tst/game_loop.c
 
 
 server.o: src/server.c src/player.h src/graph.h
-	gcc $(CFLAGS) -c src/server.c -ldl
+	${CC} $(CFLAGS) -c src/server.c -ldl
 
 server: server.o  grid.o moteur.o libplayer1.so libplayer2.so
-	gcc -L${GSL_PATH}/lib server.o grid.o moteur.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
+	${CC} -L${GSL_PATH}/lib server.o grid.o moteur.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
 
 client: 
 
 
 alltests:  
 
-test: 
-
-test_arrows.o: tst/test_arrows.c src/grid.c
-	gcc $(CFLAGS) -c tst/test_arrows.c -ldl
-
-test_arrows: tst/test_arrows.o grid.o
-	make server
-	gcc -L${GSL_PATH}/lib tst/test_arrows.o grid.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
 
 # test_grid.o: tst/test_graph.c src/grid.c src/grid.h hole.o moteur.o server.o 
-# 	gcc $(CFLAGS) -I src -I tst tst/test_grid.c -c
+# 	${CC} $(CFLAGS) -I src -I tst tst/test_grid.c -c
 
 # test_execute_move.o: tst/test_execute_move.c src/grid.c src/grid.h hole.o moteur.o server.o 
-# 	gcc $(CFLAGS) -I src -I tst tst/test_execute_move.c moteur.o -c
+# 	${CC} $(CFLAGS) -I src -I tst tst/test_execute_move.c moteur.o -c
 
 install: server
 	make server

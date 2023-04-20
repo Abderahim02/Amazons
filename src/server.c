@@ -131,7 +131,10 @@ int next_player(int player){
     }
     return BLACK;
 }
-
+//function that prints the move
+void print_move(struct move_t move){
+    printf("move from %d to %d and arrow at %d \n", move.queen_src, move.queen_dst,move.arrow_dst);
+}
 
 int main(){
     void *handle1;
@@ -195,11 +198,13 @@ int main(){
             move=black_move(move);
             printf("Joueur: %s\n", black_player);
             execute_move(move,graph,queens[1]);
+            print_move(move);
         }
         else{
             move=white_move(move);
             printf("Joueur: %s\n", white_player);
             execute_move(move,graph,queens[0]);
+            print_move(move);
         }
         if(move.queen_dst==UINT_MAX){
             printf("\n game is finished: %s wins\n", (player ? black_player : white_player));

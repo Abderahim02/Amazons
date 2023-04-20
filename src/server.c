@@ -136,7 +136,49 @@ void print_move(struct move_t move){
     printf("move from %d to %d and arrow at %d \n", move.queen_src, move.queen_dst,move.arrow_dst);
 }
 
-int main(){
+int main(int argc, char* argv[]){
+    /* START GETOPT */
+    int turns=100;
+    extern char *optarg;
+    int opt=0;
+    while((opt=getopt(argc, argv, "s:m:t:h")) != -1){
+        switch(opt){
+            case 'm':
+                if(optarg!=NULL){
+                    #undef LENGHT
+                    #define LENGHT atoi(optarg)
+                    printf("%d\n", LENGHT);
+                }
+                break;
+            case 's':
+                if(optarg!=NULL){
+                    turns=atoi(optarg);
+                }
+                break;
+            case 't':
+                if(optarg[0]='c'){
+
+                }
+                else if(optarg[0]='d'){
+
+                }
+                else if(optarg[0]='t'){
+
+                }
+                else if(optarg[0]='8'){
+
+                }
+                break;
+            case 'h':
+                printf("usage: ./project [-h help]\n \t \t [-m allows you to specify the width of the game board] \n \t \t [-t allows you to specify the shape of the game board (square grid c, donut d, cloverleaf t or figure eight 8 ) \n]");
+                return 0;
+                break;
+            default:
+                break;
+        }
+    }
+    /* END GETOPT */
+    //printf("%d\n", LENGHT);
     void *handle1;
     void *handle2;
         char *(*get_white_player_name)(void);
@@ -192,7 +234,7 @@ int main(){
         struct move_t move={-1,-1,-1};
         int player = start_player();
         //The game loop
-        for(int i=0;i<200;i++){
+        for(int i=0;i<turns;i++){
             printf("########## TOUR: %d ##########\n", i+1);
         if(player==BLACK){
             move=black_move(move);
@@ -206,12 +248,14 @@ int main(){
             execute_move(move,graph,queens[0]);
             print_move(move);
         }
-        if(move.queen_dst==UINT_MAX){
+        if(move.queen_dst==UINT_MAX || i==99){
             printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
             display(graph,queens,m);
+            //player? printf("%d \n", 2): printf("%d \n", 1);
             dlclose(handle1);
             dlclose(handle2);
             return 0;
+            
         }
         player=next_player(player);
         display(graph,queens,m);

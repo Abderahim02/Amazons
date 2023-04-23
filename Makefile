@@ -9,7 +9,7 @@ OBJS = $(SRCS:.c=.o)
 BIN = server
 TEST = test_arrows
 
-
+export LD_LIBRARY_PATH=./
 
 all: build
 build: server client install test alltests

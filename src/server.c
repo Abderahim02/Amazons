@@ -11,7 +11,6 @@
 
 
 struct player player_blanc;
-struct player player_black;
 
 void begining_position(unsigned int* queens[NUM_PLAYERS]){
     unsigned int *t=queens[0];
@@ -138,7 +137,7 @@ void print_move(struct move_t move){
 
 int main(int argc, char* argv[]){
     /* START GETOPT */
-    int turns=100;
+    int turns=2;
     extern char *optarg;
     int opt=0;
     while((opt=getopt(argc, argv, "s:m:t:h")) != -1){

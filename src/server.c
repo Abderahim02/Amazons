@@ -10,7 +10,21 @@
 #include "server.h"
 
 
-struct player player_blanc;
+//struct player player_blanc;
+
+char *(*get_player1_name)(void);
+char *(*get_player2_name)(void);
+
+void(*initialize_player1)(unsigned int player_id, struct graph_t* graph,
+                unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]);
+void(*initialize_player2)(unsigned int player_id, struct graph_t* graph,
+                unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]);
+
+struct move_t(*play1)(struct move_t previous_move);
+struct move_t(*play2)(struct move_t previous_move);
+        
+
+
 
 void begining_position(unsigned int* queens[NUM_PLAYERS]){
     unsigned int *t=queens[0];
@@ -178,39 +192,32 @@ int main(int argc, char* argv[]){
     }
     /* END GETOPT */
     //printf("%d\n", LENGHT);
-    void *handle1;
-    void *handle2;
-        char *(*get_white_player_name)(void);
-        char *(*get_black_player_name)(void);
-        struct move_t(*white_move)(struct move_t previous_move);
+     if (argc > 1) {
+     void * lib1 = dlopen(argv[argc-2], RTLD_NOW); 
+     void * lib2 = dlopen(argv[argc-1], RTLD_NOW); 
+    //get player name functions.
+      get_player1_name= dlsym(lib1,"get_player_name");
+      get_player2_name = dlsym(lib2,"get_player_name");
+        
+    //Initialize player functions.
+    initialize_player1 = dlsym(lib1,"initialize");
+    initialize_player2 = dlsym(lib2,"initialize");
 
+    //play functions 
+    play1=dlsym(lib1,"play");
+    play2=dlsym(lib2,"play"); 
+    
 
-        struct move_t(*black_move)(struct move_t previous_move);
-        char*(*initiamize_white_player)(unsigned int player_id, struct graph_t* graph,
-                unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]);
-        char*(*initiamize_black_player)(unsigned int player_id, struct graph_t* graph,
-                unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]);
+    if (lib1 == NULL || lib2 == NULL ) { 
+        printf("bibliothèque vide\n"); 
+        exit(EXIT_FAILURE); 
+    } 
 
-        char *error;
-        handle2 = dlopen ("libplayer2.so", RTLD_LAZY);
-        handle1 = dlopen("libplayer1.so",RTLD_LAZY);
-        if (!handle2 || !handle1  ) {
-            fputs (dlerror(), stderr);
-            exit(1);
-        }
-        //Initialize players
-        get_white_player_name = dlsym(handle1,"get_player_name");
-        get_black_player_name = dlsym(handle2,"get_player_name");
-        char *white_player = get_white_player_name();
-        char *black_player = get_black_player_name();
-        initiamize_white_player = dlsym(handle1,"initialize");
-        initiamize_black_player = dlsym(handle2,"initialize");
-        white_move=dlsym(handle1,"play");
-        black_move=dlsym(handle2,"play");        
-        if ((error = dlerror()) != NULL)  {
-            fputs(error, stderr);
-            exit(1);
-        }
+    char *white_player = get_player1_name();
+    char *black_player = get_player2_name();
+        
+               
+       
         //Initialize graphs
         struct graph_t* graph = initialize_graph();
         initialize_graph_positions_classic(graph);
@@ -226,8 +233,8 @@ int main(int argc, char* argv[]){
         unsigned int black_queens[m];
         unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
         begining_position(queens);
-        initiamize_white_player(0,white_graph,m,queens);
-        initiamize_black_player(1,black_graph,m,queens);
+        initialize_player1(0,white_graph,m,queens);
+        initialize_player2(1,black_graph,m,queens);
         //The starting board
         display(graph,queens,m);
         struct move_t move={-1,-1,-1};
@@ -236,13 +243,13 @@ int main(int argc, char* argv[]){
         for(int i=0;i<turns;i++){
             printf("########## TOUR: %d ##########\n", i+1);
         if(player==BLACK){
-            move=black_move(move);
+            move=play2(move);
             printf("Joueur: %s\n", black_player);
             execute_move(move,graph,queens[1]);
             print_move(move);
         }
         else{
-            move=white_move(move);
+            move=play1(move);
             printf("Joueur: %s\n", white_player);
             execute_move(move,graph,queens[0]);
             print_move(move);
@@ -251,8 +258,8 @@ int main(int argc, char* argv[]){
             printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
             display(graph,queens,m);
             //player? printf("%d \n", 2): printf("%d \n", 1);
-            dlclose(handle1);
-            dlclose(handle2);
+            dlclose(lib1);
+            dlclose(lib2);
             return 0;
             
         }
@@ -260,8 +267,9 @@ int main(int argc, char* argv[]){
         display(graph,queens,m);
 
         }
-        dlclose(handle1);
-        dlclose(handle2);
+        dlclose(lib1);
+        dlclose(lib2);
+     }
     return 0;
 }
 

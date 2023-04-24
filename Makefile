@@ -53,7 +53,7 @@ game_loop.o: tst/game_loop.c
 server.o: src/server.c src/player.h src/graph.h
 	${CC} $(CFLAGS) -c src/server.c -ldl
 
-server: server.o  grid.o moteur.o libplayer1.so libplayer2.so
+server: server.o  grid.o moteur.o #libplayer1.so libplayer2.so
 	${CC} -L${GSL_PATH}/lib server.o grid.o moteur.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
 
 client: 

@@ -22,7 +22,7 @@ position of the queen after the move*/
 void execute_move(struct move_t move, struct graph_t *graph, unsigned int *queens){
    
    // printf("%d %d\n",move.arrow_dst, move.queen_dst);
-    if(move.queen_dst>=0){
+    if((int)move.queen_dst>=0){
     int queen_number = 4*(LENGHT/10 + 1 );
     for(int  i =0; i < queen_number ; ++i ){
         if ( queens[i] == move.queen_src ){ //we look for the ex_position and then we put the new position
@@ -30,7 +30,7 @@ void execute_move(struct move_t move, struct graph_t *graph, unsigned int *queen
             break;
         }
     }
-    if(move.arrow_dst!=-1 || move.arrow_dst!=UINT_MAX){
+    if((int)move.arrow_dst!=-1 || move.arrow_dst!=UINT_MAX){
         put_arrow(graph, move.arrow_dst);
     }
      //here we updates the graph, we make the position arrow_dst isolated

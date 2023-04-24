@@ -24,9 +24,9 @@
 #ifndef NUM_PLAYERS
     #define NUM_PLAYERS 2
 #endif
-#ifndef N
-    #define N 8
-#endif
+// #ifndef N
+//     #define N 8
+// #endif
 
 
 
@@ -46,5 +46,8 @@ void print_board(struct graph_t* graph);
 values in the matrix representing the graph (la matrice d'adjacence)we consider that 
 every sommit of the graph has a maximum of 8 neighbors*/
 void initialize_graph_positions_classic(struct graph_t* g);
+
+
+int empty_cell(struct graph_t *graph, int x, int size);
 
 #endif // _AMAZON_GRAPH_H_

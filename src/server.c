@@ -29,31 +29,31 @@ struct move_t(*play2)(struct move_t previous_move);
 void begining_position(unsigned int* queens[NUM_PLAYERS]){
     unsigned int *t=queens[0];
     unsigned int *t2=queens[1];
-    int m=((N/10)+1)*4;
+    int m=((LENGHT/10)+1)*4;
     int tmp=0;
     for(int i=1;i<=m/4;i++){
-        t[tmp]=2*i+N*(N-1);
+        t[tmp]=2*i+LENGHT*(LENGHT-1);
         tmp++;
-        t[tmp]=N-1-2*i+N*(N-1);
+        t[tmp]=LENGHT-1-2*i+LENGHT*(LENGHT-1);
         tmp++;
     }
     for(int i=1;i<=m/4;i++){
-        t[tmp]=N*(N-1)-N*2*i;
+        t[tmp]=LENGHT*(LENGHT-1)-LENGHT*2*i;
         tmp++;
-        t[tmp]=N*(N-1)-N*2*i+N-1;
+        t[tmp]=LENGHT*(LENGHT-1)-LENGHT*2*i+LENGHT-1;
         tmp++;
     }
      tmp=0;
     for(int i=1;i<=m/4;i++){
         t2[tmp]=2*i;
         tmp++;
-        t2[tmp]=N-1-2*i;
+        t2[tmp]=LENGHT-1-2*i;
         tmp++;
     }
     for(int i=1;i<=m/4;i++){
-        t2[tmp]=N*2*(i);
+        t2[tmp]=LENGHT*2*(i);
         tmp++;
-        t2[tmp]=N*2*i+N-1;
+        t2[tmp]=LENGHT*2*i+LENGHT-1;
         tmp++;
     }
     //printf("tmp2=%d \n",tmp);
@@ -61,8 +61,8 @@ void begining_position(unsigned int* queens[NUM_PLAYERS]){
 
 int *graph_table(struct graph_t *graph){
     int *t=malloc(sizeof(int)*LENGHT*LENGHT);
-    for(int i=0;i<N*N;i++){
-     if(empty_cell(graph,i,N*N))   
+    for(int i=0;i<LENGHT*LENGHT;i++){
+     if(empty_cell(graph,i,LENGHT*LENGHT))   
             t[i]=-1;
         else t[i]=0;
     }
@@ -78,7 +78,7 @@ void table(unsigned int* queens[NUM_PLAYERS], int *t, int queens_number){
 }
 
 /*
-void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS], int queens_number) {
+void display(struct graph_t* graph, unsigned int* queens[LENGHTUM_PLAYERS], int queens_number) {
 
     int *t = graph_table(graph);
     table(queens, t, queens_number);
@@ -118,8 +118,8 @@ void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS], int queen
 void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number){
     int *t = graph_table(graph);
     table(queens,t,queens_number);
-    for(int i=0;i<N*N;i++){
-        if(i!=0 && i%N==0) printf("\n");
+    for(int i=0;i<LENGHT*LENGHT;i++){
+        if(i!=0 && i%LENGHT==0) printf("\n");
         if(t[i]==-1) printf("  ");
     else printf("%d ",t[i] );
     }
@@ -158,9 +158,9 @@ int main(int argc, char* argv[]){
         switch(opt){
             case 'm':
                 if(optarg!=NULL){
-                    #undef LENGHT
-                    #define LENGHT atoi(optarg)
-                    printf("%d\n", LENGHT);
+                    #undef LELENGHTGHT
+                    #define LELENGHTGHT atoi(optarg)
+                    printf("%d\n", LELENGHTGHT);
                 }
                 break;
             case 's':
@@ -169,16 +169,16 @@ int main(int argc, char* argv[]){
                 }
                 break;
             case 't':
-                if(optarg[0]='c'){
+                if(optarg[0]=='c'){
 
                 }
-                else if(optarg[0]='d'){
+                else if(optarg[0]=='d'){
 
                 }
-                else if(optarg[0]='t'){
+                else if(optarg[0]=='t'){
 
                 }
-                else if(optarg[0]='8'){
+                else if(optarg[0]=='8'){
 
                 }
                 break;
@@ -190,8 +190,8 @@ int main(int argc, char* argv[]){
                 break;
         }
     }
-    /* END GETOPT */
-    //printf("%d\n", LENGHT);
+    /* ELENGHTD GETOPT */
+    //printf("%d\n", LELENGHTGHT);
      if (argc > 1) {
      void * lib1 = dlopen(argv[argc-2], RTLD_NOW); 
      void * lib2 = dlopen(argv[argc-1], RTLD_NOW); 
@@ -228,7 +228,7 @@ int main(int argc, char* argv[]){
         initialize_graph_positions_classic(black_graph);
 
         //Initialize queens for each player
-        int m=((N/10)+1)*4;
+        int m=((LENGHT/10)+1)*4;
         unsigned int white_queens[m];
         unsigned int black_queens[m];
         unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
@@ -254,7 +254,7 @@ int main(int argc, char* argv[]){
             execute_move(move,graph,queens[0]);
             print_move(move);
         }
-        if(move.queen_dst==UINT_MAX || i==99){
+        if(move.queen_dst==UINT_MAX|| i==99){
             printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
             display(graph,queens,m);
             //player? printf("%d \n", 2): printf("%d \n", 1);
@@ -272,13 +272,4 @@ int main(int argc, char* argv[]){
      }
     return 0;
 }
-
-
-
-
-
-
-
-
-
 

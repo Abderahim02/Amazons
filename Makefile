@@ -31,11 +31,11 @@ player2.o: src/player2.c
 player1.o: src/player1.c
 	${CC} -c -fPIC $<
 
-libplayer2.so: player2.o moteur.o
-	${CC} -shared player2.o moteur.o -o $@ 
+libraries:player1.o player2.o moteur.o
+	${CC} -shared player2.o moteur.o -o libplayer2.so
+	${CC} -shared player1.o moteur.o -o libplayer1.so
+	
 
-libplayer1.so: player1.o moteur.o
-	${CC} -shared player1.o moteur.o -o $@
 
 grid.o: src/grid.c src/grid.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c src/grid.c
@@ -70,8 +70,10 @@ alltests:
 
 install: server
 	make server
+	make libraries
 	if [ -f server ]; then cp server install/; fi
 	if [ -f alltests ]; then cp alltests install/; fi
+	cp *.so install
 	make clean
 
 clean:

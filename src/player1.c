@@ -6,8 +6,6 @@
 #include "graph.h"
 #include "dir.h"
 #include "grid.h"
-#include "move.h"
-#include "strategy.h"
 #include <time.h>
 
 

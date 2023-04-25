@@ -26,4 +26,8 @@ void table(unsigned int* queens[NUM_PLAYERS], int *t, int queens_number);
 
 int *graph_table(struct graph_t *graph);
 
+int start_player();
+
+int next_player(int player);
+
 

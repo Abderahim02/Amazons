@@ -3,7 +3,6 @@
 #include <string.h>
 #include "moteur.h" 
 #include "player.h"
-#include "graph.h"
 #include "dir.h"
 #include "grid.h"
 #include <time.h>
@@ -28,6 +27,7 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
    player_black.id=player_id;
     player_black.graph=graph;
     player_black.num_queens=num_queens;
+    player_black.turn=0;
     int m=((graph->num_vertices/10)+1)*4;
     player_black.current_queens=malloc(sizeof(unsigned int)*m);
 
@@ -38,33 +38,9 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
     }
 }
 
-int random_dst(struct graph_t *graph, enum dir_t dir, int pos){
-    int t[LENGHT*2];
-    int i=0;
-    int tmp=pos;
-    while(get_neighbor(tmp,dir,graph)!=-1){
-        t[i]=get_neighbor(tmp,dir,graph);
-        tmp=t[i];
-        i++;
-    }
-    return t[rand()%i];
-
-}
 
 
-enum dir_t available_dir(int queen, struct graph_t *graph, enum dir_t direction){
-    enum dir_t dir=rand()%8+1;
-    int cmp=0;
-    while((get_neighbor(queen,dir,graph)==-1 || dir==direction) && cmp<9){
-        dir++;
-        dir=dir%9;
-        cmp++;
-    }
-    if(cmp==9){
-        return NO_DIR;
-    }
-    return dir;
-}
+
 
 
 struct move_t play(struct move_t previous_move){
@@ -80,7 +56,7 @@ struct move_t play(struct move_t previous_move){
     while(dir==NO_DIR && cmp<player_black.num_queens){
         cmp++;
         queen=player_black.current_queens[r];
-        dir=available_dir(queen,player_black.graph,NO_DIR);
+        dir=available_dir(queen,player_black.graph,NO_DIR, player_black);
         r=(r+1)%player_black.num_queens;
     }
     
@@ -89,16 +65,16 @@ struct move_t play(struct move_t previous_move){
     }
   // printf("dir=%d\n",dir);
      move.queen_src=queen;
-     move.queen_dst=random_dst(player_black.graph,dir,queen);
+     move.queen_dst=random_dst(player_black.graph,dir,queen, player_black);
      player_black.current_queens[r-1]=move.queen_dst;
      queen=move.queen_dst;
-     enum dir_t dir2=available_dir(queen,player_black.graph,dir);
+     enum dir_t dir2=available_dir(queen,player_black.graph,dir, player_black);
      if(dir2==NO_DIR){
         move.arrow_dst=-1;
      }
      else {
         //printf("queen %d\n",queen);
-         move.arrow_dst=random_dst(player_black.graph,dir2,queen);
+         move.arrow_dst=random_dst(player_black.graph,dir2,queen, player_black);
      }
     execute_move(move,player_black.graph,player_black.current_queens);
     return move;  

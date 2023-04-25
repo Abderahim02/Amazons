@@ -3,11 +3,8 @@
 #include <string.h>
 #include "moteur.h" 
 #include "player.h"
-#include "graph.h"
 #include "dir.h"
 #include "grid.h"
-#include "move.h"
-//#include "strategy.h"
 #include <time.h>
 
 
@@ -29,6 +26,7 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
     player_blanc.id=player_id;
     player_blanc.graph=graph;
     player_blanc.num_queens=num_queens;
+    player_blanc.turn=0;
     int m=((graph->num_vertices/10)+1)*4;
     player_blanc.current_queens=malloc(sizeof(unsigned int)*num_queens);
 
@@ -39,33 +37,9 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
     }
 }
 
-int random_dst(struct graph_t *graph, enum dir_t dir, int pos){
-    int t[LENGHT*2];
-    int i=0;
-    int tmp=pos;
-    while(get_neighbor(tmp,dir,graph)!=-1){
-        t[i]=get_neighbor(tmp,dir,graph);
-        tmp=t[i];
-        i++;
-    }
-    return t[rand()%i];
-
-}
 
 
-enum dir_t available_dir(int queen, struct graph_t *graph, enum dir_t direction){
-    enum dir_t dir=rand()%8+1;
-    int cmp=0;
-    while((get_neighbor(queen,dir,graph)==-1 || dir==direction) && cmp<9){
-        dir++;
-        dir=dir%9;
-        cmp++;
-    }
-    if(cmp==9){
-        return NO_DIR;
-    }
-    return dir;
-}
+
 //function that loops over the neighbors of a queen and returns the one that has the max neighbors in all directions
 int best_queen_move_in_direction(struct graph_t *graph, enum dir_t dir, int pos){
     int t[LENGHT*2];
@@ -120,12 +94,12 @@ struct move_t best_move(struct graph_t *graph, unsigned int* queens, int num_que
             if(get_neighbor(queens[i],j,graph)!=-1){
                 moves[counter].queen_src=queens[i];
                 moves[counter].queen_dst=best_queen_move_in_direction(graph,j,queens[i]);
-                enum dir_t dir2=available_dir(moves[counter].queen_dst,player_blanc.graph,NO_DIR);
+                enum dir_t dir2=available_dir(moves[counter].queen_dst,player_blanc.graph,NO_DIR, player_blanc);
                 if(dir2==NO_DIR){
                     moves[counter].arrow_dst=UINT_MAX;
                 }
                 else{
-                    moves[counter].arrow_dst=random_dst(graph,dir2,moves[counter].queen_dst);
+                    moves[counter].arrow_dst=random_dst(graph,dir2,moves[counter].queen_dst, player_blanc);
                 }
                 counter++;
             }
@@ -141,7 +115,7 @@ struct move_t best_move(struct graph_t *graph, unsigned int* queens, int num_que
     for(int i=0;i<capcity;i++){
         int cmp=0;
         for(int j=1;j<9;j++){
-            if(get_neighbor(moves[i].queen_dst,j,graph)!=-1){
+            if(get_neighbor_gen(moves[i].queen_dst,j,graph, player_blanc)!=-1){
                 cmp++;
             }
         }
@@ -180,9 +154,19 @@ int find_queen(int queen, unsigned int* queens, int num_queens){
     }
     return -1;
 }
+
+
+
+
+
 struct move_t play(struct move_t previous_move){
     if(previous_move.queen_dst!=-1 && previous_move.queen_dst!=-1){
         execute_move(previous_move,player_blanc.graph,player_blanc.other_queens);
+        player_blanc.turn++;
+        printf("turn pour white: %d \n", player_blanc.turn);
+    }
+    if(player_blanc.turn<4){
+        printf("YEssssssssssssssssssss\n");
     }
     struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
     int r=rand()%player_blanc.num_queens;
@@ -193,7 +177,7 @@ struct move_t play(struct move_t previous_move){
     //finds an avaliable direction for a queen
     while(dir==NO_DIR && cmp<player_blanc.num_queens){
         queen=player_blanc.current_queens[r];
-        dir=available_dir(queen,player_blanc.graph,NO_DIR);
+        dir=available_dir(queen,player_blanc.graph,NO_DIR, player_blanc);
         r=(r+1)%player_blanc.num_queens;
         cmp++;
     }
@@ -202,33 +186,38 @@ struct move_t play(struct move_t previous_move){
         return move;
     }
      move.queen_src=queen;
-     move.queen_dst=random_dst(player_blanc.graph,dir,queen);
+     move.queen_dst=random_dst(player_blanc.graph,dir,queen, player_blanc);
      player_blanc.current_queens[r-1]=move.queen_dst;
      queen=move.queen_dst;
-     enum dir_t dir2=available_dir(queen,player_blanc.graph,dir);
+     enum dir_t dir2=available_dir(queen,player_blanc.graph,dir, player_blanc);
      if(dir2==NO_DIR){
         move.arrow_dst=-1;
      }
      else {
-         move.arrow_dst=random_dst(player_blanc.graph,dir2,queen);
+         move.arrow_dst=random_dst(player_blanc.graph,dir2,queen, player_blanc);
      }
     execute_move(move,player_blanc.graph,player_blanc.current_queens);
     return move;  
 }
+
+
+
+
 //function play2 that uses the best_move function to find the best move
-struct move_t play2(struct move_t previous_move ){
-    if(previous_move.queen_dst!=-1 && previous_move.queen_dst!=-1){
-        execute_move(previous_move,player_blanc.graph,player_blanc.other_queens);
-    }
-    struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
-    struct move_t best=best_move(player_blanc.graph,player_blanc.current_queens,player_blanc.num_queens);
-    move.queen_src=best.queen_src;
-    move.queen_dst=best.queen_dst;
-    move.arrow_dst=best.arrow_dst;
-    execute_move(move,player_blanc.graph,player_blanc.current_queens);
-    //printf("move is %d %d %d",move.queen_src,move.queen_dst,move.arrow_dst);
-    return move;
-}
+// struct move_t play2(struct move_t previous_move ){
+//     if(previous_move.queen_dst!=-1 && previous_move.queen_dst!=-1){
+//         execute_move(previous_move,player_blanc.graph,player_blanc.other_queens);
+//         player_blanc.turn++;
+//     }
+//     struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
+//     struct move_t best=best_move(player_blanc.graph,player_blanc.current_queens,player_blanc.num_queens);
+//     move.queen_src=best.queen_src;
+//     move.queen_dst=best.queen_dst;
+//     move.arrow_dst=best.arrow_dst;
+//     execute_move(move,player_blanc.graph,player_blanc.current_queens);
+//     //printf("move is %d %d %d",move.queen_src,move.queen_dst,move.arrow_dst);
+//     return move;
+// }
 int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
     return get_neighbor_gen(pos, dir, graph, player_blanc);
 }

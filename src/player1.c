@@ -28,10 +28,10 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
     player_blanc.num_queens=num_queens;
     player_blanc.turn=0;
     int m=((graph->num_vertices/10)+1)*4;
-    player_blanc.current_queens=malloc(sizeof(unsigned int)*num_queens);
+    player_blanc.current_queens=(unsigned int *)malloc(sizeof(unsigned int)*m);
 
-    player_blanc.other_queens=malloc(sizeof(unsigned int)*num_queens);
-    for(int i=0;i<num_queens;i++){
+    player_blanc.other_queens=(unsigned int *)malloc(sizeof(unsigned int)*m);
+    for(unsigned int i=0;i<num_queens;i++){
         player_blanc.current_queens[i]=queens[player_id][i];
         player_blanc.other_queens[i]=queens[(player_id+1)%2][i];
     }
@@ -146,7 +146,7 @@ int num_neighbors(int queen, struct graph_t *graph){
 }
 
 //function that finds index of a queen in an array of queens notvery useful right now
-int find_queen(int queen, unsigned int* queens, int num_queens){
+int find_queen(unsigned int queen, unsigned int* queens, int num_queens){
     for(int i=0;i<num_queens;i++){
         if(queens[i]==queen){
             return i;
@@ -173,7 +173,7 @@ struct move_t play(struct move_t previous_move){
     int queen=player_blanc.current_queens[r];
     
     enum dir_t dir=NO_DIR;
-    int cmp=0;
+    unsigned int cmp=0;
     //finds an avaliable direction for a queen
     while(dir==NO_DIR && cmp<player_blanc.num_queens){
         queen=player_blanc.current_queens[r];
@@ -183,11 +183,12 @@ struct move_t play(struct move_t previous_move){
     }
     
     if(dir==NO_DIR){
+        free_player(player_blanc);
         return move;
     }
      move.queen_src=queen;
      move.queen_dst=random_dst(player_blanc.graph,dir,queen, player_blanc);
-     player_blanc.current_queens[r-1]=move.queen_dst;
+     player_blanc.current_queens[r]=move.queen_dst;
      queen=move.queen_dst;
      enum dir_t dir2=available_dir(queen,player_blanc.graph,dir, player_blanc);
      if(dir2==NO_DIR){

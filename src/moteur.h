@@ -28,10 +28,12 @@ int element_in_array(unsigned int *t, int size, unsigned int x);
 /*a test function */
 void test_execute_move();
 
-int random_dst(struct graph_t *graph, enum dir_t dir, int pos, struct player player);
+int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos, struct player player);
 
-enum dir_t available_dir(int queen, struct graph_t *graph, enum dir_t direction, struct player player);
+enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t direction, struct player player);
 
+
+void free_player(struct player player);
 
 
 int get_neighbor_gen(int pos, enum dir_t dir, struct graph_t* graph, struct player player);

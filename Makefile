@@ -1,4 +1,4 @@
-GSL_PATH ?= /net/ens/renault/save/gsl-2.6/install
+GSL_PATH=/opt/gsl-2.6
 LENGHT ?= 8
 AMAZONS_FLAGS = -DLENGHT=$(LENGHT)
 #GSL_PATH ?=/usr/local

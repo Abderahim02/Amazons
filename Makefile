@@ -29,11 +29,11 @@ test_arrows: ${TST}/test_arrows.o grid.o
 	${CC} -L${GSL_PATH}/lib ${TST}/test_arrows.o grid.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
 
 
-player2.o: ${SRC}/player2.c
-	${CC} -c -fPIC $<
+player2.o:  ${SRC}/player2.c 
+	${CC} -c -fPIC -I ${SRC} $< 
 
-player1.o: ${SRC}/player1.c
-	${CC} -c -fPIC $<
+player1.o: ${SRC}/player1.c 
+	${CC} -c -fPIC  -I${SRC} $< 
 
 libraries:player1.o player2.o moteur.o
 	${CC} -shared player2.o moteur.o -o libplayer2.so

@@ -1,10 +1,13 @@
 #ifndef _AMAZON_GRAPH_H_
 #define _AMAZON_GRAPH_H_
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <stddef.h>
 #include <gsl/gsl_spmatrix.h>
 #include <gsl/gsl_spblas.h>
 #include <gsl/gsl_spmatrix_uint.h>
-#include <stddef.h>
+
 
 struct graph_t {
   unsigned int num_vertices; // Number of vertices in the graph

@@ -1,9 +1,7 @@
 #ifndef _GRID_H_
 #define _GRID_H_
 
-#include <gsl/gsl_spmatrix.h>
-#include <gsl/gsl_spmatrix_uint.h>
-#include <gsl/gsl_spblas.h>
+
 #include <stddef.h>
 
 #include "graph.h"

@@ -13,6 +13,7 @@ struct player {
     unsigned int num_queens;
     unsigned int* current_queens;
     unsigned int* other_queens;
+    unsigned int turn;
 };
 
 /*this function puts an arrow in the position idx in the graph, it puts NO_DIT with all of its neighbors*/
@@ -27,9 +28,9 @@ int element_in_array(unsigned int *t, int size, unsigned int x);
 /*a test function */
 void test_execute_move();
 
-int random_dst(struct graph_t *graph, enum dir_t dir, int pos);
+int random_dst(struct graph_t *graph, enum dir_t dir, int pos, struct player player);
 
-enum dir_t available_dir(int queen, struct graph_t *graph, enum dir_t direction);
+enum dir_t available_dir(int queen, struct graph_t *graph, enum dir_t direction, struct player player);
 
 
 

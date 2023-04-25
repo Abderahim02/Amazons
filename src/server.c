@@ -22,6 +22,7 @@ void(*initialize_player2)(unsigned int player_id, struct graph_t* graph,
 
 struct move_t(*play1)(struct move_t previous_move);
 struct move_t(*play2)(struct move_t previous_move);
+struct move_t(*opening)(struct move_t previous_move);
         
 
 
@@ -195,6 +196,11 @@ int main(int argc, char* argv[]){
      if (argc > 1) {
      void * lib1 = dlopen(argv[argc-2], RTLD_NOW); 
      void * lib2 = dlopen(argv[argc-1], RTLD_NOW); 
+     if (lib1 == NULL || lib2 == NULL ) { 
+        printf("bibliothèque vide\n"); 
+        exit(EXIT_FAILURE); 
+    } 
+
     //get player name functions.
       get_player1_name= dlsym(lib1,"get_player_name");
       get_player2_name = dlsym(lib2,"get_player_name");
@@ -205,14 +211,11 @@ int main(int argc, char* argv[]){
 
     //play functions 
     play1=dlsym(lib1,"play");
-    play2=dlsym(lib2,"play"); 
+    play2=dlsym(lib2,"play");
+    //opening=dlsym(lib1,"opening_play");
     
 
-    if (lib1 == NULL || lib2 == NULL ) { 
-        printf("bibliothèque vide\n"); 
-        exit(EXIT_FAILURE); 
-    } 
-
+    
     char *white_player = get_player1_name();
     char *black_player = get_player2_name();
         

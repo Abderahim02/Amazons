@@ -30,10 +30,10 @@ test_arrows: ${TST}/test_arrows.o grid.o
 
 
 player2.o:  ${SRC}/player2.c 
-	${CC} -c -fPIC -I ${SRC} $< 
+	${CC} $(CFLAGS) -I${SRC} -c  $< 
 
 player1.o: ${SRC}/player1.c 
-	${CC} -c -fPIC  -I${SRC} $< 
+	${CC} $(CFLAGS) -I${SRC} -c  $<  
 
 libraries:player1.o player2.o moteur.o
 	${CC} -shared player2.o moteur.o -o libplayer2.so

@@ -63,7 +63,7 @@ void begining_position(unsigned int* queens[NUM_PLAYERS], unsigned int length){
 int *graph_table(struct graph_t *graph){
     unsigned int length=sqrt(graph->t->size1);
     int *t=(int *)malloc(sizeof(int)*length*length);
-    for(int i=0;i<length*length;i++){
+    for(unsigned int i=0 ; i<length*length;i++){
      if(empty_cell(graph,i,length*length))   
             t[i]=-1;
         else t[i]=0;
@@ -121,7 +121,7 @@ void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens
     unsigned int length=sqrt(graph->t->size1);
     int *t = graph_table(graph);
     table(queens,t,queens_number);
-    for(int i=0;i<length*length;i++){
+    for(unsigned int i=0;i<length*length;i++){
         if(i!=0 && i%length==0) printf("\n");
         if(t[i]==-1) printf("  ");
     else printf("%d ",t[i] );

@@ -50,6 +50,8 @@ void test_execute_move(){
     void *handle2;
         char*(*player_name1)(void);
         char*(*player_name2)(void);
+        (void) player_name1;
+        (void) player_name2;
         char*(*initialize1)(unsigned int player_id, struct graph_t* graph,
                 unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]);
         char*(*initialize2)(unsigned int player_id, struct graph_t* graph,

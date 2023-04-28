@@ -162,7 +162,7 @@ int find_queen(unsigned int queen, unsigned int* queens, int num_queens){
 
 
 struct move_t play(struct move_t previous_move){
-    if(previous_move.queen_dst !=-1 && previous_move.queen_dst!=-1){
+    if(previous_move.queen_dst != (unsigned int)-1 && previous_move.queen_dst != (unsigned int)-1 ){
         execute_move(previous_move,player_blanc.graph,player_blanc.other_queens);
         player_blanc.turn++;
         printf("turn pour white: %d \n", player_blanc.turn);

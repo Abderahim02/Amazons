@@ -45,7 +45,7 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
 
 struct move_t play(struct move_t previous_move){
    //    srand(300);
-    if(previous_move.queen_dst!=-1 && previous_move.queen_dst!=-1 )
+    if(previous_move.queen_dst!= (unsigned int) -1 && previous_move.queen_dst!= (unsigned int) -1 )
         execute_move(previous_move,player_black.graph,player_black.other_queens);
     struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
     int r=rand()%player_black.num_queens;

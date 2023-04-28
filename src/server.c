@@ -26,43 +26,44 @@ struct move_t(*play2)(struct move_t previous_move);
 
 
 
-void begining_position(unsigned int* queens[NUM_PLAYERS]){
+void begining_position(unsigned int* queens[NUM_PLAYERS], unsigned int length){
     unsigned int *t=queens[0];
     unsigned int *t2=queens[1];
-    int m=((LENGHT/10)+1)*4;
+    int m=((length/10)+1)*4;
     int tmp=0;
     for(int i=1;i<=m/4;i++){
-        t[tmp]=2*i+LENGHT*(LENGHT-1);
+        t[tmp]=2*i+length*(length-1);
         tmp++;
-        t[tmp]=LENGHT-1-2*i+LENGHT*(LENGHT-1);
+        t[tmp]=length-1-2*i+length*(length-1);
         tmp++;
     }
     for(int i=1;i<=m/4;i++){
-        t[tmp]=LENGHT*(LENGHT-1)-LENGHT*2*i;
+        t[tmp]=length*(length-1)-length*2*i;
         tmp++;
-        t[tmp]=LENGHT*(LENGHT-1)-LENGHT*2*i+LENGHT-1;
+        t[tmp]=length*(length-1)-length*2*i+length-1;
         tmp++;
     }
      tmp=0;
     for(int i=1;i<=m/4;i++){
         t2[tmp]=2*i;
         tmp++;
-        t2[tmp]=LENGHT-1-2*i;
+        t2[tmp]=length-1-2*i;
         tmp++;
     }
     for(int i=1;i<=m/4;i++){
-        t2[tmp]=LENGHT*2*(i);
+        t2[tmp]=length*2*(i);
         tmp++;
-        t2[tmp]=LENGHT*2*i+LENGHT-1;
+        t2[tmp]=length*2*i+length-1;
         tmp++;
     }
     //printf("tmp2=%d \n",tmp);
 }
 
 int *graph_table(struct graph_t *graph){
-    int *t=(int *)malloc(sizeof(int)*LENGHT*LENGHT);
-    for(int i=0;i<LENGHT*LENGHT;i++){
-     if(empty_cell(graph,i,LENGHT*LENGHT))   
+    unsigned int length=sqrt(graph->t->size1);
+    int *t=(int *)malloc(sizeof(int)*length*length);
+    for(int i=0;i<length*length;i++){
+     if(empty_cell(graph,i,length*length))   
             t[i]=-1;
         else t[i]=0;
     }
@@ -116,10 +117,11 @@ void display(struct graph_t* graph, unsigned int* queens[LENGHTUM_PLAYERS], int 
 
 */
 void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number){
+    unsigned int length=sqrt(graph->t->size1);
     int *t = graph_table(graph);
     table(queens,t,queens_number);
-    for(int i=0;i<LENGHT*LENGHT;i++){
-        if(i!=0 && i%LENGHT==0) printf("\n");
+    for(int i=0;i<length*length;i++){
+        if(i!=0 && i%length==0) printf("\n");
         if(t[i]==-1) printf("  ");
     else printf("%d ",t[i] );
     }
@@ -152,6 +154,7 @@ void print_move(struct move_t move){
 
 int main(int argc, char* argv[]){
     /* START GETOPT */
+    unsigned int length=4;
     int turns=2;
     extern char *optarg;
     int opt=0;
@@ -159,9 +162,7 @@ int main(int argc, char* argv[]){
         switch(opt){
             case 'm':
                 if(optarg!=NULL){
-                    #undef LELENGHTGHT
-                    #define LELENGHTGHT atoi(optarg)
-                    printf("%d\n", LELENGHTGHT);
+                    length=atoi(optarg);
                 }
                 break;
             case 's':
@@ -191,8 +192,6 @@ int main(int argc, char* argv[]){
                 break;
         }
     }
-    /* ELENGHTD GETOPT */
-    //printf("%d\n", LELENGHTGHT);
      if (argc > 1) {
      void * lib1 = dlopen(argv[argc-2], RTLD_NOW); 
      void * lib2 = dlopen(argv[argc-1], RTLD_NOW); 
@@ -222,20 +221,20 @@ int main(int argc, char* argv[]){
                
        
         //Initialize graphs
-        struct graph_t* graph = initialize_graph();
+        struct graph_t* graph = initialize_graph(length);
         initialize_graph_positions_classic(graph);
         //make_hole(graph,graph->num_vertices/2,2);
-        struct graph_t* white_graph = initialize_graph();
+        struct graph_t* white_graph = initialize_graph(length);
         initialize_graph_positions_classic(white_graph);
-        struct graph_t* black_graph = initialize_graph();
+        struct graph_t* black_graph = initialize_graph(length);
         initialize_graph_positions_classic(black_graph);
 
         //Initialize queens for each player
-        int m=((LENGHT/10)+1)*4;
+        int m=((length/10)+1)*4;
         unsigned int white_queens[m];
         unsigned int black_queens[m];
         unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
-        begining_position(queens);
+        begining_position(queens, length);
         initialize_player1(0,white_graph,m,queens);
         initialize_player2(1,black_graph,m,queens);
         //The starting board
@@ -273,7 +272,6 @@ int main(int argc, char* argv[]){
         display(graph,queens,m);
 
         }
-        print_sparse_matrix(graph->t);
         free_graph(graph);
         free_graph(white_graph);
         free_graph(black_graph);

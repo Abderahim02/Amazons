@@ -7,7 +7,7 @@ BIN = server
 CC = gcc
 SRC = src
 TST = tst
-CFLAGS = -std=c99 -Wall -Wextra -fPIC -g3 -I$(GSL_PATH)/include
+CFLAGS = -std=c99 -Wall -lm -Wextra -fPIC -g3 -I$(GSL_PATH)/include
 LDFLAGS = -lm -lgsl -lgslcblas -ldl \	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \	-Wl,--rpath=${GSL_PATH}/lib
 OBJS = $(SRCS:.c=.o)
 

@@ -42,7 +42,8 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
 
 //function that loops over the neighbors of a queen and returns the one that has the max neighbors in all directions
 int best_queen_move_in_direction(struct graph_t *graph, enum dir_t dir, int pos){
-    int t[LENGHT*2];
+    unsigned int length=sqrt(graph->t->size1);
+    int t[length*2];
     int i=0;
     int tmp=pos;
     //fill the t array with all the neighbors of the queen in the given direction
@@ -81,7 +82,8 @@ void print_array(struct move_t *moves, int size){
 
 //function that calculates all possible moves for all the queens puts them in an array and returns the max of the best_queen_move_in_direction for each queen and the queen corresponding to the max
 struct move_t best_move(struct graph_t *graph, unsigned int* queens, int num_queens){
-    struct move_t moves[LENGHT*2*num_queens];
+    unsigned int length=sqrt(graph->t->size1);
+    struct move_t moves[length*2*num_queens];
     int capcity = 0;
     struct move_t move ={UINT_MAX,UINT_MAX,UINT_MAX};
     //fill the moves array with all the possible moves for each queen

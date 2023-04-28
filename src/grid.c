@@ -6,17 +6,17 @@
 #include <math.h> 
 
 
-/*this function create an empty graph  with the size LENGHT*LENGHT, a matrix of size LENGHT*LENGHT
-is needed to store a graph of size LENGHT */
-struct graph_t * initialize_graph(){  
-    gsl_spmatrix_uint *mat = gsl_spmatrix_uint_alloc(LENGHT* LENGHT, LENGHT*LENGHT);
-    for (int i = 0; i < LENGHT*LENGHT; i++) {
-        for (int j = 0; j < LENGHT* LENGHT; j++) {
+/*this function create an empty graph  with the size length*length, a matrix of size length*length
+is needed to store a graph of size length */
+struct graph_t * initialize_graph(unsigned int length){  
+    gsl_spmatrix_uint *mat = gsl_spmatrix_uint_alloc(length* length, length*length);
+    for (int i = 0; i < length*length; i++) {
+        for (int j = 0; j < length* length; j++) {
             gsl_spmatrix_uint_set(mat, i, j, NO_DIR);
         }
     }
     struct graph_t * grid=(struct graph_t *)malloc(sizeof(struct graph_t)); 
-    grid->num_vertices = LENGHT*LENGHT;
+    grid->num_vertices = length*length;
     grid->t = mat;
     return grid;
 }
@@ -142,7 +142,7 @@ void initialize_graph_positions_classic(struct graph_t* g){
     }
 }
 
-int empty_cell(struct graph_t *graph, int x, int size){
+int empty_cell(struct graph_t *graph, int x, unsigned int size){
     for(int i=0;i<size;i++){
         if(gsl_spmatrix_uint_get(graph->t, x, i)!=NO_DIR) return 0;
     }
@@ -150,14 +150,15 @@ int empty_cell(struct graph_t *graph, int x, int size){
 }
 
 void print_board(struct graph_t* graph){
-    int *t=malloc(sizeof(int)*LENGHT*LENGHT);
-    for(int i=0;i<LENGHT*LENGHT;i++){
-        if(empty_cell(graph,i,LENGHT*LENGHT))   
+    unsigned int length=graph->t->size1;
+    int *t=malloc(sizeof(int)*length*length);
+    for(int i=0;i<length*length;i++){
+        if(empty_cell(graph,i,length*length))   
             t[i]=-1;
         else t[i]=0;
     }
-    for(int i=0; i<LENGHT*LENGHT; i++){
-        if(i!=0 && i%LENGHT==0){
+    for(int i=0; i<length*length; i++){
+        if(i!=0 && i%length==0){
             printf("\n");
         }
         if(t[i]==-1){

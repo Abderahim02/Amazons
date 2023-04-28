@@ -228,6 +228,4 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
 void finalize(){
     free(player_blanc.current_queens);
     free(player_blanc.other_queens);
-    player_blanc.current_queens=NULL;
-    player_blanc.other_queens=NULL;
 }

@@ -35,7 +35,6 @@ void print_sparse_matrix(gsl_spmatrix_uint *mat) {
 //this function frees the momory blocks allocated for the graph
 void free_graph(struct graph_t* g){
     gsl_spmatrix_uint_free(g->t);
-    g->t=NULL;
     free(g);
 }
 

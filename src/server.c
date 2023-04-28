@@ -334,19 +334,7 @@ int main(int argc, char* argv[]){
                 }
                 break;
             case 't':
-                printf("t = %s", optarg[0]);
-                if(optarg[0]=='c'){
-                    make_graph(graph, LENGHT, 'c');
-                }
-                else if(optarg[0]=='d'){
-                    make_graph(graph, LENGHT, 'd');
-                }
-                else if(optarg[0]=='t'){
-                    make_graph(graph, LENGHT, 't');
-                }
-                else if(optarg[0]=='8'){
-                    make_graph(graph, LENGHT, '8');
-                }
+                make_graph(graph, LENGHT, optarg[0]);
                 break;
             case 'h':
                 printf("usage: ./project [-h help]\n \t \t [-m allows you to specify the width of the game board] \n \t \t [-t allows you to specify the shape of the game board (square grid c, donut d, cloverleaf t or figure eight 8 ) \n]");
@@ -402,8 +390,44 @@ int main(int argc, char* argv[]){
         //The starting board
         display(graph, queens, m);
         printf("Lenght  %d\n",LENGHT);
-        make_graph(graph, LENGHT,'8');
+        make_graph(graph, LENGHT,'c');
         display(graph,queens,m);
+        struct move_t move={-1,-1,-1};
+        int player = start_player();
+        //The game loop
+        for(int i=0;i<turns;i++){
+            printf("########## TOUR: %d ##########\n", i+1);
+        if(player==BLACK){
+            move=play2(move);
+            printf("Joueur: %s\n", black_player);
+            execute_move(move,graph,queens[1]);
+            print_move(move);
+        }
+        else{
+            move=play1(move);
+            printf("Joueur: %s\n", white_player);
+            execute_move(move,graph,queens[0]);
+            print_move(move);
+        }
+        if(move.queen_dst==UINT_MAX|| i==99){
+            printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
+            display(graph,queens,m);
+            //player? printf("%d \n", 2): printf("%d \n", 1);
+            free_graph(graph);
+            free_graph(white_graph);
+            free_graph(black_graph);
+            dlclose(lib1);
+            dlclose(lib2);
+            return 0;
+            
+        }
+        player=next_player(player);
+        display(graph,queens,m);
+
+        }
+        free_graph(graph);
+        free_graph(white_graph);
+        free_graph(black_graph);
         dlclose(lib1);
         dlclose(lib2);
      }

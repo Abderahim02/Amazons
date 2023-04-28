@@ -9,7 +9,7 @@
 
 /** The height (number of rows or columns) of the world */
 #ifndef LENGHT
-  #define LENGHT 12
+  #define LENGHT 8
 #endif
 
 // #define LENGHT 9

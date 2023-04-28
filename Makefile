@@ -1,6 +1,6 @@
 GSL_PATH=/opt/gsl-2.6
 # LENGHT ?= 8
-LENGHT ?= 9
+LENGHT ?= 8
 AMAZONS_FLAGS = -DLENGHT=$(LENGHT)
 #GSL_PATH ?=/usr/local
 
@@ -68,6 +68,8 @@ test_execute_move.o: ${TST}/test_execute_move.c hole.o
 
 alltests:  ${TST}/test_execute_move.o grid.o hole.o
 	${CC} -L${GSL_PATH}/lib  ${TST}/test_execute_move.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov
+# alltests:  #${TST}/test_arrows.o grid.o
+# 	#${CC} ${LDFLAGS} -L${GSL_PATH}/lib  ${TST}/test_arrows.o grid.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov
 
 
 # test_grid.o: ${TST}/test_graph.c ${SRC}/grid.c ${SRC}/grid.h hole.o moteur.o server.o 

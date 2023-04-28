@@ -116,12 +116,12 @@ void test_execute_move(){
 }
 
 int main(){
-    struct graph_t * g= initialize_graph(9);
-    initialize_graph_positions_classic(g);
-    printf("op %d\n",(int)sqrt(g->num_vertices));
-    make_hole(g,1,6);
-    print_sparse_matrix(g->t);
-    free_graph(g);
+    // struct graph_t * g= initialize_graph(9);
+    // initialize_graph_positions_classic(g);
+    // printf("op %d\n",(int)sqrt(g->num_vertices));
+    // make_hole(g,1,6);
+    // print_sparse_matrix(g->t);
+    // free_graph(g);
     return 0;
 }
 // int main(){

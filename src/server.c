@@ -289,19 +289,19 @@ void make_graph(struct graph_t * g, unsigned int m ,char s){
     // m = (unsigned int ) LENGHT;
     switch(s){
         case 'c' :
-        g->num_vertices = m*m;
-      break;
+            g->num_vertices = m*m;
+            break;
         case 'd':
-        make_hole(g, (m/3)*m + m/3 , m/3);
-        g->num_vertices = 8*m*m/9;
-      break;
-    case 't':
-        make_hole(g, m/5*m + m/5, m/5 );
-        make_hole(g, m/5*m + 3*m/5 , m/5 );
-        make_hole(g, 3*m/5*m + m/5, m/5 );
-        make_hole(g, 3*m/5*m + 3*m/5, m/5 );
-        g->num_vertices = 21*m*m / 25 ;
-      break;
+            make_hole(g, (m/3)*m + m/3 , m/3);
+            g->num_vertices = 8*m*m/9;
+            break;
+        case 't':
+            make_hole(g, m/5*m + m/5, m/5 );
+            make_hole(g, m/5*m + 3*m/5 , m/5 );
+            make_hole(g, 3*m/5*m + m/5, m/5 );
+            make_hole(g, 3*m/5*m + 3*m/5, m/5 );
+            g->num_vertices = 21*m*m / 25 ;
+            break;
     case '8':
         make_hole(g, 2*(m/4) * m + m/4, m/4 );
         make_hole(g, (m/4) * m + 2*m/4 , m/4 );
@@ -390,7 +390,7 @@ int main(int argc, char* argv[]){
         //The starting board
         display(graph, queens, m);
         printf("Lenght  %d\n",LENGHT);
-        make_graph(graph, LENGHT,'c');
+        make_graph(graph, LENGHT,'d');
         display(graph,queens,m);
         struct move_t move={-1,-1,-1};
         int player = start_player();
@@ -430,6 +430,6 @@ int main(int argc, char* argv[]){
         free_graph(black_graph);
         dlclose(lib1);
         dlclose(lib2);
-     }
+    }
     return 0;
 }

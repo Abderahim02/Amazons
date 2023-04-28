@@ -22,11 +22,8 @@ build: server client install test alltests
 test:
 
 test_arrows.o: ${TST}/test_arrows.c ${SRC}/grid.c
-	${CC} $(CFLAGS) -c ${TST}/test_arrows.c -ldl
+	${CC} $(CFLAGS) -c  ${TST}/test_arrows.c -ldl
 
-test_arrows: ${TST}/test_arrows.o grid.o
-	make server
-	${CC} -L${GSL_PATH}/lib ${TST}/test_arrows.o grid.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
 
 
 player2.o:  ${SRC}/player2.c 
@@ -38,11 +35,10 @@ player1.o: ${SRC}/player1.c
 libraries:player1.o player2.o moteur.o
 	${CC} -shared player2.o moteur.o -o libplayer2.so
 	${CC} -shared player1.o moteur.o -o libplayer1.so
-	
 
 
 grid.o: ${SRC}/grid.c ${SRC}/grid.h
-	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/grid.c
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib --coverage -c ${SRC}/grid.c -lgcov
 
 hole.o: ${SRC}/hole.c  ${SRC}/graph.h 
 	${CC} $(CFLAGS) -c ${SRC}/hole.c
@@ -63,7 +59,8 @@ server: server.o  grid.o moteur.o #libplayer1.so libplayer2.so
 client: 
 
 
-alltests:  
+alltests:  ${TST}/test_arrows.o grid.o
+	${CC} -L${GSL_PATH}/lib  ${TST}/test_arrows.o grid.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov
 
 
 # test_grid.o: ${TST}/test_graph.c ${SRC}/grid.c ${SRC}/grid.h hole.o moteur.o server.o 
@@ -75,6 +72,7 @@ alltests:
 install: server
 	make server
 	make libraries
+	make alltests
 	if [ -f server ]; then cp server install/; fi
 	if [ -f alltests ]; then cp alltests install/; fi
 	cp *.so install

@@ -1,4 +1,5 @@
 GSL_PATH=/opt/gsl-2.6
+# LENGHT ?= 8
 LENGHT ?= 8
 AMAZONS_FLAGS = -DLENGHT=$(LENGHT)
 #GSL_PATH ?=/usr/local
@@ -42,10 +43,13 @@ grid.o: ${SRC}/grid.c ${SRC}/grid.h
 	#${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib --coverage -c ${SRC}/grid.c -lgcov
 
 hole.o: ${SRC}/hole.c  ${SRC}/graph.h 
-	${CC} $(CFLAGS) -c ${SRC}/hole.c
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/hole.c
 
-moteur.o: ${SRC}/moteur.c  ${SRC}/graph.h 
-	${CC} $(CFLAGS) -fPIC -c ${SRC}/moteur.c
+moteur.o: ${SRC}/moteur.c ${SRC}/grid.h
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/moteur.c
+	
+# moteur.o: ${SRC}/moteur.c  ${SRC}/graph.h 
+# 	${CC} $(CFLAGS) -fPIC -c ${SRC}/moteur.c
 
 game_loop.o: ${TST}/game_loop.c  
 	${CC} $(CFLAGS) -fPIC -c ${TST}/game_loop.c
@@ -54,12 +58,16 @@ game_loop.o: ${TST}/game_loop.c
 server.o: ${SRC}/server.c ${SRC}/player.h ${SRC}/graph.h
 	${CC} $(CFLAGS) -c ${SRC}/server.c -ldl
 
-server: server.o  grid.o moteur.o #libplayer1.so libplayer2.so
-	${CC} -L${GSL_PATH}/lib server.o grid.o moteur.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
+server: server.o  grid.o moteur.o hole.o  #libplayer1.so libplayer2.so
+	${CC} -L${GSL_PATH}/lib server.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
 
 client: 
 
+test_execute_move.o: ${TST}/test_execute_move.c hole.o 
+	${CC} $(CFLAGS) -I ${SRC} -I ${TST} ${TST}/test_execute_move.c  -c
 
+# alltests:  ${TST}/test_execute_move.o grid.o hole.o
+# 	${CC} -L${GSL_PATH}/lib  ${TST}/test_execute_move.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov
 alltests:  #${TST}/test_arrows.o grid.o
 	#${CC} ${LDFLAGS} -L${GSL_PATH}/lib  ${TST}/test_arrows.o grid.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov
 
@@ -67,8 +75,6 @@ alltests:  #${TST}/test_arrows.o grid.o
 # test_grid.o: ${TST}/test_graph.c ${SRC}/grid.c ${SRC}/grid.h hole.o moteur.o server.o 
 # 	${CC} $(CFLAGS) -I ${SRC} -I ${TST} ${TST}/test_grid.c -c
 
-# test_execute_move.o: ${TST}/test_execute_move.c ${SRC}/grid.c ${SRC}/grid.h hole.o moteur.o server.o 
-# 	${CC} $(CFLAGS) -I ${SRC} -I ${TST} ${TST}/test_execute_move.c moteur.o -c
 
 install: server
 	make server

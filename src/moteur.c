@@ -148,6 +148,7 @@ int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* gra
             printf("choix est %d, pos: %d, dir: %d\n", i, pos, direction);
             return i;
         }
+        
         i++;
     }
     return -1;

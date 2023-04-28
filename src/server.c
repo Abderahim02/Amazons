@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
-
+#include <math.h>
 // #include <gsl/gsl_spmatrix.h>
 // #include <gsl/gsl_spmatrix_uint.h>
 // #include <gsl/gsl_spblas.h>
@@ -79,7 +79,7 @@ void table(unsigned int* queens[NUM_PLAYERS], int *t, int queens_number){
 }
 
 /*
-void display(struct graph_t* graph, unsigned int* queens[LENGHTUM_PLAYERS], int queens_number) {
+void display(struct graph_t* graph, unsigned int* queens[lengthUM_PLAYERS], int queens_number) {
 
     int *t = graph_table(graph);
     table(queens, t, queens_number);
@@ -152,12 +152,181 @@ void print_move(struct move_t move){
     printf("move from %d to %d and arrow at %d \n", move.queen_src, move.queen_dst,move.arrow_dst);
 }
 
+// int main(int argc, char* argv[]){
+//     /* START GETOPT */
+//     int turns=2;
+//     extern char *optarg;
+//     int opt=0;
+//     while((opt=getopt(argc, argv, "s:m:t:h")) != -1){
+//         switch(opt){
+//             case 'm':
+//                 if(optarg!=NULL){
+//                     #undef LElengthGHT
+//                     #define LElengthGHT atoi(optarg)
+//                     printf("%d\n", LElengthGHT);
+//                 }
+//                 break;
+//             case 's':
+//                 if(optarg!=NULL){
+//                     turns=atoi(optarg);
+//                 }
+//                 break;
+//             case 't':
+//                 if(optarg[0]=='c'){
+                    
+//                 }
+//                 else if(optarg[0]=='d'){
+
+//                 }
+//                 else if(optarg[0]=='t'){
+
+//                 }
+//                 else if(optarg[0]=='8'){
+
+//                 }
+//                 break;
+//             case 'h':
+//                 printf("usage: ./project [-h help]\n \t \t [-m allows you to specify the width of the game board] \n \t \t [-t allows you to specify the shape of the game board (square grid c, donut d, cloverleaf t or figure eight 8 ) \n]");
+//                 return 0;
+//                 break;
+//             default:
+//                 break;
+//         }
+//     }
+//     /* ElengthD GETOPT */
+//     //printf("%d\n", LElengthGHT);
+//      if (argc > 1) {
+//      void * lib1 = dlopen(argv[argc-2], RTLD_NOW); 
+//      void * lib2 = dlopen(argv[argc-1], RTLD_NOW); 
+//      if (lib1 == NULL || lib2 == NULL ) { 
+//         printf("bibliothèque vide\n"); 
+//         exit(EXIT_FAILURE); 
+//     } 
+
+//     //get player name functions.
+//       get_player1_name= dlsym(lib1,"get_player_name");
+//       get_player2_name = dlsym(lib2,"get_player_name");
+        
+//     //Initialize player functions.
+//     initialize_player1 = dlsym(lib1,"initialize");
+//     initialize_player2 = dlsym(lib2,"initialize");
+
+//     //play functions 
+//     play1=dlsym(lib1,"play");
+//     play2=dlsym(lib2,"play");
+//     //opening=dlsym(lib1,"opening_play");
+    
+
+    
+//     char *white_player = get_player1_name();
+//     char *black_player = get_player2_name();
+        
+               
+       
+//         //Initialize graphs
+//         struct graph_t* graph = initialize_graph();
+//         initialize_graph_positions_classic(graph);
+//         //make_hole(graph,graph->num_vertices/2,2);
+//         struct graph_t* white_graph = initialize_graph();
+//         initialize_graph_positions_classic(white_graph);
+//         struct graph_t* black_graph = initialize_graph();
+//         initialize_graph_positions_classic(black_graph);
+
+//         //Initialize queens for each player
+//         int m=((length/10)+1)*4;
+//         unsigned int white_queens[m];
+//         unsigned int black_queens[m];
+//         unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
+//         begining_position(queens);
+//         initialize_player1(0,white_graph,m,queens);
+//         initialize_player2(1,black_graph,m,queens);
+//         //The starting board
+//         display(graph,queens,m);
+//         struct move_t move={-1,-1,-1};
+//         int player = start_player();
+//         //The game loop
+//         for(int i=0;i<turns;i++){
+//             printf("########## TOUR: %d ##########\n", i+1);
+//         if(player==BLACK){
+//             move=play2(move);
+//             printf("Joueur: %s\n", black_player);
+//             execute_move(move,graph,queens[1]);
+//             print_move(move);
+//         }
+//         else{
+//             move=play1(move);
+//             printf("Joueur: %s\n", white_player);
+//             execute_move(move,graph,queens[0]);
+//             print_move(move);
+//         }
+//         if(move.queen_dst==UINT_MAX|| i==99){
+//             printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
+//             display(graph,queens,m);
+//             //player? printf("%d \n", 2): printf("%d \n", 1);
+//             free_graph(graph);
+//             free_graph(white_graph);
+//             free_graph(black_graph);
+//             dlclose(lib1);
+//             dlclose(lib2);
+//             return 0;
+            
+//         }
+//         player=next_player(player);
+//         display(graph,queens,m);
+
+//         }
+//         free_graph(graph);
+//         free_graph(white_graph);
+//         free_graph(black_graph);
+//         dlclose(lib1);
+//         dlclose(lib2);
+//      }
+//     return 0;
+// }
+
+
+
+
+void make_graph(struct graph_t * g, unsigned int m ,char s){ 
+    switch(s){
+        case 'c' :
+        g->num_vertices = m*m;
+      break;
+        case 'd':
+        printf("hanaaaaaaa\n");
+            make_hole(g, (m/3)*m + m/3 , m/3);
+            g->num_vertices = 8*m*m/9;
+        break;
+    case 't':
+        make_hole(g, m/5*m + m/5, m/5 );
+        make_hole(g, m/5*m + 3*m/5 , m/5 );
+        make_hole(g, 3*m/5*m + m/5, m/5 );
+        make_hole(g, 3*m/5*m + 3*m/5, m/5 );
+        g->num_vertices = 21*m*m / 25 ;
+      break;
+    case '8':
+        make_hole(g, 2*(m/4) * m + m/4, m/4 );
+        make_hole(g, (m/4) * m + 2*m/4 , m/4 );
+        g->num_vertices = 21*m*m / 25 ;
+        break;
+    default :
+        break;
+  }
+}
+
 int main(int argc, char* argv[]){
     /* START GETOPT */
-    unsigned int length=4;
+    unsigned int length=8;
     int turns=2;
     extern char *optarg;
     int opt=0;
+    struct graph_t* graph = initialize_graph(length);
+        initialize_graph_positions_classic(graph);
+        //make_hole(graph,graph->num_vertices/2,2);
+        struct graph_t* white_graph = initialize_graph(length);
+        initialize_graph_positions_classic(white_graph);
+        struct graph_t* black_graph = initialize_graph(length);
+        initialize_graph_positions_classic(black_graph);
     while((opt=getopt(argc, argv, "s:m:t:h")) != -1){
         switch(opt){
             case 'm':
@@ -171,18 +340,8 @@ int main(int argc, char* argv[]){
                 }
                 break;
             case 't':
-                if(optarg[0]=='c'){
-
-                }
-                else if(optarg[0]=='d'){
-
-                }
-                else if(optarg[0]=='t'){
-
-                }
-                else if(optarg[0]=='8'){
-
-                }
+                printf("%c    est %d \n", optarg[0], length);
+                make_graph(graph, length, optarg[0]);
                 break;
             case 'h':
                 printf("usage: ./project [-h help]\n \t \t [-m allows you to specify the width of the game board] \n \t \t [-t allows you to specify the shape of the game board (square grid c, donut d, cloverleaf t or figure eight 8 ) \n]");
@@ -217,12 +376,10 @@ int main(int argc, char* argv[]){
     
     char *white_player = get_player1_name();
     char *black_player = get_player2_name();
-        
-               
-       
         //Initialize graphs
         struct graph_t* graph = initialize_graph(length);
         initialize_graph_positions_classic(graph);
+        
         //make_hole(graph,graph->num_vertices/2,2);
         struct graph_t* white_graph = initialize_graph(length);
         initialize_graph_positions_classic(white_graph);
@@ -238,6 +395,8 @@ int main(int argc, char* argv[]){
         initialize_player1(0,white_graph,m,queens);
         initialize_player2(1,black_graph,m,queens);
         //The starting board
+        display(graph, queens, m);
+        printf("length  %d\n",length);
         display(graph,queens,m);
         struct move_t move={-1,-1,-1};
         int player = start_player();
@@ -280,4 +439,3 @@ int main(int argc, char* argv[]){
      }
     return 0;
 }
-

@@ -165,10 +165,6 @@ struct move_t play(struct move_t previous_move){
     if(previous_move.queen_dst != (unsigned int)-1 && previous_move.queen_dst != (unsigned int)-1 ){
         execute_move(previous_move,player_blanc.graph,player_blanc.other_queens);
         player_blanc.turn++;
-        printf("turn pour white: %d \n", player_blanc.turn);
-    }
-    if(player_blanc.turn<4){
-        printf("YEssssssssssssssssssss\n");
     }
     struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
     int r=rand()%player_blanc.num_queens;

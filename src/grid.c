@@ -168,5 +168,6 @@ void print_board(struct graph_t* graph){
             printf("%d ", t[i]);
         }
     }
+    free(t);
     printf("\n");
 }

@@ -37,7 +37,6 @@ void free_graph(struct graph_t* g){
     gsl_spmatrix_uint_free(g->t);
     g->t=NULL;
     free(g);
-    g=NULL;
 }
 
 

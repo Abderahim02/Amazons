@@ -45,25 +45,3 @@ void  make_hole(struct graph_t *g, int id, int size){
     }
   }
 }
-
-
-// void make_graph(struct graph_t * g, char s){ 
-//   switch(s){
-//     size_t l = g->t->size1;
-//     case 'c' :
-//       g->num_vertices = sqrt(l);
-//       // return g;
-//       break;
-//     case 'd':
-//       g->num_vertices = 8*l/9;
-//       make_hole(g, sqrt(l)*l + sqrt(l) , l*l/9 );
-//       break;
-//     case 't':
-//       g->num_vertices = 21*l / 25 ;
-//       make_hole(g, l/5*l + l, l/25 );
-//       make_hole(g, 2*l/5*l + l, l/25 );
-//       make_hole(g, 3*l/5*l + l, l/25 );
-//       break;
-//   }
-//   // return g;
-// }

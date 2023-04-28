@@ -17,7 +17,7 @@ TEST = test_arrows
 export LD_LIBRARY_PATH=./
 
 all: build
-build: server client install test alltests
+build: server client install test alltests libraries
 
 
 test:
@@ -25,6 +25,18 @@ test:
 test_arrows.o: ${TST}/test_arrows.c ${SRC}/grid.c
 	${CC} $(CFLAGS) -c  ${TST}/test_arrows.c -ldl
 
+grid.o: ${SRC}/grid.c ${SRC}/grid.h
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/grid.c
+	#${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib --coverage -c ${SRC}/grid.c -lgcov
+
+hole.o: ${SRC}/hole.c  ${SRC}/graph.h 
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/hole.c
+
+moteur.o: ${SRC}/moteur.c ${SRC}/grid.h
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/moteur.c
+	
+game_loop.o: ${TST}/game_loop.c  
+	${CC} $(CFLAGS) -fPIC -c ${TST}/game_loop.c
 
 
 player2.o:  ${SRC}/player2.c 
@@ -38,21 +50,9 @@ libraries:player1.o player2.o moteur.o
 	${CC} -shared player1.o moteur.o -o libplayer1.so
 
 
-grid.o: ${SRC}/grid.c ${SRC}/grid.h
-	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/grid.c
-	#${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib --coverage -c ${SRC}/grid.c -lgcov
 
-hole.o: ${SRC}/hole.c  ${SRC}/graph.h 
-	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/hole.c
-
-moteur.o: ${SRC}/moteur.c ${SRC}/grid.h
-	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/moteur.c
-	
 # moteur.o: ${SRC}/moteur.c  ${SRC}/graph.h 
 # 	${CC} $(CFLAGS) -fPIC -c ${SRC}/moteur.c
-
-game_loop.o: ${TST}/game_loop.c  
-	${CC} $(CFLAGS) -fPIC -c ${TST}/game_loop.c
 
 
 server.o: ${SRC}/server.c ${SRC}/player.h ${SRC}/graph.h
@@ -66,10 +66,12 @@ client:
 test_execute_move.o: ${TST}/test_execute_move.c hole.o 
 	${CC} $(CFLAGS) -I ${SRC} -I ${TST} ${TST}/test_execute_move.c  -c
 
-# alltests:  ${TST}/test_execute_move.o grid.o hole.o
-# 	${CC} -L${GSL_PATH}/lib  ${TST}/test_execute_move.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov
-alltests:  #${TST}/test_arrows.o grid.o
-	#${CC} ${LDFLAGS} -L${GSL_PATH}/lib  ${TST}/test_arrows.o grid.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov
+alltests:  ${TST}/test_execute_move.o grid.o hole.o moteur.o
+	make server
+	${CC} -L${GSL_PATH}/lib  ${TST}/test_execute_move.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov
+# alltests:  #${TST}/test_arrows.o grid.o
+# 	#${CC} ${LDFLAGS} -L${GSL_PATH}/lib  ${TST}/test_arrows.o grid.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov
+
 
 
 # test_grid.o: ${TST}/test_graph.c ${SRC}/grid.c ${SRC}/grid.h hole.o moteur.o server.o 

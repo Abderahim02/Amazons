@@ -14,7 +14,7 @@
 
 
 
-void begining_position(unsigned int* queens[NUM_PLAYERS]);
+void begining_position(unsigned int* queens[NUM_PLAYERS], unsigned int length);
 
 
 // void print_queens(struct player p, int num_queens );

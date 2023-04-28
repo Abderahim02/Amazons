@@ -10,7 +10,6 @@
 /** The height (number of rows or columns) of the world */
 
 
-// #define LENGHT 9
 /** The number of possible places in the world */
 #define WHITE 1
 #define BLACK 0
@@ -28,7 +27,7 @@
 
 /*this function create an empty graph  with the size LENGHT*LENGHT, a matrix of size LENGHT*LENGHT
 is needed to store a graph of size LENGHT */
-struct graph_t * initialize_graph();
+struct graph_t * initialize_graph(unsigned int length);
 
 //this function frees the momory blocks allocated for the graph
 void free_graph(struct graph_t* g);
@@ -43,6 +42,6 @@ every sommit of the graph has a maximum of 8 neighbors*/
 void initialize_graph_positions_classic(struct graph_t* g);
 
 
-int empty_cell(struct graph_t *graph, int x, int size);
+int empty_cell(struct graph_t *graph, int x, unsigned int size);
 
 #endif // _AMAZON_GRAPH_H_

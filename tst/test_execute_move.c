@@ -8,63 +8,44 @@
 #include "../src/hole.h"
 #include "../src/moteur.h"
 
-#include <gsl/gsl_spmatrix.h>
-#include <gsl/gsl_spmatrix_uint.h>
-#include <gsl/gsl_spblas.h>
-#ifndef NUM_PLAYERS
-#define NUM_PLAYERS 2
-#endif
-#ifndef N
-    #define N 8
-#endif
 
 
 
-// void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number){
-//     int *t = graph_table(graph);
-//     table(queens,t,queens_number);
-//     for(int i=0;i<LENGHT*LENGHT;i++){
-//         if(i!=0 && i%LENGHT==0) printf("\n");
-//         if(t[i]==-1) printf("  ");
-//     else printf("%d ",t[i] );
-//     }
-//     printf("\n");
-//     free(t);
-// }
-
-void begining_position(unsigned int* queens[NUM_PLAYERS]){
+void begining_position(unsigned int* queens[NUM_PLAYERS], unsigned int length){
     unsigned int *t=queens[0];
     unsigned int *t2=queens[1];
-    int m=((LENGHT/10)+1)*4;
+    int m=((length/10)+1)*4;
     int tmp=0;
     for(int i=1;i<=m/4;i++){
-        t[tmp]=2*i+LENGHT*(LENGHT-1);
+        t[tmp]=2*i+length*(length-1);
         tmp++;
-        t[tmp]=LENGHT-1-2*i+LENGHT*(LENGHT-1);
+        t[tmp]=length-1-2*i+length*(length-1);
         tmp++;
     }
     for(int i=1;i<=m/4;i++){
-        t[tmp]=LENGHT*(LENGHT-1)-LENGHT*2*i;
+        t[tmp]=length*(length-1)-length*2*i;
         tmp++;
-        t[tmp]=LENGHT*(LENGHT-1)-LENGHT*2*i+LENGHT-1;
+        t[tmp]=length*(length-1)-length*2*i+length-1;
         tmp++;
     }
      tmp=0;
     for(int i=1;i<=m/4;i++){
         t2[tmp]=2*i;
         tmp++;
-        t2[tmp]=LENGHT-1-2*i;
+        t2[tmp]=length-1-2*i;
         tmp++;
     }
     for(int i=1;i<=m/4;i++){
-        t2[tmp]=LENGHT*2*(i);
+        t2[tmp]=length*2*(i);
         tmp++;
-        t2[tmp]=LENGHT*2*i+LENGHT-1;
+        t2[tmp]=length*2*i+length-1;
         tmp++;
     }
     //printf("tmp2=%d \n",tmp);
 }
+
 void test_execute_move(){
+    int LENGHT = 8;
     void *handle1;
     void *handle2;
         char*(*player_name1)(void);
@@ -90,20 +71,20 @@ void test_execute_move(){
             fputs(error, stderr);
             exit(1);
         }
-        struct graph_t* graph = initialize_graph();
+        struct graph_t* graph = initialize_graph(LENGHT);
         initialize_graph_positions_classic(graph);
 
-        struct graph_t* graph1 = initialize_graph();
+        struct graph_t* graph1 = initialize_graph(LENGHT);
         initialize_graph_positions_classic(graph1);
 
-        struct graph_t* graph2 = initialize_graph();
+        struct graph_t* graph2 = initialize_graph(LENGHT);
         initialize_graph_positions_classic(graph2);
 
         int m=((LENGHT /10)+1)*4;
         unsigned int queens_player1[m];
         unsigned int queens_palyer2[m];
         unsigned int *queens[NUM_PLAYERS]={queens_player1,queens_palyer2};
-        begining_position(queens);
+        begining_position(queens, LENGHT);
         initialize1(0,graph1,m,queens);
         initialize2(1,graph2,m,queens);
 
@@ -113,6 +94,9 @@ void test_execute_move(){
         execute_move(move, graph1, p.other_queens);
         // print_queens(p);
         printf("\n");
+        free_graph(graph);
+        free_graph(graph1);
+        free_graph(graph2);
 }
 
 int main(){
@@ -124,7 +108,3 @@ int main(){
     // free_graph(g);
     return 0;
 }
-// int main(){
-//     test_execute_move();
-//     return 1;
-// }

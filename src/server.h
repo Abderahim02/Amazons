@@ -12,14 +12,7 @@
 #include <gsl/gsl_spmatrix_uint.h>
 #include <gsl/gsl_spblas.h>
 
-struct player {
-    unsigned int id;
-    char const* name;
-    struct graph_t* graph;
-    unsigned int num_queens;
-    unsigned int* current_queens;
-    unsigned int* other_queens;
-};
+
 
 void begining_position(unsigned int* queens[NUM_PLAYERS]);
 
@@ -32,5 +25,9 @@ void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens
 void table(unsigned int* queens[NUM_PLAYERS], int *t, int queens_number);
 
 int *graph_table(struct graph_t *graph);
+
+int start_player();
+
+int next_player(int player);
 
 

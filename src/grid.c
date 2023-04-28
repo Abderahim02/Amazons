@@ -15,7 +15,7 @@ struct graph_t * initialize_graph(){
             gsl_spmatrix_uint_set(mat, i, j, NO_DIR);
         }
     }
-    struct graph_t * grid=malloc(sizeof(struct graph_t)); 
+    struct graph_t * grid=(struct graph_t *)malloc(sizeof(struct graph_t)); 
     grid->num_vertices = LENGHT*LENGHT;
     grid->t = mat;
     return grid;
@@ -34,6 +34,7 @@ void print_sparse_matrix(gsl_spmatrix_uint *mat) {
     }
 //this function frees the momory blocks allocated for the graph
 void free_graph(struct graph_t* g){
+    gsl_spmatrix_uint_free(g->t);
     free(g);
 }
 

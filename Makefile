@@ -38,7 +38,8 @@ libraries:player1.o player2.o moteur.o
 
 
 grid.o: ${SRC}/grid.c ${SRC}/grid.h
-	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib --coverage -c ${SRC}/grid.c -lgcov
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/grid.c
+	#${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib --coverage -c ${SRC}/grid.c -lgcov
 
 hole.o: ${SRC}/hole.c  ${SRC}/graph.h 
 	${CC} $(CFLAGS) -c ${SRC}/hole.c
@@ -59,8 +60,8 @@ server: server.o  grid.o moteur.o #libplayer1.so libplayer2.so
 client: 
 
 
-alltests:  ${TST}/test_arrows.o grid.o
-	${CC} -L${GSL_PATH}/lib  ${TST}/test_arrows.o grid.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov
+alltests:  #${TST}/test_arrows.o grid.o
+	#${CC} -L${GSL_PATH}/lib  ${TST}/test_arrows.o grid.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov
 
 
 # test_grid.o: ${TST}/test_graph.c ${SRC}/grid.c ${SRC}/grid.h hole.o moteur.o server.o 

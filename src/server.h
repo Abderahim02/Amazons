@@ -19,10 +19,10 @@ void begining_position(unsigned int* queens[NUM_PLAYERS], unsigned int length);
 
 // void print_queens(struct player p, int num_queens );
 
-void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number);
+void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],unsigned int queens_number);
 
 
-void table(unsigned int* queens[NUM_PLAYERS], int *t, int queens_number);
+void table(unsigned int* queens[NUM_PLAYERS], int *t, unsigned int queens_number);
 
 int *graph_table(struct graph_t *graph);
 

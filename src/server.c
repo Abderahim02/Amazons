@@ -71,8 +71,8 @@ int *graph_table(struct graph_t *graph){
     return t;
 }
 
-void table(unsigned int* queens[NUM_PLAYERS], int *t, int queens_number){
-    for(int i=0;i<queens_number;i++){
+void table(unsigned int* queens[NUM_PLAYERS], int *t, unsigned int queens_number){
+    for(unsigned int i=0;i<queens_number;i++){
         t[queens[0][i]]=1;
         t[queens[1][i]]=2;
     }
@@ -117,7 +117,7 @@ void display(struct graph_t* graph, unsigned int* queens[lengthUM_PLAYERS], int 
 }
 
 */
-void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number){
+void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],unsigned int queens_number){
     unsigned int length=sqrt(graph->t->size1);
     int *t = graph_table(graph);
     table(queens,t,queens_number);
@@ -256,7 +256,7 @@ int main(int argc, char* argv[]){
         make_graph(black_graph, length, graph_type);
 
         //Initialize queens for each player
-        int m=((length/10)+1)*4;
+        unsigned int m=((length/10)+1)*4;
         unsigned int white_queens[m];
         unsigned int black_queens[m];
         unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
@@ -293,6 +293,8 @@ int main(int argc, char* argv[]){
             free_graph(graph);
             free_graph(white_graph);
             free_graph(black_graph);
+            finalize_player1();
+            finalize_player2();
             dlclose(lib1);
             dlclose(lib2);
             return 0;

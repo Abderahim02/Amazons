@@ -273,6 +273,7 @@ int main(int argc, char* argv[]){
         display(graph,queens,m);
 
         }
+        print_sparse_matrix(graph->t);
         free_graph(graph);
         free_graph(white_graph);
         free_graph(black_graph);

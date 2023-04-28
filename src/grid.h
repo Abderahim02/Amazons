@@ -12,7 +12,7 @@
 //   #define LENGHT 8
 // #endif
 
-#define LENGHT 8
+#define LENGHT 4
 /** The number of possible places in the world */
 #define GRID_SIZE (LENGHT*LENGHT)
 #define WHITE 1

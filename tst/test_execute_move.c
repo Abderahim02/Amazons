@@ -17,15 +17,53 @@
 #ifndef N
     #define N 8
 #endif
-struct player {
-    unsigned int id;
-    char const* name;
-    struct graph_t* graph;
-    unsigned int num_queens;
-    unsigned int* current_queens;
-    unsigned int* other_queens;
-};
 
+
+
+// void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number){
+//     int *t = graph_table(graph);
+//     table(queens,t,queens_number);
+//     for(int i=0;i<LENGHT*LENGHT;i++){
+//         if(i!=0 && i%LENGHT==0) printf("\n");
+//         if(t[i]==-1) printf("  ");
+//     else printf("%d ",t[i] );
+//     }
+//     printf("\n");
+//     free(t);
+// }
+
+void begining_position(unsigned int* queens[NUM_PLAYERS]){
+    unsigned int *t=queens[0];
+    unsigned int *t2=queens[1];
+    int m=((LENGHT/10)+1)*4;
+    int tmp=0;
+    for(int i=1;i<=m/4;i++){
+        t[tmp]=2*i+LENGHT*(LENGHT-1);
+        tmp++;
+        t[tmp]=LENGHT-1-2*i+LENGHT*(LENGHT-1);
+        tmp++;
+    }
+    for(int i=1;i<=m/4;i++){
+        t[tmp]=LENGHT*(LENGHT-1)-LENGHT*2*i;
+        tmp++;
+        t[tmp]=LENGHT*(LENGHT-1)-LENGHT*2*i+LENGHT-1;
+        tmp++;
+    }
+     tmp=0;
+    for(int i=1;i<=m/4;i++){
+        t2[tmp]=2*i;
+        tmp++;
+        t2[tmp]=LENGHT-1-2*i;
+        tmp++;
+    }
+    for(int i=1;i<=m/4;i++){
+        t2[tmp]=LENGHT*2*(i);
+        tmp++;
+        t2[tmp]=LENGHT*2*i+LENGHT-1;
+        tmp++;
+    }
+    //printf("tmp2=%d \n",tmp);
+}
 void test_execute_move(){
     void *handle1;
     void *handle2;
@@ -70,11 +108,21 @@ void test_execute_move(){
         initialize2(1,graph2,m,queens);
 
         struct player p = {.id = 0, .graph = graph1, .name = "player1", .num_queens = m, .current_queens = queens[0], .other_queens = queens[1]};
-        print_queens(p);
+        //print_queens(p);
         struct move_t move = {.queen_dst = 2 + LENGHT, .queen_src = 2, .arrow_dst = 4 };
         execute_move(move, graph1, p.other_queens);
-        print_queens(p);
+        // print_queens(p);
         printf("\n");
+}
+
+int main(){
+    struct graph_t * g= initialize_graph(9);
+    initialize_graph_positions_classic(g);
+    printf("op %d\n",(int)sqrt(g->num_vertices));
+    make_hole(g,1,6);
+    print_sparse_matrix(g->t);
+    free_graph(g);
+    return 0;
 }
 // int main(){
 //     test_execute_move();

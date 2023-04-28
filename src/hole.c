@@ -3,6 +3,7 @@
 #include "grid.h"
 #include <stddef.h>
 #include "dir.h"
+#include <math.h>
 //removes a node from the graph 
 void remove_node(int n,gsl_spmatrix_uint *mat){
     for (int i = 0 ; i<mat->size1;i++){
@@ -44,13 +45,25 @@ void  make_hole(struct graph_t *g, int id, int size){
     }
   }
 }
-//for testing
-// int main(){
-//     struct graph_t * g= initialize_graph(16);
-//     initialize_graph_positions_classic(g);
-//     printf("op %d\n",(int)sqrt(g->num_vertices));
-//     make_hole(g,1,6);
-//     print_sparse_matrix(g->t);
-//     free_graph(g);
-//     return 0;
+
+
+// void make_graph(struct graph_t * g, char s){ 
+//   switch(s){
+//     size_t l = g->t->size1;
+//     case 'c' :
+//       g->num_vertices = sqrt(l);
+//       // return g;
+//       break;
+//     case 'd':
+//       g->num_vertices = 8*l/9;
+//       make_hole(g, sqrt(l)*l + sqrt(l) , l*l/9 );
+//       break;
+//     case 't':
+//       g->num_vertices = 21*l / 25 ;
+//       make_hole(g, l/5*l + l, l/25 );
+//       make_hole(g, 2*l/5*l + l, l/25 );
+//       make_hole(g, 3*l/5*l + l, l/25 );
+//       break;
+//   }
+//   // return g;
 // }

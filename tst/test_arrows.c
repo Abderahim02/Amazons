@@ -16,7 +16,8 @@ void test_arrows(){
     printf("OK\n");
 }
 
-int main(){
-    test_arrows();
-    return 0;
-}
+
+// int main(){
+//     //test_arrows();
+//     return 0;
+// }

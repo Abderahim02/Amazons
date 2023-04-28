@@ -145,7 +145,6 @@ int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* gra
     unsigned int i = 0;
     while(i<length){
         if(gsl_spmatrix_uint_get(mat_adj, pos, i)==direction){
-            printf("choix est %d, pos: %d, dir: %d\n", i, pos, direction);
             return i;
         }
         

@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <gsl/gsl_spmatrix.h>
-#include <gsl/gsl_spmatrix_uint.h>
-#include <gsl/gsl_spblas.h>
+
 #include "../src/grid.h"
 #include "../src/graph.h"
 #include "../src/hole.h"

@@ -28,11 +28,11 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
     player_black.graph=graph;
     player_black.num_queens=num_queens;
     player_black.turn=0;
-    int m=((graph->num_vertices/10)+1)*4;
-    player_black.current_queens=malloc(sizeof(unsigned int)*m);
+    unsigned int m=((graph->num_vertices/10)+1)*4;
+    player_black.current_queens=(unsigned int *)malloc(sizeof(unsigned int)*m);
 
-    player_black.other_queens=malloc(sizeof(unsigned int)*m);
-    for(int i=0;i<m;i++){
+    player_black.other_queens=(unsigned int *)malloc(sizeof(unsigned int)*m);
+    for(unsigned int i=0;i<m;i++){
     player_black.current_queens[i]=queens[player_id][i];
     player_black.other_queens[i]=queens[(player_id+1)%2][i];
     }
@@ -52,7 +52,7 @@ struct move_t play(struct move_t previous_move){
     int queen=player_black.current_queens[r];
 
     enum dir_t dir=NO_DIR;
-    int cmp=0;
+    unsigned int cmp=0;
     while(dir==NO_DIR && cmp<player_black.num_queens){
         cmp++;
         queen=player_black.current_queens[r];
@@ -61,12 +61,13 @@ struct move_t play(struct move_t previous_move){
     }
     
     if(dir==NO_DIR){
+        free_player(player_black);
         return move;
     }
   // printf("dir=%d\n",dir);
      move.queen_src=queen;
      move.queen_dst=random_dst(player_black.graph,dir,queen, player_black);
-     player_black.current_queens[r-1]=move.queen_dst;
+     player_black.current_queens[r]=move.queen_dst;
      queen=move.queen_dst;
      enum dir_t dir2=available_dir(queen,player_black.graph,dir, player_black);
      if(dir2==NO_DIR){

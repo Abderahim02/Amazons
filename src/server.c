@@ -22,7 +22,6 @@ void(*initialize_player2)(unsigned int player_id, struct graph_t* graph,
 
 struct move_t(*play1)(struct move_t previous_move);
 struct move_t(*play2)(struct move_t previous_move);
-struct move_t(*opening)(struct move_t previous_move);
         
 
 
@@ -61,7 +60,7 @@ void begining_position(unsigned int* queens[NUM_PLAYERS]){
 }
 
 int *graph_table(struct graph_t *graph){
-    int *t=malloc(sizeof(int)*LENGHT*LENGHT);
+    int *t=(int *)malloc(sizeof(int)*LENGHT*LENGHT);
     for(int i=0;i<LENGHT*LENGHT;i++){
      if(empty_cell(graph,i,LENGHT*LENGHT))   
             t[i]=-1;
@@ -125,6 +124,7 @@ void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens
     else printf("%d ",t[i] );
     }
     printf("\n");
+    free(t);
 }
 
 void print_queens(struct player p, int num_queens ){
@@ -261,6 +261,9 @@ int main(int argc, char* argv[]){
             printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
             display(graph,queens,m);
             //player? printf("%d \n", 2): printf("%d \n", 1);
+            free_graph(graph);
+            free_graph(white_graph);
+            free_graph(black_graph);
             dlclose(lib1);
             dlclose(lib2);
             return 0;
@@ -270,6 +273,9 @@ int main(int argc, char* argv[]){
         display(graph,queens,m);
 
         }
+        free_graph(graph);
+        free_graph(white_graph);
+        free_graph(black_graph);
         dlclose(lib1);
         dlclose(lib2);
      }

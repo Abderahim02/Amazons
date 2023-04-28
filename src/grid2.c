@@ -1,35 +1,37 @@
-#include <gsl/gsl_spmatrix.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <stddef.h>
+#include <gsl/gsl_spmatrix.h>
 
-void print_sparse_matrix(gsl_spmatrix_uint *mat) {
-    printf("Sparse matrix:\n");
-    printf("size1 = %zu, size2 = %zu, nz = %zu\n", mat->size1, mat->size2, mat->nz);
+// void print_sparse_matrix(gsl_spmatrix_uint *mat) {
+//     printf("Sparse matrix:\n");
+//     printf("size1 = %zu, size2 = %zu, nz = %zu\n", mat->size1, mat->size2, mat->nz);
 
-    for (size_t i = 0; i < mat->size1; i++) {
-        for (gsl_spmatrix_uint_const_iter row_iter = gsl_spmatrix_uint_const_row_iterator(mat, i); 
-             !gsl_spmatrix_uint_iter_end(row_iter); 
-             gsl_spmatrix_uint_const_iter_next(row_iter)) {
-            size_t j = gsl_spmatrix_uint_iter_col(row_iter);
-            unsigned int val = gsl_spmatrix_uint_iter_get(row_iter);
-            printf("(%zu, %zu) = %u\n", i, j, val);
-        }
-    }
-}
+//     for (size_t i = 0; i < mat->size1; i++) {
+//         for (gsl_spmatrix_uint_const_iter row_iter = gsl_spmatrix_uint_const_row_iterator(mat, i); 
+//              !gsl_spmatrix_uint_iter_end(row_iter); 
+//              gsl_spmatrix_uint_const_iter_next(row_iter)) {
+//             size_t j = gsl_spmatrix_uint_iter_col(row_iter);
+//             unsigned int val = gsl_spmatrix_uint_iter_get(row_iter);
+//             printf("(%zu, %zu) = %u\n", i, j, val);
+//         }
+//     }
+// }
 
-int main() {
-    // Create a 3x3 sparse matrix
-    gsl_spmatrix_uint *mat = gsl_spmatrix_uint_alloc(3, 3);
-    gsl_spmatrix_uint_set(mat, 0, 1, 2);
-    gsl_spmatrix_uint_set(mat, 1, 0, 1);
-    gsl_spmatrix_uint_set(mat, 2, 2, 3);
+// int main() {
+//     // Create a 3x3 sparse matrix
+//     gsl_spmatrix_uint *mat = gsl_spmatrix_uint_alloc(3, 3);
+//     gsl_spmatrix_uint_set(mat, 0, 1, 2);
+//     gsl_spmatrix_uint_set(mat, 1, 0, 1);
+//     gsl_spmatrix_uint_set(mat, 2, 2, 3);
 
-    // Print the matrix
-    print_sparse_matrix(mat);
+//     // Print the matrix
+//     print_sparse_matrix(mat);
 
-    // Free the matrix memory
-    gsl_spmatrix_uint_free(mat);
-    return 0;
-}
+//     // Free the matrix memory
+//     gsl_spmatrix_uint_free(mat);
+//     return 0;
+// }
 
 // This code defines a print_sparse_matrix function that takes a pointer to a gsl_spmatrix_uint struct and prints the matrix size and the non-zero elements in the matrix. It uses the gsl_spmatrix_uint_const_row_iterator function to iterate over the rows of the matrix and the gsl_spmatrix_uint_iter_col and gsl_spmatrix_uint_iter_get functions to get the column index and value of each non-zero element in the row.
 

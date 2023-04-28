@@ -225,3 +225,7 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
     return get_neighbor_gen(pos, dir, graph, player_blanc);
 }
 
+void finalize(){
+    free(player_blanc.current_queens);
+    free(player_blanc.other_queens);
+}

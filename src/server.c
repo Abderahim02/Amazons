@@ -7,7 +7,7 @@
 #include "server.h"
 
 
-//struct player player_blanc;
+extern struct player player_blanc;
 
 char *(*get_player1_name)(void);
 char *(*get_player2_name)(void);
@@ -16,6 +16,10 @@ void(*initialize_player1)(unsigned int player_id, struct graph_t* graph,
                 unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]);
 void(*initialize_player2)(unsigned int player_id, struct graph_t* graph,
                 unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]);
+
+void(*finalize_player1)(void);
+void(*finalize_player2)(void );
+
 
 struct move_t(*play1)(struct move_t previous_move);
 struct move_t(*play2)(struct move_t previous_move);
@@ -229,6 +233,9 @@ int main(int argc, char* argv[]){
     play1=dlsym(lib1,"play");
     play2=dlsym(lib2,"play");
     //opening=dlsym(lib1,"opening_play");
+    //finalize player functions.
+    finalize_player1 = dlsym(lib1,"finalize");
+    finalize_player2 = dlsym(lib2,"finalize");
     
 
     
@@ -298,6 +305,8 @@ int main(int argc, char* argv[]){
         free_graph(graph);
         free_graph(white_graph);
         free_graph(black_graph);
+        finalize_player1();
+        finalize_player2();
         dlclose(lib1);
         dlclose(lib2);
     }

@@ -10,7 +10,7 @@ SRC = src
 TST = tst
 CFLAGS = -std=c99 -Wall -lm -Wextra -fPIC -g3 -I$(GSL_PATH)/include
 LDFLAGS = -lm -lgsl -lgslcblas -ldl \	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \	-Wl,--rpath=${GSL_PATH}/lib
-OBJS = $(SRCS:.c=.o)
+# OBJS = $(SRCS:.c=.o)
 
 TEST = test_arrows
 
@@ -65,6 +65,38 @@ client:
 
 test_execute_move.o: ${TST}/test_execute_move.c hole.o 
 	${CC} $(CFLAGS) -I ${SRC} -I ${TST} ${TST}/test_execute_move.c  -c
+
+############################# NE PAS MODIFIER ####################
+
+# OBJ = .
+
+# # Liste des fichiers sources à compiler
+# SRCS = $(wildcard $(SRC)/*.c)
+# # Liste des fichiers objets à générer
+# OBJS = $(patsubst $(SRC)/%.c,$(OBJ)/%.o,$(SRCS))
+# # Compilation des fichiers objets
+# $(OBJ)/%.o: $(SRC)/%.c
+# 	$(CC) $(CFLAGS) -c $< -o $@
+
+# # Compilation des tests
+# $(TST)/%.o: $(TST)/%.c
+# 	$(CC) $(CFLAGS) -c $< -o $@
+
+# # Cible pour l'exécutable alltests
+# alltests: $(TST)/test_execute_move.o $(OBJS)
+# 	$(CC) -L${GSL_PATH}/lib -lgsl -lgslcblas -lm -ldl  $^ -o $@ -ldl -lgcov
+# # # Cible pour exécuter tous les tests
+# # test: alltests
+# # 	./$<
+
+
+
+
+# alltests:  ${TST}/test_execute_move.o grid.o hole.o moteur.o
+# 	make server
+# 	${CC} -L${GSL_PATH}/lib  ${TST}/test_execute_move.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov
+
+########################  FIN NE PAS MODIFIER ####################
 
 alltests:  ${TST}/test_execute_move.o grid.o hole.o moteur.o
 	make server

@@ -24,7 +24,7 @@ char const* get_player_name(){
 
 
 void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]){
-   player_black.id=player_id;
+    player_black.id=player_id;
     player_black.graph=graph;
     player_black.num_queens=num_queens;
     player_black.turn=0;
@@ -86,4 +86,8 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
     return get_neighbor_gen(pos, dir, graph, player_black);
 }
 
+void finalize(){
+    free(player_black.current_queens);
+    free(player_black.other_queens);
+}
 

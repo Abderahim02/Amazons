@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
-
+#include <time.h>
 // #include <gsl/gsl_spmatrix.h>
 // #include <gsl/gsl_spmatrix_uint.h>
 // #include <gsl/gsl_spblas.h>
@@ -107,8 +107,13 @@ void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens
     table(queens,t,queens_number);
     for(int i=0;i<N*N;i++){
         if(i!=0 && i%N==0) printf("\n");
-        if(t[i]==-1) printf("  ");
-    else printf("%d ",t[i] );
+        // if(t[i]==-1) printf("  ");
+        if(t[i]==-1) printf("\033[1;31m# \033[0m");
+        else printf("%d ",t[i] );
+        // else {
+        //     if ( t[i] == 1 ) printf("\n\033[1;31m* \033[0m");
+        //     else if ( t[i] == 2 ) printf("\n\033[1;32m* \033[0m");
+        // }
     }
     printf("\n");
 }
@@ -131,6 +136,17 @@ int next_player(int player){
     }
     return BLACK;
 }
+
+/*
+void test_arrows(){
+    struct graph_t* graph = initialize_graph();
+    initialize_graph_positions_classic(graph);
+    print_board(graph);
+    struct move_t mv = {1, 1, 1};
+    play(mv);
+    print_board(graph);
+    printf("OK\n");
+}*/
 
 
 int main(int argc, char* argv[]){
@@ -233,28 +249,28 @@ int main(int argc, char* argv[]){
         //The game loop
         for(int i=0;i<turns;i++){
             printf("########## TOUR: %d ##########\n", i+1);
-        if(player==BLACK){
-            move=black_move(move);
-            printf("Joueur: %s\n", black_player);
-            execute_move(move,graph,queens[1]);
-        }
-        else{
-            move=white_move(move);
-            printf("Joueur: %s\n", white_player);
-            execute_move(move,graph,queens[0]);
-        }
-        if(move.queen_dst==UINT_MAX || i==99){
-            printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
+            if(player==BLACK){
+                move=black_move(move);
+                printf("Joueur: %s\n", black_player);
+                execute_move(move,graph,queens[1]);
+            }
+            else{
+                move=white_move(move);
+                printf("Joueur: %s\n", white_player);
+                execute_move(move,graph,queens[0]);
+            }
+            if(move.queen_dst==UINT_MAX || i==99){
+                printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
+                display(graph,queens,m);
+                //player? printf("%d \n", 2): printf("%d \n", 1);
+                dlclose(handle1);
+                dlclose(handle2);
+                return 0;
+                
+            }
+            player=next_player(player);
             display(graph,queens,m);
-            //player? printf("%d \n", 2): printf("%d \n", 1);
-            dlclose(handle1);
-            dlclose(handle2);
-            return 0;
-            
-        }
-        player=next_player(player);
-        display(graph,queens,m);
-
+            // sleep(1);
         }
         dlclose(handle1);
         dlclose(handle2);

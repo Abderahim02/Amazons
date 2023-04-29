@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "grid.h"
+#include "hole.h"
+
 #include <stddef.h>
-#include "dir.h"
 #include <math.h>
 //removes a node from the graph 
 void remove_node(int n,gsl_spmatrix_uint *mat){

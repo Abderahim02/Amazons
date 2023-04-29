@@ -36,6 +36,6 @@ enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t d
 void free_player(struct player player);
 
 
-int get_neighbor_gen(unsigned int pos, enum dir_t dir, struct graph_t* graph, struct player player);
+int get_neighbor_gen(unsigned int pos, enum dir_t dir, struct graph_t* graph);
 
 #endif

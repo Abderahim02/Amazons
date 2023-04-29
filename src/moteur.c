@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "moteur.h"
-#include "grid.h"
 #include <math.h>
 
 #include <gsl/gsl_spmatrix.h>
@@ -53,7 +52,7 @@ int element_in_array(unsigned int *t, int size,unsigned int x){
 enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t direction, struct player player){
     enum dir_t dir=rand()%8+1;
     int cmp=0;
-    while((get_neighbor_gen(queen,dir,graph, player)==-1 || dir==direction) && cmp<9){
+    while((get_neighbor_gen(queen,dir,graph)==-1 || dir==direction) && cmp<9){
         dir++;
         dir=dir%9;
         cmp++;
@@ -64,19 +63,29 @@ enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t d
     return dir;
 }
 
-int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos, struct player player){
+int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos, struct player player){
     unsigned int length=sqrt(graph->t->size1);
-    int t[length*2];
-    int i=0;
+    int* t=(int *)malloc(sizeof(int)*(length*2+1));
+    int i=1;
     int tmp=pos;
-    while(get_neighbor_gen(tmp,dir,graph, player)!=-1){
-        t[i]=get_neighbor_gen(tmp,dir,graph, player);
+    while(get_neighbor_gen(tmp,dir,graph)!=-1){
+        t[i]=get_neighbor_gen(tmp,dir,graph);
         tmp=t[i];
         i++;
     }
-    return t[rand()%i];
+    t[0]=i-1;
+    return t;
 
 }
+
+int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos, struct player player){
+    int *t=available_dst(graph, dir, pos, player);
+    int dst=t[rand()%t[0]];
+    free(t);
+    return dst;
+
+}
+
 
 
 
@@ -139,7 +148,7 @@ int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos, struct p
 //     return -1;
 // }
 
-int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* graph, struct player player){
+int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* graph){
     gsl_spmatrix_uint* mat_adj = graph->t;
     unsigned int length=graph->t->size1;
     unsigned int i = 0;

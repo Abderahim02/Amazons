@@ -83,7 +83,7 @@ struct move_t play(struct move_t previous_move){
 
 
 int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
-    return get_neighbor_gen(pos, dir, graph, player_black);
+    return get_neighbor_gen(pos, dir, graph);
 }
 
 void finalize(){

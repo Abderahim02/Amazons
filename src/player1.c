@@ -117,7 +117,7 @@ struct move_t best_move(struct graph_t *graph, unsigned int* queens, int num_que
     for(int i=0;i<capcity;i++){
         int cmp=0;
         for(int j=1;j<9;j++){
-            if(get_neighbor_gen(moves[i].queen_dst,j,graph, player_blanc)!=-1){
+            if(get_neighbor_gen(moves[i].queen_dst,j,graph)!=-1){
                 cmp++;
             }
         }
@@ -218,7 +218,7 @@ struct move_t play(struct move_t previous_move){
 //     return move;
 // }
 int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
-    return get_neighbor_gen(pos, dir, graph, player_blanc);
+    return get_neighbor_gen(pos, dir, graph);
 }
 
 void finalize(){

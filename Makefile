@@ -12,7 +12,7 @@ CFLAGS = -std=c99 -Wall -lm -Wextra -fPIC -g3 -I$(GSL_PATH)/include
 LDFLAGS = -lm -lgsl -lgslcblas -ldl \	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \	-Wl,--rpath=${GSL_PATH}/lib
 # OBJS = $(SRCS:.c=.o)
 
-TEST = test_arrows
+TEST = test_get_neighbor
 
 export LD_LIBRARY_PATH=./
 
@@ -22,8 +22,11 @@ build: server client install test alltests libraries
 
 test:
 
-test_arrows.o: ${TST}/test_arrows.c ${SRC}/grid.c
-	${CC} $(CFLAGS) -c  ${TST}/test_arrows.c -ldl
+test_get_neighbor.o: ${TST}/test_get_neighbor.c ${SRC}/grid.c ${SRC}/grid.h
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test_get_neighbor.c
+
+test_get_neighbor: test_get_neighbor.o grid.o moteur.o hole.o 
+	${CC} -L${GSL_PATH}/lib test_get_neighbor.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
 
 grid.o: ${SRC}/grid.c ${SRC}/grid.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/grid.c
@@ -102,8 +105,8 @@ test_execute_move.o: ${TST}/test_execute_move.c hole.o
 alltests:  ${TST}/test_execute_move.o grid.o hole.o moteur.o
 	make server
 	${CC} -L${GSL_PATH}/lib  ${TST}/test_execute_move.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov 
-# alltests:  #${TST}/test_arrows.o grid.o
-# 	#${CC} ${LDFLAGS} -L${GSL_PATH}/lib  ${TST}/test_arrows.o grid.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov
+# alltests:  #${TST}/test_get_neighbor.o grid.o
+# 	#${CC} ${LDFLAGS} -L${GSL_PATH}/lib  ${TST}/test_get_neighbor.o grid.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov
 
 
 

@@ -28,6 +28,13 @@ test_get_neighbor.o: ${TST}/test_get_neighbor.c ${SRC}/grid.c ${SRC}/grid.h
 test_get_neighbor: test_get_neighbor.o grid.o moteur.o hole.o 
 	${CC} -L${GSL_PATH}/lib test_get_neighbor.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
 
+test__moves.o: ${TST}/test__moves.c ${SRC}/grid.c ${SRC}/grid.h
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test__moves.c
+
+test__moves: test__moves.o grid.o moteur.o hole.o 
+	${CC} -L${GSL_PATH}/lib test__moves.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
+
+
 grid.o: ${SRC}/grid.c ${SRC}/grid.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/grid.c
 	#${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib --coverage -c ${SRC}/grid.c -lgcov

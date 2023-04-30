@@ -56,7 +56,7 @@ struct move_t play(struct move_t previous_move){
     while(dir==NO_DIR && cmp<player_black.num_queens){
         cmp++;
         queen=player_black.current_queens[r];
-        dir=available_dir(queen,player_black.graph,NO_DIR, player_black);
+        dir=available_dir(queen,player_black.graph,NO_DIR);
         r=(r+1)%player_black.num_queens;
     }
     
@@ -66,16 +66,16 @@ struct move_t play(struct move_t previous_move){
     }
   // printf("dir=%d\n",dir);
      move.queen_src=queen;
-     move.queen_dst=random_dst(player_black.graph,dir,queen, player_black);
+     move.queen_dst=random_dst(player_black.graph,dir,queen);
      player_black.current_queens[r]=move.queen_dst;
      queen=move.queen_dst;
-     enum dir_t dir2=available_dir(queen,player_black.graph,dir, player_black);
+     enum dir_t dir2=available_dir(queen,player_black.graph,dir);
      if(dir2==NO_DIR){
         move.arrow_dst=-1;
      }
      else {
         //printf("queen %d\n",queen);
-         move.arrow_dst=random_dst(player_black.graph,dir2,queen, player_black);
+         move.arrow_dst=random_dst(player_black.graph,dir2,queen);
      }
     execute_move(move,player_black.graph,player_black.current_queens);
     return move;  

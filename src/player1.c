@@ -96,12 +96,12 @@ struct move_t best_move(struct graph_t *graph, unsigned int* queens, int num_que
             if(get_neighbor(queens[i],j,graph)!=-1){
                 moves[counter].queen_src=queens[i];
                 moves[counter].queen_dst=best_queen_move_in_direction(graph,j,queens[i]);
-                enum dir_t dir2=available_dir(moves[counter].queen_dst,player_blanc.graph,NO_DIR, player_blanc);
+                enum dir_t dir2=available_dir(moves[counter].queen_dst,player_blanc.graph,NO_DIR);
                 if(dir2==NO_DIR){
                     moves[counter].arrow_dst=UINT_MAX;
                 }
                 else{
-                    moves[counter].arrow_dst=random_dst(graph,dir2,moves[counter].queen_dst, player_blanc);
+                    moves[counter].arrow_dst=random_dst(graph,dir2,moves[counter].queen_dst);
                 }
                 counter++;
             }
@@ -175,7 +175,7 @@ struct move_t play(struct move_t previous_move){
     //finds an avaliable direction for a queen
     while(dir==NO_DIR && cmp<player_blanc.num_queens){
         queen=player_blanc.current_queens[r];
-        dir=available_dir(queen,player_blanc.graph,NO_DIR, player_blanc);
+        dir=available_dir(queen,player_blanc.graph,NO_DIR);
         r=(r+1)%player_blanc.num_queens;
         cmp++;
     }
@@ -185,15 +185,15 @@ struct move_t play(struct move_t previous_move){
         return move;
     }
      move.queen_src=queen;
-     move.queen_dst=random_dst(player_blanc.graph,dir,queen, player_blanc);
+     move.queen_dst=random_dst(player_blanc.graph,dir,queen);
      player_blanc.current_queens[r]=move.queen_dst;
      queen=move.queen_dst;
-     enum dir_t dir2=available_dir(queen,player_blanc.graph,dir, player_blanc);
+     enum dir_t dir2=available_dir(queen,player_blanc.graph,dir);
      if(dir2==NO_DIR){
         move.arrow_dst=-1;
      }
      else {
-         move.arrow_dst=random_dst(player_blanc.graph,dir2,queen, player_blanc);
+         move.arrow_dst=random_dst(player_blanc.graph,dir2,queen);
      }
     execute_move(move,player_blanc.graph,player_blanc.current_queens);
     return move;  

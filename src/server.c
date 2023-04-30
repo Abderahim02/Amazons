@@ -33,28 +33,28 @@ void begining_position(unsigned int* queens[NUM_PLAYERS], unsigned int length){
     int m=((length/10)+1)*4;
     int tmp=0;
     for(int i=1;i<=m/4;i++){
-        t[tmp]=2*i+length*(length-1);
+        t[tmp]=(1+length/7)*i+length*(length-1);
         tmp++;
-        t[tmp]=length-1-2*i+length*(length-1);
+        t[tmp]=length-1-(1+length/7)*i+length*(length-1);
         tmp++;
     }
     for(int i=1;i<=m/4;i++){
-        t[tmp]=length*(length-1)-length*2*i;
+        t[tmp]=length*(length-1)-length*(1+length/7)*i;
         tmp++;
-        t[tmp]=length*(length-1)-length*2*i+length-1;
+        t[tmp]=length*(length-1)-length*(1+length/7)*i+length-1;
         tmp++;
     }
      tmp=0;
     for(int i=1;i<=m/4;i++){
-        t2[tmp]=2*i;
+        t2[tmp]=(1+length/7)*i;
         tmp++;
-        t2[tmp]=length-1-2*i;
+        t2[tmp]=length-1-(1+length/7)*i;
         tmp++;
     }
     for(int i=1;i<=m/4;i++){
-        t2[tmp]=length*2*(i);
+        t2[tmp]=length*(1+length/7)*(i);
         tmp++;
-        t2[tmp]=length*2*i+length-1;
+        t2[tmp]=length*(1+length/7)*i+length-1;
         tmp++;
     }
     //printf("tmp2=%d \n",tmp);
@@ -117,6 +117,32 @@ void display(struct graph_t* graph, unsigned int* queens[lengthUM_PLAYERS], int 
 }
 
 */
+
+void sdl_display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number, int size){
+    // all int numbers to display different colors with sdl.
+  int n=0;   // color black in sdl
+  int nel=256*50; //
+  int nt=65536*50;
+  int b=16777215; // wolor white 
+  int bt=65536*255+256*100+50;
+  int bel=65536*100+255*256; 
+  int g=255;   // color red 
+  int bh=65536*255+140;
+  int nh=65536*80+100;
+   int *t=graph_table(graph);
+   table(queens,t,queens_number);
+  for(int i=0;i<size*size;i++){
+    if(i%size==0 && i!=0) printf("\n");
+    // printf("%d " ,t[i]);
+    if(t[i]==0) printf("%d ",nh );
+    if(t[i]==-1) printf("%d ",bh);
+    if(t[i]==1) printf("%d ",b);
+     if(t[i]==2) printf("%d ", n);
+  }
+    printf("\n");
+    printf("\n");
+}
+
 void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],unsigned int queens_number){
     unsigned int length=sqrt(graph->t->size1);
     int *t = graph_table(graph);
@@ -126,7 +152,8 @@ void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],unsigned i
         if(t[i]==-1) printf("  ");
     else printf("%d ",t[i] );
     }
-    printf("\n");
+    printf("\n \n");
+    
     free(t);
 }
 
@@ -220,6 +247,8 @@ int main(int argc, char* argv[]){
         printf("bibliothèque vide\n"); 
         exit(EXIT_FAILURE); 
     } 
+    printf("%d %d \n",length, length);
+    printf("#\n");
 
     //get player name functions.
     get_player1_name= dlsym(lib1,"get_player_name");
@@ -264,30 +293,32 @@ int main(int argc, char* argv[]){
         initialize_player1(0,white_graph,m,queens);
         initialize_player2(1,black_graph,m,queens);
         //The starting board
+       //sdl_display(graph,queens,m,length);
         display(graph, queens, m);
-        printf("length  %d\n",length);
+       // printf("length  %d\n",length);
         // make_graph(graph, length, 'd');
-
+        //sdl_display(graph,queens,m,length);
         display(graph,queens,m);
         struct move_t move={-1,-1,-1};
         int player = start_player();
         //The game loop
         for(int i=0;i<turns;i++){
-            printf("########## TOUR: %d ##########\n", i+1);
+          //  printf("########## TOUR: %d ##########\n", i+1);
         if(player==BLACK){
             move=play2(move);
-            printf("Joueur: %s\n", black_player);
+          //  printf("Joueur: %s\n", black_player);
             execute_move(move,graph,queens[1]);
-            print_move(move);
+          //  print_move(move);
         }
         else{
             move=play1(move);
-            printf("Joueur: %s\n", white_player);
+        //    printf("Joueur: %s\n", white_player);
             execute_move(move,graph,queens[0]);
-            print_move(move);
+            //print_move(move);
         }
         if(move.queen_dst==UINT_MAX|| i==99){
             printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
+         //  sdl_display(graph,queens,m,length);
             display(graph,queens,m);
             //player? printf("%d \n", 2): printf("%d \n", 1);
             free_graph(graph);
@@ -301,6 +332,7 @@ int main(int argc, char* argv[]){
             
         }
         player=next_player(player);
+        //sdl_display(graph,queens,m,length);
         display(graph,queens,m);
 
         }

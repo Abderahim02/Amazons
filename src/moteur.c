@@ -41,18 +41,25 @@ void execute_move(struct move_t move, struct graph_t *graph, unsigned int *queen
 }
 
 
-int element_in_array(unsigned int *t, int size,unsigned int x){
-    for(int i=0;i<size;i++){
-        if(t[i]==x) return 1;
+// int element_in_array(unsigned int *t, int size,unsigned int x){
+//     for(int i=0;i<size;i++){
+//         if(t[i]==x) return 1;
+//     }
+//     return 0;
+// }
+int element_in_array(unsigned int *array, unsigned int size, unsigned int element){
+    for(unsigned int j=0; j<size; j++){
+        if(array[j]==element){
+            return 1;
+        }
     }
     return 0;
 }
 
-
-enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t direction){
+enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t direction,struct player player){
     enum dir_t dir=rand()%8+1;
     int cmp=0;
-    while((get_neighbor_gen(queen,dir,graph)==-1 || dir==direction) && cmp<9){
+    while((get_neighbor_gen(queen,dir,graph,player)==-1 || dir==direction) && cmp<9){
         dir++;
         dir=dir%9;
         cmp++;
@@ -63,13 +70,13 @@ enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t d
     return dir;
 }
 
-int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos){
+int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player){
     unsigned int length=sqrt(graph->t->size1);
     int* t=(int *)malloc(sizeof(int)*(length*2+1));
     int i=1;
     int tmp=pos;
-    while(get_neighbor_gen(tmp,dir,graph)!=-1){
-        t[i]=get_neighbor_gen(tmp,dir,graph);
+    while(get_neighbor_gen(tmp,dir,graph,player)!=-1){
+        t[i]=get_neighbor_gen(tmp,dir,graph,player);
         tmp=t[i];
         i++;
     }
@@ -78,8 +85,8 @@ int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos){
 
 }
 
-int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos){
-    int *t=available_dst(graph, dir, pos);
+int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player){
+    int *t=available_dst(graph, dir, pos,player);
     int dst=t[rand()%t[0]];
     free(t);
     return dst;
@@ -148,12 +155,15 @@ int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos){
 //     return -1;
 // }
 
-int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* graph){
+// function that checks if unsigned int is in array
+
+
+unsigned int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* graph,struct player player){
     gsl_spmatrix_uint* mat_adj = graph->t;
     unsigned int length=graph->t->size1;
     unsigned int i = 0;
     while(i<length){
-        if(gsl_spmatrix_uint_get(mat_adj, pos, i)==direction){
+        if((gsl_spmatrix_uint_get(mat_adj, pos, i)==direction)&&(!element_in_array(player.other_queens,player.num_queens,i))&&(!element_in_array(player.current_queens,player.num_queens,i))){
             return i;
         }
         

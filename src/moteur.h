@@ -22,22 +22,23 @@ void put_arrow(struct graph_t* graph, unsigned int idx);
 position of the queen after the move*/
 void execute_move(struct move_t move, struct graph_t *graph, unsigned int *queens);
 
-int element_in_array(unsigned int *t, int size, unsigned int x);
+int element_in_array(unsigned int *array, unsigned int size, unsigned int element);
+
 
 /*a test function */
 void test_execute_move();
 
-int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos);
+int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player);
 
-int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos);
+int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player);
 
 
-enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t direction);
+enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t direction,struct player player);
 
 
 void free_player(struct player player);
 
 
-int get_neighbor_gen(unsigned int pos, enum dir_t dir, struct graph_t* graph);
+unsigned int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* graph,struct player player);
 
 #endif

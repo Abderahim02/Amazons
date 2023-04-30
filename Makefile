@@ -132,8 +132,4 @@ install: server
 clean:
 	@rm -f *~ *.so *.o  ${TST}/*.o ${BIN} *~ */*~ ${SRC}/*.o server alltests ${TEST}
 	rm -f test_get_neighbor.o
-	rm *.gcno
-	rm -f ${TST}/test*.gcno
-	rm -f *.gcda
-
 .PHONY: client install test clean

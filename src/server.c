@@ -211,7 +211,7 @@ void make_graph(struct graph_t * g, unsigned int m ,char s ){
 int main(int argc, char* argv[]){
     /* START GETOPT */
     unsigned int length=8;
-    int turns=60;
+    int turns=5;
     extern char *optarg;
     int opt=0;
     char graph_type  = 'c'; //we set the default type of world at squared world
@@ -294,7 +294,7 @@ int main(int argc, char* argv[]){
         initialize_player2(1,black_graph,m,queens);
         //The starting board
         sdl_display(graph,queens,m,length);
-        display(graph, queens, m);
+        //display(graph, queens, m);
        // printf("length  %d\n",length);
         // make_graph(graph, length, 'd');
         //sdl_display(graph,queens,m,length);
@@ -303,21 +303,22 @@ int main(int argc, char* argv[]){
         int player = start_player();
         //The game loop
         for(int i=0;i<turns;i++){
-           printf("########## TOUR: %d ##########\n", i+1);
+         //  printf("########## TOUR: %d ##########\n", i+1);
         if(player==BLACK){
             move=play2(move);
-            printf("Joueur: %s\n", black_player);
+         //   printf("Joueur: %s\n", black_player);
             execute_move(move,graph,queens[1]);
-            print_move(move);
+         //   print_move(move);
         }
         else{
             move=play1(move);
-            printf("Joueur: %s\n", white_player);
+         //   printf("Joueur: %s\n", white_player);
             execute_move(move,graph,queens[0]);
-            print_move(move);
+          //  print_move(move);
         }
-        if(move.queen_dst==UINT_MAX){
-            printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
+        if(move.queen_dst==UINT_MAX|| i==length*length){
+            if(i==length*length) printf("eqalité\n");
+            else printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
             //sdl_display(graph,queens,m,length);
             display(graph,queens,m);
             //player? printf("%d \n", 2): printf("%d \n", 1);

@@ -211,11 +211,7 @@ void make_graph(struct graph_t * g, unsigned int m ,char s ){
 int main(int argc, char* argv[]){
     /* START GETOPT */
     unsigned int length=8;
-<<<<<<< HEAD
     int turns=5;
-=======
-    int turns=60;
->>>>>>> 9b313c88c8c1577fe826128e9cc55cba98087e45
     extern char *optarg;
     int opt=0;
     char graph_type  = 'c'; //we set the default type of world at squared world

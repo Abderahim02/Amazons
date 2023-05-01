@@ -120,12 +120,12 @@ void display(struct graph_t* graph, unsigned int* queens[lengthUM_PLAYERS], int 
 void sdl_display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number, int size){
     // all int numbers to display different colors with sdl.
   int n=0;   // color black in sdl
-  int nel=256*50; //
-  int nt=65536*50;
+  //int nel=256*50; //
+  //int nt=65536*50;
   int b=16777215; // wolor white 
-  int bt=65536*255+256*100+50;
-  int bel=65536*100+255*256; 
-  int g=255;   // color red 
+  //int bt=65536*255+256*100+50;
+  //int bel=65536*100+255*256; 
+  //int g=255;   // color red 
   int bh=65536*255+140;
   int nh=65536*80+100;
    int *t=graph_table(graph);
@@ -138,6 +138,7 @@ void sdl_display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int qu
     if(t[i]==1) printf("%d ",b);
      if(t[i]==2) printf("%d ", n);
   }
+    free(t);
     printf("\n");
     printf("\n");
 }
@@ -210,7 +211,11 @@ void make_graph(struct graph_t * g, unsigned int m ,char s ){
 int main(int argc, char* argv[]){
     /* START GETOPT */
     unsigned int length=8;
+<<<<<<< HEAD
     int turns=5;
+=======
+    int turns=60;
+>>>>>>> 9b313c88c8c1577fe826128e9cc55cba98087e45
     extern char *optarg;
     int opt=0;
     char graph_type  = 'c'; //we set the default type of world at squared world
@@ -315,15 +320,15 @@ int main(int argc, char* argv[]){
             execute_move(move,graph,queens[0]);
           //  print_move(move);
         }
-        if(move.queen_dst==UINT_MAX|| i==99){
-            if(i==99) printf("eqalité\n");
+        if(move.queen_dst==UINT_MAX|| i==length*length){
+            if(i==length*length) printf("eqalité\n");
             else printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
             sdl_display(graph,queens,m,length);
             //display(graph,queens,m);
             //player? printf("%d \n", 2): printf("%d \n", 1);
             free_graph(graph);
-            free_graph(white_graph);
-            free_graph(black_graph);
+            // free_graph(white_graph);
+            // free_graph(black_graph);
             finalize_player1();
             finalize_player2();
             dlclose(lib1);
@@ -337,8 +342,8 @@ int main(int argc, char* argv[]){
 
         }
         free_graph(graph);
-        free_graph(white_graph);
-        free_graph(black_graph);
+        // free_graph(white_graph);
+        // free_graph(black_graph);
         finalize_player1();
         finalize_player2();
         dlclose(lib1);

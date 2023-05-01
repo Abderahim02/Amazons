@@ -76,7 +76,6 @@ void print_array(struct move_t *moves, int size){
         }
         printf("\n");}
 
-
 //function that fills an array with all neighbors of an adversary queen
 
 
@@ -190,7 +189,7 @@ struct move_t play(struct move_t previous_move){
      enum dir_t dir2=available_dir(queen,player_blanc.graph,dir,player_blanc);
     // printf("DIR2 EST %d\n", dir2);
      if(dir2==NO_DIR){
-        move.arrow_dst=-1;
+        move.arrow_dst=move.queen_src;
      }
      else {
          move.arrow_dst=random_dst(player_blanc.graph,dir2,queen,player_blanc);
@@ -224,4 +223,6 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
 void finalize(){
     free(player_blanc.current_queens);
     free(player_blanc.other_queens);
+    gsl_spmatrix_uint_free(player_blanc.graph->t);
+    free(player_blanc.graph);
 }

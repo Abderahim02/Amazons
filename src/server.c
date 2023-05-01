@@ -211,7 +211,7 @@ void make_graph(struct graph_t * g, unsigned int m ,char s ){
 int main(int argc, char* argv[]){
     /* START GETOPT */
     unsigned int length=8;
-    int turns=5;
+    int turns=50;
     extern char *optarg;
     int opt=0;
     char graph_type  = 'c'; //we set the default type of world at squared world
@@ -316,7 +316,7 @@ int main(int argc, char* argv[]){
             execute_move(move,graph,queens[0]);
           //  print_move(move);
         }
-        if(move.queen_dst==UINT_MAX|| i==length*length){
+        if(move.queen_dst==UINT_MAX){
             if(i==length*length) printf("eqalité\n");
             else printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
             //sdl_display(graph,queens,m,length);

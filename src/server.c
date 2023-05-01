@@ -120,12 +120,12 @@ void display(struct graph_t* graph, unsigned int* queens[lengthUM_PLAYERS], int 
 void sdl_display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number, int size){
     // all int numbers to display different colors with sdl.
   int n=0;   // color black in sdl
-  int nel=256*50; //
-  int nt=65536*50;
+  //int nel=256*50; //
+  //int nt=65536*50;
   int b=16777215; // wolor white 
-  int bt=65536*255+256*100+50;
-  int bel=65536*100+255*256; 
-  int g=255;   // color red 
+  //int bt=65536*255+256*100+50;
+  //int bel=65536*100+255*256; 
+  //int g=255;   // color red 
   int bh=65536*255+140;
   int nh=65536*80+100;
    int *t=graph_table(graph);
@@ -211,7 +211,7 @@ void make_graph(struct graph_t * g, unsigned int m ,char s ){
 int main(int argc, char* argv[]){
     /* START GETOPT */
     unsigned int length=8;
-    int turns=2;
+    int turns=60;
     extern char *optarg;
     int opt=0;
     char graph_type  = 'c'; //we set the default type of world at squared world
@@ -297,7 +297,7 @@ int main(int argc, char* argv[]){
         display(graph, queens, m);
        // printf("length  %d\n",length);
         // make_graph(graph, length, 'd');
-        sdl_display(graph,queens,m,length);
+        //sdl_display(graph,queens,m,length);
         display(graph,queens,m);
         struct move_t move={-1,-1,-1};
         int player = start_player();
@@ -318,7 +318,7 @@ int main(int argc, char* argv[]){
         }
         if(move.queen_dst==UINT_MAX|| i==99){
             printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
-            sdl_display(graph,queens,m,length);
+            //sdl_display(graph,queens,m,length);
             display(graph,queens,m);
             //player? printf("%d \n", 2): printf("%d \n", 1);
             free_graph(graph);
@@ -332,7 +332,7 @@ int main(int argc, char* argv[]){
             
         }
         player=next_player(player);
-        sdl_display(graph,queens,m,length);
+        //sdl_display(graph,queens,m,length);
         display(graph,queens,m);
 
         }

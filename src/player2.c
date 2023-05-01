@@ -69,11 +69,12 @@ struct move_t play(struct move_t previous_move){
      player_black.current_queens[(r-1)%player_black.num_queens]=move.queen_dst;
      queen=move.queen_dst;
      enum dir_t dir2=available_dir(queen,player_black.graph,dir,player_black);
+
+     printf("DIR2 EST %d\n", dir2);
      if(dir2==NO_DIR){
-        move.arrow_dst=-1;
+        move.arrow_dst=move.queen_src;
      }
      else {
-        //printf("queen %d\n",queen);
          move.arrow_dst=random_dst(player_black.graph,dir2,queen,player_black);
      }
     execute_move(move,player_black.graph,player_black.current_queens);

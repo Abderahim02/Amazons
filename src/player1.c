@@ -190,7 +190,7 @@ struct move_t play(struct move_t previous_move){
      enum dir_t dir2=available_dir(queen,player_blanc.graph,dir,player_blanc);
      printf("DIR2 EST %d\n", dir2);
      if(dir2==NO_DIR){
-        move.arrow_dst=-1;
+        move.arrow_dst=move.queen_src;
      }
      else {
          move.arrow_dst=random_dst(player_blanc.graph,dir2,queen,player_blanc);

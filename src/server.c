@@ -323,8 +323,8 @@ int main(int argc, char* argv[]){
             display(graph,queens,m);
             //player? printf("%d \n", 2): printf("%d \n", 1);
             free_graph(graph);
-            // free_graph(white_graph);
-            // free_graph(black_graph);
+            free_graph(white_graph);
+            free_graph(black_graph);
             finalize_player1();
             finalize_player2();
             dlclose(lib1);
@@ -338,8 +338,8 @@ int main(int argc, char* argv[]){
 
         }
         free_graph(graph);
-        // free_graph(white_graph);
-        // free_graph(black_graph);
+        free_graph(white_graph);
+        free_graph(black_graph);
         finalize_player1();
         finalize_player2();
         dlclose(lib1);

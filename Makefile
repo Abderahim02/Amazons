@@ -73,10 +73,10 @@ libraries:player1.o player2.o moteur.o
 
 
 server.o: ${SRC}/server.c ${SRC}/player.h ${SRC}/graph.h
-	${CC} $(CFLAGS) -c ${SRC}/server.c -ldl -lgcov -lSDL2
+	${CC} $(CFLAGS) -c ${SRC}/server.c -ldl -lgcov 
 
 server: server.o  grid.o moteur.o hole.o  #libplayer1.so libplayer2.so
-	${CC} -L${GSL_PATH}/lib server.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov -lSDL2
+	${CC} -L${GSL_PATH}/lib server.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov 
 
 client: 
 

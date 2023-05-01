@@ -138,6 +138,7 @@ void sdl_display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int qu
     if(t[i]==1) printf("%d ",b);
      if(t[i]==2) printf("%d ", n);
   }
+    free(t);
     printf("\n");
     printf("\n");
 }

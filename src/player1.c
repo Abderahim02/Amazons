@@ -167,20 +167,20 @@ struct move_t play(struct move_t previous_move){
     }
     struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
     int r=rand()%player_blanc.num_queens;
+    int queen_index=r;
     int queen=player_blanc.current_queens[r];
-    
+    // we search for available direction for queen, else we change the queen 
+    // cmp to avoid the infinite loop 
     enum dir_t dir=NO_DIR;
     unsigned int cmp=0;
-    //finds an avaliable direction for a queen
     while(dir==NO_DIR && cmp<player_blanc.num_queens){
+        cmp++;
+        queen_index=r;
         queen=player_blanc.current_queens[r];
         dir=available_dir(queen,player_blanc.graph,NO_DIR,player_blanc);
+    //    printf("available 3tat dir=%d\n",dir);
         r=(r+1)%player_blanc.num_queens;
-        cmp++;
-    }
-    
-    if(dir==NO_DIR){
-        return move;
+       
     }
      move.queen_src=queen;
      move.queen_dst=random_dst(player_blanc.graph,dir,queen, player_blanc);

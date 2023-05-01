@@ -49,13 +49,16 @@ struct move_t play(struct move_t previous_move){
         execute_move(previous_move,player_black.graph,player_black.other_queens);
     struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
     int r=rand()%player_black.num_queens;
+    int queen_index=r;
     int queen=player_black.current_queens[r];
 
     enum dir_t dir=NO_DIR;
     unsigned int cmp=0;
+    //finds an avaliable direction for a queen
     while(dir==NO_DIR && cmp<player_black.num_queens){
         cmp++;
-        queen=player_black.current_queens[r];
+        queen_index=r;
+        queen=player_black.current_queens[queen_index];
         dir=available_dir(queen,player_black.graph,NO_DIR,player_black);
         r=(r+1)%player_black.num_queens;
     }
@@ -66,7 +69,7 @@ struct move_t play(struct move_t previous_move){
   // printf("dir=%d\n",dir);
      move.queen_src=queen;
      move.queen_dst=random_dst(player_black.graph,dir,queen, player_black);
-     player_black.current_queens[(r-1)%player_black.num_queens]=move.queen_dst;
+     player_black.current_queens[queen_index]=move.queen_dst;
      queen=move.queen_dst;
      enum dir_t dir2=available_dir(queen,player_black.graph,dir,player_black);
 

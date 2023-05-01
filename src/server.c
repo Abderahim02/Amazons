@@ -316,7 +316,7 @@ int main(int argc, char* argv[]){
             execute_move(move,graph,queens[0]);
             print_move(move);
         }
-        if(move.queen_dst==UINT_MAX|| i==99){
+        if(move.queen_dst==UINT_MAX){
             printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
             //sdl_display(graph,queens,m,length);
             display(graph,queens,m);

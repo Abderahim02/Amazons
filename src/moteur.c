@@ -94,7 +94,7 @@ int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct pl
 }
 
 
-int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* graph){
+unsigned int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* graph, struct player player){
     gsl_spmatrix_uint* mat_adj = graph->t;
     unsigned int length=graph->t->size1;
     unsigned int i = 0;

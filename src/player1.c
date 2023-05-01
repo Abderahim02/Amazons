@@ -188,7 +188,7 @@ struct move_t play(struct move_t previous_move){
      player_blanc.current_queens[(r-1)%player_blanc.num_queens]=move.queen_dst;
      queen=move.queen_dst;
      enum dir_t dir2=available_dir(queen,player_blanc.graph,dir,player_blanc);
-     printf("DIR2 EST %d\n", dir2);
+    // printf("DIR2 EST %d\n", dir2);
      if(dir2==NO_DIR){
         move.arrow_dst=-1;
      }

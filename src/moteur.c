@@ -87,67 +87,6 @@ int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos){
 }
 
 
-
-
-
-// int get_neighbor_gen(int pos, enum dir_t dir, struct graph_t* graph, struct player player){
-//     unsigned int length=sqrt(graph->t->size1);
-//     int m=4*(LENGHT/10 + 1);
-//     switch (dir)
-//     {
-//     case 1:
-//         if(pos-LENGHT >= 0 && gsl_spmatrix_uint_get(graph->t, pos, pos-LENGHT) && !element_in_array(player.other_queens,m,pos-LENGHT) &&  !element_in_array(player.current_queens,m,pos-LENGHT)){
-//             return pos-LENGHT;
-//         }
-//         break;
-//     case 3:
-//         if(pos-1>= 0 && gsl_spmatrix_uint_get(graph->t, pos, pos-1) && !element_in_array(player.other_queens,m,pos-1) && !element_in_array(player.current_queens,m,pos-1)){
-//             return pos-1;
-//         }
-//         break;
-//     case 5:
-//         if(pos+LENGHT<= LENGHT*LENGHT-1 && gsl_spmatrix_uint_get(graph->t, pos, pos+LENGHT) && !element_in_array(player.other_queens,m,pos+LENGHT) && !element_in_array(player.current_queens,m,pos+LENGHT)){
-//         //    printf("lelement pos =%d %d\n",!element_in_array(player.other_queens,m,pos+LENGHT), pos);
-//             return pos+LENGHT;
-//         }
-//         break;
-//     case 7:
-//         if(pos+1<=LENGHT*LENGHT-1 && gsl_spmatrix_uint_get(graph->t, pos, pos+1) && !element_in_array(player.other_queens,m,pos+1) && !element_in_array(player.current_queens,m,pos+1)){
-//             return pos+1;
-//         }
-//         break;
-//     case 2:
-//         if(pos-LENGHT+1>=0 && gsl_spmatrix_uint_get(graph->t, pos, pos-LENGHT+1) && !element_in_array(player.other_queens,m,pos-LENGHT+1) && !element_in_array(player.current_queens,m,pos-LENGHT+1)){
-//             return pos-LENGHT+1;
-//         }
-//             break;
-//     case 4:
-//         if(pos+LENGHT+1<=LENGHT*LENGHT-1){
-//             if(gsl_spmatrix_uint_get(graph->t, pos, pos+LENGHT+1) && !element_in_array(player.other_queens,m,pos+LENGHT+1) && !element_in_array(player.current_queens,m,pos+LENGHT+1)){
-//         //    printf("here\n");
-//             return pos+LENGHT+1;
-//             }
-//         }
-//         break;
-//     case 6:
-//         if(pos+LENGHT-1<=LENGHT*LENGHT-1 && gsl_spmatrix_uint_get(graph->t, pos, pos+LENGHT-1) && !element_in_array(player.other_queens,m,pos+LENGHT-1) && !element_in_array(player.current_queens,m,pos+LENGHT-1) ){
-//             return pos+LENGHT-1;
-//         }
-//             break;
-//     case 8:
-//         if(pos-LENGHT-1>=0 && gsl_spmatrix_uint_get(graph->t, pos, pos-LENGHT-1) && !element_in_array(player.other_queens,m,pos-LENGHT-1) && !element_in_array(player.current_queens,m,pos-LENGHT-1)){
-//             return pos-LENGHT-1;
-//         }
-//             break;
-        
-//     default:
-//     return -1;
-//     break;
-//     //  printf("je suis là\n");
-//     }
-//     return -1;
-// }
-
 int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* graph){
     gsl_spmatrix_uint* mat_adj = graph->t;
     unsigned int length=graph->t->size1;

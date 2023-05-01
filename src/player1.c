@@ -181,12 +181,11 @@ struct move_t play(struct move_t previous_move){
     }
     
     if(dir==NO_DIR){
-        free_player(player_blanc);
         return move;
     }
      move.queen_src=queen;
      move.queen_dst=random_dst(player_blanc.graph,dir,queen);
-     player_blanc.current_queens[r]=move.queen_dst;
+     //player_blanc.current_queens[(r-1)%player_blanc.num_queens]=move.queen_dst;
      queen=move.queen_dst;
      enum dir_t dir2=available_dir(queen,player_blanc.graph,dir);
      if(dir2==NO_DIR){

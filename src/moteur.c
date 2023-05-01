@@ -62,8 +62,10 @@ enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t d
     while((get_neighbor_gen(queen,dir,graph,player)==-1 || dir==direction) && cmp<9){
         dir++;
         dir=dir%9;
+        if(dir==0) dir++;
         cmp++;
     }
+  //  printf("queen =%d cmp=%d get_neighbor_gen(queen,dir,graph,player)=%d\n",queen, cmp,get_neighbor_gen(queen,dir,graph,player));
     if(cmp==9){
         return NO_DIR;
     }
@@ -87,7 +89,8 @@ int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struc
 
 int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player){
     int *t=available_dst(graph, dir, pos,player);
-    int dst=t[rand()%t[0]+1];
+  // printf("division=%d\n",t[0]);
+    int dst=t[(rand()%t[0])+1];
     free(t);
     return dst;
 
@@ -97,6 +100,8 @@ int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct pl
 unsigned int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* graph, struct player player){
     gsl_spmatrix_uint* mat_adj = graph->t;
     unsigned int length=graph->t->size1;
+    //for(int j=0;j<length;j++)
+   // printf("l'affichage matrice adja=%d  %d\n",gsl_spmatrix_uint_get(mat_adj, pos, j),j);
     unsigned int i = 0;
     while(i<length){
         if((gsl_spmatrix_uint_get(mat_adj, pos, i)==direction)&&(!element_in_array(player.other_queens,player.num_queens,i))&&(!element_in_array(player.current_queens,player.num_queens,i))){

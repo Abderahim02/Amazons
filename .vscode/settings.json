@@ -8,7 +8,8 @@
         "hole.h": "c",
         "moteur.h": "c",
         "iterator": "c",
-        "gsl_spmatrix_uint.h": "c"
+        "gsl_spmatrix_uint.h": "c",
+        "getopt.h": "c"
     },
 
     "C_Cpp.default.includePath": [

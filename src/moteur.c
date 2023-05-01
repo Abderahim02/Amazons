@@ -87,7 +87,7 @@ int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struc
 
 int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player){
     int *t=available_dst(graph, dir, pos,player);
-    int dst=t[rand()%t[0]];
+    int dst=t[rand()%t[0]+1];
     free(t);
     return dst;
 

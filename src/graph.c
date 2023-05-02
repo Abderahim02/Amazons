@@ -1,8 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "grid.h"
 #include <stddef.h>
 #include <math.h> 
+
+#include "graph.h"
+#include "dir.h"
+#include "hole.h"
+
 
 
 /*this function create an empty graph  with the size length*length, a matrix of size length*length
@@ -20,6 +24,7 @@ struct graph_t * initialize_graph(unsigned int length){
     return grid;
 }
 
+
 //This function prints the contents of a gsl_spmatrix_uint sparse matrix to the console. 
 void print_sparse_matrix(gsl_spmatrix_uint *mat) {
     printf("Sparse matrix:\n");
@@ -33,11 +38,6 @@ void print_sparse_matrix(gsl_spmatrix_uint *mat) {
     }
 }
 
-//this function frees the momory blocks allocated for the graph
-void free_graph(struct graph_t* g){
-    gsl_spmatrix_uint_free(g->t);
-    free(g);
-}
 
 
 /*this function fill an empty graph with relachionships, it means we puts the right
@@ -114,6 +114,30 @@ void initialize_graph_positions_classic(struct graph_t* g){
     }                   
 }
 
+void initialize_donut_graph(struct graph_t* graph){
+    initialize_graph_positions_classic(graph);
+    unsigned int length=graph->t->size1;
+    make_hole(graph, (length/3)*length + length/3 , length/3);
+    graph->num_vertices = 8*length*length/9;
+}
+
+void initialize_trefle_graph(struct graph_t* graph){
+    initialize_graph_positions_classic(graph);
+    unsigned int length=graph->t->size1;
+    make_hole(graph, length/5*length + length/5, length/5 );
+    make_hole(graph, length/5*length + 3*length/5 , length/5 );
+    make_hole(graph, 3*length/5*length + length/5, length/5 );
+    make_hole(graph, 3*length/5*length + 3*length/5, length/5 );
+    graph->num_vertices = 21*length*length / 25 ;
+}
+
+void initialize_eight_graph(struct graph_t* graph){
+    initialize_graph_positions_classic(graph);
+    unsigned int length=graph->t->size1;
+    make_hole(graph, 2*(length/4) * length + length/4, length/4 );
+    make_hole(graph, (length/4) * length + 2*length/4 , length/4 );
+    graph->num_vertices = 21*length*length / 25 ;
+}
 
 //this function can be useful for checking if a vertex can be occupied by a queen in a game
 int empty_cell(struct graph_t *graph, int x, unsigned int size){
@@ -145,4 +169,11 @@ void print_board(struct graph_t* graph){
     }
     free(t);
     printf("\n");
+}
+
+
+//this function frees the momory blocks allocated for the graph
+void free_graph(struct graph_t* g){
+    gsl_spmatrix_uint_free(g->t);
+    free(g);
 }

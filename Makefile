@@ -21,17 +21,17 @@ build: server install alltests libraries
 ######################################################### Début tests #####################################################################################
 test: test__moves test_get_neighbor test_execute_move
 
-test_get_neighbor.o: ${TST}/test_get_neighbor.c ${SRC}/grid.c ${SRC}/grid.h
+test_get_neighbor.o: ${TST}/test_get_neighbor.c ${SRC}/graph.c ${SRC}/graph.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test_get_neighbor.c
 
-test_get_neighbor: test_get_neighbor.o grid.o moteur.o hole.o 
-	${CC} -fprofile-arcs -ftest-coverage -L${GSL_PATH}/lib test_get_neighbor.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
+test_get_neighbor: test_get_neighbor.o graph.o moteur.o hole.o 
+	${CC} -fprofile-arcs -ftest-coverage -L${GSL_PATH}/lib test_get_neighbor.o graph.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
 
-test__moves.o: ${TST}/test__moves.c ${SRC}/grid.c ${SRC}/grid.h
+test__moves.o: ${TST}/test__moves.c ${SRC}/graph.c ${SRC}/graph.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test__moves.c
 
-test__moves: test__moves.o grid.o moteur.o hole.o 
-	${CC} -L${GSL_PATH}/lib test__moves.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
+test__moves: test__moves.o graph.o moteur.o hole.o 
+	${CC} -L${GSL_PATH}/lib test__moves.o graph.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
 
 test_execute_move.o: ${TST}/test_execute_move.c hole.o 
 	${CC} $(CFLAGS) -I ${SRC} -I ${TST} ${TST}/test_execute_move.c  -c 
@@ -40,14 +40,14 @@ test_execute_move.o: ${TST}/test_execute_move.c hole.o
 
 ######################################################### Début fichiers objets #####################################################################################
 
-grid.o: ${SRC}/grid.c ${SRC}/grid.h
-	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/grid.c -lgcov
-	#${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -c ${SRC}/grid.c -lgcov
+graph.o: ${SRC}/graph.c ${SRC}/graph.h
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/graph.c -lgcov
+	#${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -c ${SRC}/graph.c -lgcov
 
 hole.o: ${SRC}/hole.c  ${SRC}/graph.h 
 	${CC} -Wall  -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/hole.c -lgcov 
 
-moteur.o: ${SRC}/moteur.c ${SRC}/grid.h
+moteur.o: ${SRC}/moteur.c ${SRC}/graph.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -c ${SRC}/moteur.c -lgcov
 	
 player2.o:  ${SRC}/player2.c 
@@ -56,7 +56,7 @@ player2.o:  ${SRC}/player2.c
 player1.o: ${SRC}/player1.c 
 	${CC} $(CFLAGS) -I${SRC} -c  $<  
 
-server.o: ${SRC}/server.c ${SRC}/player.h ${SRC}/graph.h
+server.o: ${SRC}/server.c ${SRC}/player.h ${SRC}/graph.h ${SRC}/hole.h
 	${CC} $(CFLAGS) -c ${SRC}/server.c -ldl -lgcov 
 
 ######################################################### Fin fichiers objets #####################################################################################
@@ -72,8 +72,8 @@ libraries:player1.o player2.o moteur.o
 
 ######################################################### Début Server #####################################################################################
 
-server: server.o  grid.o moteur.o hole.o  #libplayer1.so libplayer2.so
-	${CC} -L${GSL_PATH}/lib server.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov 
+server: server.o  graph.o moteur.o hole.o  #libplayer1.so libplayer2.so
+	${CC} -L${GSL_PATH}/lib server.o graph.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov 
 
 ######################################################### Fin Server #####################################################################################
 
@@ -82,9 +82,9 @@ server: server.o  grid.o moteur.o hole.o  #libplayer1.so libplayer2.so
 ######################################################### Début Alltests #####################################################################################
 
 
-alltests:  ${TST}/test_execute_move.o grid.o  moteur.o
+alltests:  ${TST}/test_execute_move.o graph.o  moteur.o hole.o
 	make server
-	${CC} -L${GSL_PATH}/lib  ${TST}/test_execute_move.o grid.o moteur.o  -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov 
+	${CC} -L${GSL_PATH}/lib  ${TST}/test_execute_move.o graph.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov 
 
 ######################################################### Fin Alltests #####################################################################################
 

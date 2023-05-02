@@ -8,6 +8,32 @@
 #include "server.h"
 
 
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////:
+
+
+extern struct graph_t * initialize_graph(unsigned int length);
+
+extern void free_graph(struct graph_t* g);
+
+extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
+
+extern void print_board(struct graph_t* graph);
+
+extern void initialize_graph_positions_classic(struct graph_t* g);
+
+extern int empty_cell(struct graph_t *graph, int x, unsigned int size);
+
+extern void initialize_donut_graph(struct graph_t* graph);
+
+extern void initialize_trefle_graph(struct graph_t* graph);
+
+extern void initialize_eight_graph(struct graph_t* graph);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 extern struct player player_blanc;
 
 char *(*get_player1_name)(void);
@@ -47,44 +73,7 @@ void table(unsigned int* queens[NUM_PLAYERS], int *t, unsigned int queens_number
     
 }
 
-/*
-void display(struct graph_t* graph, unsigned int* queens[lengthUM_PLAYERS], int queens_number) {
 
-    int *t = graph_table(graph);
-    table(queens, t, queens_number);
-
-    unsigned int max_val = 0;
-    for (int i = 0; i < graph->num_vertices; i++) {
-        unsigned int val = t[i];
-        if (val > max_val) {
-            max_val = val;
-        }
-    }
-
-    unsigned int field_width = snprintf(NULL, 0, "%u", max_val) + 1; // +1 for the space
-
-    printf("\n");
-    for (int i = 0; i < sqrt(graph->num_vertices); i++) {
-        for (int j = 0; j < sqrt(graph->num_vertices); j++) {
-            if (j % 2 == 0 && i % 2 == 0) {
-                printf("\x1b[107m %*d \x1b[0m", field_width, t[i]);
-            }
-            else if (j % 2 != 0 && i % 2 == 0) {
-                printf("\x1b[48;2;165;42;42m %*d \x1b[0m", field_width, t[i]);
-            }
-            if (j % 2 != 0 && i % 2 != 0) {
-                printf("\x1b[107m %*d \x1b[0m", field_width, t[i]);
-            }
-            else if (j % 2 == 0 && i % 2 != 0) {
-                printf("\x1b[48;2;165;42;42m %*d \x1b[0m", field_width, t[i]);
-            }
-        }
-        printf("\n");
-    }
-    printf("\n");
-}
-
-*/
 
 void sdl_display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number, int size){
     // all int numbers to display different colors with sdl.
@@ -153,24 +142,16 @@ void print_move(struct move_t move){
 void make_graph(struct graph_t * g, unsigned int m ,char s ){ 
     switch(s){
         case 'c' :
-            g->num_vertices = m*m;
+            initialize_graph_positions_classic(g);
             break;
         case 'd':
-            printf("i am a donut \n");
-            make_hole(g, (m/3)*m + m/3 , m/3);
-            g->num_vertices = 8*m*m/9;
+            initialize_donut_graph(g);
             break;
         case 't':
-            make_hole(g, m/5*m + m/5, m/5 );
-            make_hole(g, m/5*m + 3*m/5 , m/5 );
-            make_hole(g, 3*m/5*m + m/5, m/5 );
-            make_hole(g, 3*m/5*m + 3*m/5, m/5 );
-            g->num_vertices = 21*m*m / 25 ;
+            initialize_trefle_graph(g);
             break;
         case '8':
-            make_hole(g, 2*(m/4) * m + m/4, m/4 );
-            make_hole(g, (m/4) * m + 2*m/4 , m/4 );
-            g->num_vertices = 21*m*m / 25 ;
+            initialize_eight_graph(g);
             break;
         default :
             break;

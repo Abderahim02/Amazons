@@ -3,7 +3,16 @@
 
 #include "graph.h"
 #include "player.h"
+#include "dir.h"
 
+
+#define WHITE 1
+#define BLACK 0
+#define CASE -1
+
+#ifndef NUM_PLAYERS
+    #define NUM_PLAYERS 2
+#endif
 
 struct player {
     unsigned int id;

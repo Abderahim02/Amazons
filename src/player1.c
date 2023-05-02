@@ -22,9 +22,9 @@ struct player player_blanc;
 //     return player_blanc.name;
 // }
 char const* get_player_name(){
-    char * pt = (char * )malloc (30*sizeof(char ));
-    strcpy(pt, "Dir_niya");
-    player_blanc.name = pt;
+    // char * pt = (char * )malloc (30*sizeof(char ));
+    // strcpy(pt, "Dir_niya");
+    player_blanc.name = "Dir_niya";
     return player_blanc.name;
 }
 
@@ -232,7 +232,7 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
 void finalize(){
     free(player_blanc.current_queens);
     free(player_blanc.other_queens);
-    free(player_blanc.name);
+    // free(player_blanc.name);
     gsl_spmatrix_uint_free(player_blanc.graph->t);
     free(player_blanc.graph);
 }

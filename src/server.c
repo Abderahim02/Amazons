@@ -243,9 +243,9 @@ int main(int argc, char* argv[]){
         struct graph_t* graph = initialize_graph(length);
         initialize_graph_positions_classic(graph);
         struct graph_t* white_graph = initialize_graph(length);
-        strcpy(white_graph, graph);
+        initialize_graph_positions_classic(white_graph);
         struct graph_t* black_graph = initialize_graph(length);
-        strcpy(black_graph, graph);
+        initialize_graph_positions_classic(black_graph);
         //we make hole or not depending on the type of the grapg for the tree graphs 
         make_graph(graph, length, graph_type);
         make_graph(white_graph, length, graph_type);

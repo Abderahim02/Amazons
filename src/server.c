@@ -313,11 +313,11 @@ int main(int argc, char* argv[]){
         //display(graph,queens,m);
 
         }
-        free(queens1[0]);
-        free(queens1[1]);
+        //free(queens1[0]);
+        //free(queens1[1]);
 
-        free(queens2[0]);
-        free(queens2[1]);
+        //free(queens2[0]);
+        //free(queens2[1]);
         free_graph(graph);
         finalize_player1();
         finalize_player2();

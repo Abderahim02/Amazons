@@ -35,11 +35,11 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
     player_black.graph=graph;
     player_black.num_queens=num_queens;
     player_black.turn=0;
-    player_black.current_queens=(unsigned int *)malloc(sizeof(unsigned int)*m);
-    player_black.other_queens=(unsigned int *)malloc(sizeof(unsigned int)*m);
+    player_black.current_queens=queens[player_id];//(unsigned int *)malloc(sizeof(unsigned int)*m);
+    player_black.other_queens=queens[(player_id+1)%2];//(unsigned int *)malloc(sizeof(unsigned int)*m);
 
-    player_black.current_queens=queens[player_id];
-    player_black.other_queens=queens[(player_id+1)%2];
+    // player_black.current_queens=queens[player_id];
+    // player_black.other_queens=queens[(player_id+1)%2];
     
     
 

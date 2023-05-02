@@ -47,8 +47,10 @@ void table(unsigned int* queens[NUM_PLAYERS], int *t, unsigned int queens_number
     
 }
 
+
+
 void test__available_dst(){
-    unsigned int size=4;
+    unsigned int size=8;
     struct graph_t* graph = initialize_graph(size);
     initialize_graph_positions_classic(graph);
     enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
@@ -107,6 +109,28 @@ void test__put_arrow(){
     printf("OK test__put_arrow\n");
 }
 
+void test__begining_position(){
+    unsigned int size=5;
+    struct graph_t* graph = initialize_graph(size);
+    initialize_graph_positions_classic(graph);
+    enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
+    
+    unsigned int m=((size/10)+1)*4;
+    unsigned int white_queens[m];
+    unsigned int black_queens[m];
+    unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
+    begining_position(queens, size);
+    assert(black_queens[0]==1);
+    assert(black_queens[1]==3);
+    assert(black_queens[2]==5);
+    assert(black_queens[3]==9);
+    assert(white_queens[0]==21);
+    assert(white_queens[1]==23);
+    assert(white_queens[2]==15);
+    assert(white_queens[3]==19);
+    printf("test__begining_position OK\n");
+    free_graph(graph);
+}
 
 void test__execute_move(){
     unsigned int size=8;
@@ -115,12 +139,12 @@ void test__execute_move(){
     enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
     
     unsigned int m=((size/10)+1)*4;
-    printf("%d est le nombre \n", m);
     unsigned int white_queens[m];
     unsigned int black_queens[m];
     unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
     begining_position(queens, size);
     
+
     struct move_t move={2, 4, 12};
     execute_move(move, graph, queens[1]);
     assert(queens[0][1]==61);
@@ -137,6 +161,7 @@ void test__execute_move(){
 int main(){
     test__available_dst();
     test__put_arrow();
+    test__begining_position();
     test__execute_move();
     printf("OK all__tests\n");
     return 0;

@@ -65,7 +65,6 @@ enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t d
         if(dir==0) dir++;
         cmp++;
     }
-  //  printf("queen =%d cmp=%d get_neighbor_gen(queen,dir,graph,player)=%d\n",queen, cmp,get_neighbor_gen(queen,dir,graph,player));
     if(cmp==9){
         return NO_DIR;
     }

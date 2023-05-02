@@ -342,7 +342,7 @@ int main(int argc, char* argv[]){
         free(graph);
         // free_graph(white_graph);
         // free_graph(black_graph);
-        free_graph(graph);
+      //  free_graph(graph);
         //free_graph(white_graph);
         //free_graph(black_graph);
         finalize_player1();

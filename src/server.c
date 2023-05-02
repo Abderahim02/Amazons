@@ -260,10 +260,10 @@ int main(int argc, char* argv[]){
         initialize_player1(0,white_graph,m,queens);
         initialize_player2(1,black_graph,m,queens);
         //The starting board
-        sdl_display(graph,queens,m,length);
+       // sdl_display(graph,queens,m,length);
         //display(graph, queens, m);
-        //sdl_display(graph,queens,m,length);
-        display(graph,queens,m);
+        sdl_display(graph,queens,m,length);
+       // display(graph,queens,m);
         struct move_t move={-1,-1,-1};
         int player = start_player();
         //The game loop
@@ -285,7 +285,7 @@ int main(int argc, char* argv[]){
             if(i==length*length) printf("eqalité\n");
             else printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
             sdl_display(graph,queens,m,length);
-            //display(graph,queens,m);
+           // display(graph,queens,m);
             //player? printf("%d \n", 2): printf("%d \n", 1);
             free_graph(graph);
             finalize_player1();

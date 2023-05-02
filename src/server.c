@@ -47,44 +47,8 @@ void table(unsigned int* queens[NUM_PLAYERS], int *t, unsigned int queens_number
     
 }
 
-/*
-void display(struct graph_t* graph, unsigned int* queens[lengthUM_PLAYERS], int queens_number) {
 
-    int *t = graph_table(graph);
-    table(queens, t, queens_number);
 
-    unsigned int max_val = 0;
-    for (int i = 0; i < graph->num_vertices; i++) {
-        unsigned int val = t[i];
-        if (val > max_val) {
-            max_val = val;
-        }
-    }
-
-    unsigned int field_width = snprintf(NULL, 0, "%u", max_val) + 1; // +1 for the space
-
-    printf("\n");
-    for (int i = 0; i < sqrt(graph->num_vertices); i++) {
-        for (int j = 0; j < sqrt(graph->num_vertices); j++) {
-            if (j % 2 == 0 && i % 2 == 0) {
-                printf("\x1b[107m %*d \x1b[0m", field_width, t[i]);
-            }
-            else if (j % 2 != 0 && i % 2 == 0) {
-                printf("\x1b[48;2;165;42;42m %*d \x1b[0m", field_width, t[i]);
-            }
-            if (j % 2 != 0 && i % 2 != 0) {
-                printf("\x1b[107m %*d \x1b[0m", field_width, t[i]);
-            }
-            else if (j % 2 == 0 && i % 2 != 0) {
-                printf("\x1b[48;2;165;42;42m %*d \x1b[0m", field_width, t[i]);
-            }
-        }
-        printf("\n");
-    }
-    printf("\n");
-}
-
-*/
 
 void sdl_display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number, int size){
     // all int numbers to display different colors with sdl.
@@ -147,6 +111,31 @@ int next_player(int player){
 //function that prints the move
 void print_move(struct move_t move){
     printf("move from %d to %d and arrow at %d \n", move.queen_src, move.queen_dst,move.arrow_dst);
+}
+
+
+
+
+unsigned int* table_q(int length){
+     unsigned int m = ((length / 10) + 1) * 4;
+    unsigned int *q = malloc(m * sizeof(unsigned int));
+    
+
+    // Initialisation des tableaux
+    for (int i = 0; i < m; i++) {
+        q[i] = i;  // exemple d'initialisation
+    }
+
+    return q;
+}
+
+
+void copy(unsigned int *queen[NUM_PLAYERS],unsigned int *q[NUM_PLAYERS] ,int m){
+     for (int i = 0; i < m; i++) {
+        q[0][i] = queen[0][i];
+        q[1][i] = queen[1][i];
+    }
+
 }
 /*this function makes a graph depending on the type of graph taken as argument
 */
@@ -256,9 +245,16 @@ int main(int argc, char* argv[]){
         unsigned int white_queens[m];
         unsigned int black_queens[m];
         unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
+
+        unsigned int *queens1[NUM_PLAYERS]= {table_q(length),table_q(length)};
+        unsigned int *queens2[NUM_PLAYERS]={table_q(length),table_q(length)};
+        
+
         begining_position(queens, length);
-        initialize_player1(0,white_graph,m,queens);
-        initialize_player2(1,black_graph,m,queens);
+         copy(queens, queens1, m);
+         copy(queens,queens2,m);
+        initialize_player1(0,white_graph,m,queens1);
+        initialize_player2(1,black_graph,m,queens2);
         //The starting board
        // sdl_display(graph,queens,m,length);
         //display(graph, queens, m);

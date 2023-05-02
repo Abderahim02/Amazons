@@ -99,8 +99,9 @@ int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct pl
 unsigned int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* graph, struct player player){
     gsl_spmatrix_uint* mat_adj = graph->t;
     unsigned int length=graph->t->size1;
+    //printf("%d = lenght pos =%d \n",length, pos);
     //for(int j=0;j<length;j++)
-   // printf("l'affichage matrice adja=%d  %d\n",gsl_spmatrix_uint_get(mat_adj, pos, j),j);
+   // printf("l'affichage matrice adja=%d  %d\n",gsl_spmatrix_uint_get(mat_adj, pos, 0),0);
     unsigned int i = 0;
     while(i<length){
         if((gsl_spmatrix_uint_get(mat_adj, pos, i)==direction)&&(!element_in_array(player.other_queens,player.num_queens,i))&&(!element_in_array(player.current_queens,player.num_queens,i))){

@@ -227,5 +227,5 @@ void finalize(){
     free(player_blanc.current_queens);
     free(player_blanc.other_queens);
     gsl_spmatrix_uint_free(player_blanc.graph->t);
-    free(player_blanc.graph);
+        free(player_blanc.graph);
 }

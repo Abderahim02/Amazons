@@ -317,8 +317,8 @@ int main(int argc, char* argv[]){
         if(move.queen_dst==UINT_MAX){
             if(i==length*length) printf("eqalité\n");
             else printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
-            //sdl_display(graph,queens,m,length);
-            display(graph,queens,m);
+            sdl_display(graph,queens,m,length);
+            //display(graph,queens,m);
             //player? printf("%d \n", 2): printf("%d \n", 1);
             free_graph(graph);
             finalize_player1();
@@ -329,8 +329,8 @@ int main(int argc, char* argv[]){
             
         }
         player=next_player(player);
-        //sdl_display(graph,queens,m,length);
-        display(graph,queens,m);
+        sdl_display(graph,queens,m,length);
+        //display(graph,queens,m);
 
         }
         free_graph(graph);

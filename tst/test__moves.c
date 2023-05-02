@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "../src/grid.h"
+#include "../src/graph.h"
 #include "../src/move.h"
 #include "../src/moteur.h"
 void print__array(int* t){
@@ -14,6 +14,9 @@ void print__array(int* t){
     }
     printf("]\n");
 }
+
+extern struct graph_t * initialize_graph(unsigned int length);
+
 
 unsigned int *graph_table(struct graph_t *graph){
     unsigned int length=sqrt(graph->t->size1);

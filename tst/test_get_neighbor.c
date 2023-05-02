@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "../src/grid.h"
+#include "../src/graph.h"
 #include "../src/move.h"
 #include "../src/moteur.h"
 

@@ -210,8 +210,8 @@ int main(int argc, char* argv[]){
         }
     }
      if (argc > 1) {
-     void * lib1 = dlopen(argv[argc-2], RTLD_NOW); 
-     void * lib2 = dlopen(argv[argc-1], RTLD_NOW); 
+     void * lib1 = dlopen(argv[argc-2], RTLD_LAZY); 
+     void * lib2 = dlopen(argv[argc-1], RTLD_LAZY); 
      if (lib1 == NULL || lib2 == NULL ) { 
         printf("bibliothèque vide\n"); 
         exit(EXIT_FAILURE); 

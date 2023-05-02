@@ -2,11 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dlfcn.h>
-#include <math.h>
-#include "../src/grid.h"
-#include "../src/dir.h"
-#include "../src/hole.h"
-#include "../src/moteur.h"
+// #include <math.h>
+// #include "../src/grid.h"
+// #include "../src/dir.h"
+// #include "../src/hole.h"
+// #include "../src/moteur.h"
 
 
 

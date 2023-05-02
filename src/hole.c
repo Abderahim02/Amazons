@@ -19,18 +19,7 @@ void hollow_matrix(gsl_spmatrix_uint *mat,int t[], int len ){
     remove_node(t[i],mat);
     }
 }
-// gsl_spmatrix_uint * donut_mat(gsl_spmatrix_uint *mat,int len ){
-//     int t[(len*len)/9];
-//     int c = 0 ;
-//     for (int k = (len/ 3)*len;k < (len/ 3)*len ; k+=len){
-//     for (int i = 0 ; i<len/3 ; i++){
-//         t[c] = k + i; 
-//         c++;
-//     }
-//     }
-//     hollow_matrix(mat,t,mat->size1);
-// return mat;
-// }
+
 void  make_hole(struct graph_t *g, int id, int size){
   int vertices=g->num_vertices;
   int n=(int)sqrt(vertices);

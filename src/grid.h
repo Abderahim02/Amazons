@@ -32,8 +32,10 @@ struct graph_t * initialize_graph(unsigned int length);
 //this function frees the momory blocks allocated for the graph
 void free_graph(struct graph_t* g);
 
+//This function prints the contents of a gsl_spmatrix_uint sparse matrix to the console. 
 void print_sparse_matrix(gsl_spmatrix_uint *mat);
 
+//A helpful function for debugging it prints the board of the game
 void print_board(struct graph_t* graph);
 
 /*this function fill an empty graph with relachionships, it means we puts the right
@@ -42,6 +44,7 @@ every sommit of the graph has a maximum of 8 neighbors*/
 void initialize_graph_positions_classic(struct graph_t* g);
 
 
+//this function can be useful for checking if a vertex can be occupied by a queen in a game
 int empty_cell(struct graph_t *graph, int x, unsigned int size);
 
 #endif // _AMAZON_GRAPH_H_

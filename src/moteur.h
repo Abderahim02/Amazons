@@ -40,6 +40,6 @@ void begining_position(unsigned int* queens[NUM_PLAYERS], unsigned int length);
 void free_player(struct player player);
 
 
-unsigned int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* graph,struct player player);
+int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* graph,struct player player);
 
 #endif

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <getopt.h>
 #include <math.h>
+#include <string.h>
 
 #include "server.h"
 

@@ -116,9 +116,9 @@ test_execute_move.o: ${TST}/test_execute_move.c hole.o
 
 ########################  FIN NE PAS MODIFIER ####################
 
-alltests:  ${TST}/test__moves.o grid.o hole.o moteur.o
+alltests:  ${TST}/test_execute_move.o grid.o hole.o moteur.o
 	make server
-	${CC} -L${GSL_PATH}/lib  ${TST}/test__moves.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov 
+	${CC} -L${GSL_PATH}/lib  ${TST}/test_execute_move.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov 
 
 install: server
 	make server

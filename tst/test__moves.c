@@ -16,6 +16,10 @@ void print__array(int* t){
 }
 
 extern struct graph_t * initialize_graph(unsigned int length);
+extern void initialize_graph_positions_classic(struct graph_t* g);
+extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
+extern void free_graph(struct graph_t* g);
+extern int empty_cell(struct graph_t *graph, int x, unsigned int size);
 
 
 unsigned int *graph_table(struct graph_t *graph){

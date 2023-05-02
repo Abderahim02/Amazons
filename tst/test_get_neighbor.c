@@ -6,6 +6,10 @@
 #include "../src/move.h"
 #include "../src/moteur.h"
 
+extern struct graph_t * initialize_graph(unsigned int length);
+extern void initialize_graph_positions_classic(struct graph_t* g);
+extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
+extern void free_graph(struct graph_t* g);
 
 void test__get_neighbor_gen(){
     unsigned int size=4;

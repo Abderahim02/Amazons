@@ -297,8 +297,8 @@ int main(int argc, char* argv[]){
         //display(graph, queens, m);
        // printf("length  %d\n",length);
         // make_graph(graph, length, 'd');
-        //sdl_display(graph,queens,m,length);
-        display(graph,queens,m);
+        sdl_display(graph,queens,m,length);
+        //display(graph,queens,m);
         struct move_t move={-1,-1,-1};
         int player = start_player();
         //The game loop
@@ -319,8 +319,8 @@ int main(int argc, char* argv[]){
         if(move.queen_dst==UINT_MAX){
             if(i==length*length) printf("eqalité\n");
             else printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
-            //sdl_display(graph,queens,m,length);
-            display(graph,queens,m);
+            sdl_display(graph,queens,m,length);
+            //display(graph,queens,m);
             //player? printf("%d \n", 2): printf("%d \n", 1);
             free_graph(graph);
             // free_graph(white_graph);
@@ -333,11 +333,13 @@ int main(int argc, char* argv[]){
             
         }
         player=next_player(player);
-        //sdl_display(graph,queens,m,length);
-        display(graph,queens,m);
+        sdl_display(graph,queens,m,length);
+        //display(graph,queens,m);
 
         }
-        free_graph(graph);
+        //free_graph(graph);
+        gsl_spmatrix_uint_free(graph->t);
+        free(graph);
         // free_graph(white_graph);
         // free_graph(black_graph);
         finalize_player1();

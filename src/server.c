@@ -295,8 +295,6 @@ int main(int argc, char* argv[]){
         //The starting board
         sdl_display(graph,queens,m,length);
         //display(graph, queens, m);
-       // printf("length  %d\n",length);
-        // make_graph(graph, length, 'd');
         //sdl_display(graph,queens,m,length);
         display(graph,queens,m);
         struct move_t move={-1,-1,-1};
@@ -323,8 +321,6 @@ int main(int argc, char* argv[]){
             display(graph,queens,m);
             //player? printf("%d \n", 2): printf("%d \n", 1);
             free_graph(graph);
-            // free_graph(white_graph);
-            // free_graph(black_graph);
             finalize_player1();
             finalize_player2();
             dlclose(lib1);
@@ -338,8 +334,6 @@ int main(int argc, char* argv[]){
 
         }
         free_graph(graph);
-        // free_graph(white_graph);
-        // free_graph(black_graph);
         finalize_player1();
         finalize_player2();
         dlclose(lib1);

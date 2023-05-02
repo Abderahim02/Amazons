@@ -17,11 +17,17 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph);
  * RETURNS:
  * - the player name as an [a-zA-Z0-9 -_]* string
  */
+// char const* get_player_name(){
+//     player_black.name = "seeer_seeeer";
+//     return player_black.name;
+// }
+
 char const* get_player_name(){
-    player_black.name = "seeer_seeeer";
+    char * pt = (char * )malloc (13*sizeof(char ));
+    *pt = "seeer_seeeer";
+    player_black.name = pt;
     return player_black.name;
 }
-
 
 void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]){
     player_black.id=player_id;
@@ -97,7 +103,8 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
 void finalize(){
     free(player_black.current_queens);
     free(player_black.other_queens);
+    free(player_black.name);
     gsl_spmatrix_uint_free(player_black.graph->t);
-        free(player_black.graph);
+    free(player_black.graph);
 }
 

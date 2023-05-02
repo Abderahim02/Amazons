@@ -22,9 +22,9 @@ struct player player_blanc;
 //     return player_blanc.name;
 // }
 char const* get_player_name(){
-    char * pt = (char * )malloc (30*sizeof(char ));
-    strcpy(pt, "Dir_niya");
-    player_blanc.name = pt;
+    // char * pt = (char * )malloc (30*sizeof(char ));
+    // strcpy(pt, "Dir_niya");
+    player_blanc.name = "Dir_niya";
     return player_blanc.name;
 }
 

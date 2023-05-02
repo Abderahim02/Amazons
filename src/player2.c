@@ -23,9 +23,9 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph);
 // }
 
 char const* get_player_name(){
-    char * pt = (char *) malloc(30 * sizeof(char));
-    strcpy(pt, "seeer_seeeer");
-    player_black.name = pt;
+    // char * pt = (char *) malloc(30 * sizeof(char));
+    // strcpy(pt, "seeer_seeeer");
+    player_black.name = "seeer_seeeer";
     return player_black.name;
 }
 

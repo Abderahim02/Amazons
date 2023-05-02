@@ -114,6 +114,39 @@ unsigned int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct gra
 
 }
 
+//this function beging positions of the queen for both players 
+void begining_position(unsigned int* queens[NUM_PLAYERS], unsigned int length){
+    unsigned int *t=queens[0];
+    unsigned int *t2=queens[1];
+    int m=((length/10)+1)*4;
+    int tmp=0;
+    for(int i=1;i<=m/4;i++){
+        t[tmp]=(1+length/7)*i+length*(length-1);
+        tmp++;
+        t[tmp]=length-1-(1+length/7)*i+length*(length-1);
+        tmp++;
+    }
+    for(int i=1;i<=m/4;i++){
+        t[tmp]=length*(length-1)-length*(1+length/7)*i;
+        tmp++;
+        t[tmp]=length*(length-1)-length*(1+length/7)*i+length-1;
+        tmp++;
+    }
+     tmp=0;
+    for(int i=1;i<=m/4;i++){
+        t2[tmp]=(1+length/7)*i;
+        tmp++;
+        t2[tmp]=length-1-(1+length/7)*i;
+        tmp++;
+    }
+    for(int i=1;i<=m/4;i++){
+        t2[tmp]=length*(1+length/7)*(i);
+        tmp++;
+        t2[tmp]=length*(1+length/7)*i+length-1;
+        tmp++;
+    }
+}
+
 void free_player(struct player player){
     free(player.current_queens);
     free(player.other_queens);

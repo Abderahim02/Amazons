@@ -11,39 +11,6 @@
 
 
 
-void begining_position(unsigned int* queens[NUM_PLAYERS], unsigned int length){
-    unsigned int *t=queens[0];
-    unsigned int *t2=queens[1];
-    int m=((length/10)+1)*4;
-    int tmp=0;
-    for(int i=1;i<=m/4;i++){
-        t[tmp]=2*i+length*(length-1);
-        tmp++;
-        t[tmp]=length-1-2*i+length*(length-1);
-        tmp++;
-    }
-    for(int i=1;i<=m/4;i++){
-        t[tmp]=length*(length-1)-length*2*i;
-        tmp++;
-        t[tmp]=length*(length-1)-length*2*i+length-1;
-        tmp++;
-    }
-     tmp=0;
-    for(int i=1;i<=m/4;i++){
-        t2[tmp]=2*i;
-        tmp++;
-        t2[tmp]=length-1-2*i;
-        tmp++;
-    }
-    for(int i=1;i<=m/4;i++){
-        t2[tmp]=length*2*(i);
-        tmp++;
-        t2[tmp]=length*2*i+length-1;
-        tmp++;
-    }
-    //printf("tmp2=%d \n",tmp);
-}
-
 void test_execute_move(){
     int LENGHT = 8;
     void *handle1;

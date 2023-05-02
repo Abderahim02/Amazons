@@ -26,38 +26,6 @@ struct move_t(*play2)(struct move_t previous_move);
         
 
 
-//this function beging positions of the queen for both players 
-void begining_position(unsigned int* queens[NUM_PLAYERS], unsigned int length){
-    unsigned int *t=queens[0];
-    unsigned int *t2=queens[1];
-    int m=((length/10)+1)*4;
-    int tmp=0;
-    for(int i=1;i<=m/4;i++){
-        t[tmp]=(1+length/7)*i+length*(length-1);
-        tmp++;
-        t[tmp]=length-1-(1+length/7)*i+length*(length-1);
-        tmp++;
-    }
-    for(int i=1;i<=m/4;i++){
-        t[tmp]=length*(length-1)-length*(1+length/7)*i;
-        tmp++;
-        t[tmp]=length*(length-1)-length*(1+length/7)*i+length-1;
-        tmp++;
-    }
-     tmp=0;
-    for(int i=1;i<=m/4;i++){
-        t2[tmp]=(1+length/7)*i;
-        tmp++;
-        t2[tmp]=length-1-(1+length/7)*i;
-        tmp++;
-    }
-    for(int i=1;i<=m/4;i++){
-        t2[tmp]=length*(1+length/7)*(i);
-        tmp++;
-        t2[tmp]=length*(1+length/7)*i+length-1;
-        tmp++;
-    }
-}
 
 int *graph_table(struct graph_t *graph){
     unsigned int length=sqrt(graph->t->size1);
@@ -273,12 +241,10 @@ int main(int argc, char* argv[]){
         //Initialize graphs
         struct graph_t* graph = initialize_graph(length);
         initialize_graph_positions_classic(graph);
-        
         struct graph_t* white_graph = initialize_graph(length);
-        initialize_graph_positions_classic(white_graph);
-
+        strcpy(white_graph, graph);
         struct graph_t* black_graph = initialize_graph(length);
-        initialize_graph_positions_classic(black_graph);
+        strcpy(black_graph, graph);
         //we make hole or not depending on the type of the grapg for the tree graphs 
         make_graph(graph, length, graph_type);
         make_graph(white_graph, length, graph_type);

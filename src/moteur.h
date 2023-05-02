@@ -35,6 +35,7 @@ int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struc
 
 enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t direction,struct player player);
 
+void begining_position(unsigned int* queens[NUM_PLAYERS], unsigned int length);
 
 void free_player(struct player player);
 

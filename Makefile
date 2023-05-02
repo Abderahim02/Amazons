@@ -13,7 +13,7 @@ CFLAGS = -std=c99 -Wall -lm -Wextra -fPIC -g3 -I$(GSL_PATH)/include -I${INSTALL}
 LDFLAGS = -lm -lgsl -lgslcblas -ldl -lgcov\	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \	-Wl,--rpath=${GSL_PATH}/lib
 # OBJS = $(SRCS:.c=.o)
 
-CFLAGS += -fprofile-arcs -ftest-coverage 
+#CFLAGS += -fprofile-arcs -ftest-coverage 
 # LDFLAGS += -fprofile-arcs -ftest-coverage 
 
 

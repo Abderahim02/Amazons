@@ -211,7 +211,7 @@ void make_graph(struct graph_t * g, unsigned int m ,char s ){
 int main(int argc, char* argv[]){
     /* START GETOPT */
     unsigned int length=8;
-    int turns=50;
+    unsigned int turns=50;
     extern char *optarg;
     int opt=0;
     char graph_type  = 'c'; //we set the default type of world at squared world
@@ -302,7 +302,7 @@ int main(int argc, char* argv[]){
         struct move_t move={-1,-1,-1};
         int player = start_player();
         //The game loop
-        for(int i=0;i<turns;i++){
+        for(unsigned int i=0;i<turns;i++){
          //  printf("########## TOUR: %d ##########\n", i+1);
         if(player==BLACK){
             move=play2(move);
@@ -323,8 +323,8 @@ int main(int argc, char* argv[]){
             //display(graph,queens,m);
             //player? printf("%d \n", 2): printf("%d \n", 1);
             free_graph(graph);
-            // free_graph(white_graph);
-            // free_graph(black_graph);
+            free_graph(white_graph);
+            free_graph(black_graph);
             finalize_player1();
             finalize_player2();
             dlclose(lib1);
@@ -342,6 +342,9 @@ int main(int argc, char* argv[]){
         free(graph);
         // free_graph(white_graph);
         // free_graph(black_graph);
+        free_graph(graph);
+        //free_graph(white_graph);
+        //free_graph(black_graph);
         finalize_player1();
         finalize_player2();
         dlclose(lib1);

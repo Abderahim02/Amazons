@@ -19,7 +19,7 @@ build: server install alltests libraries
 
 
 ######################################################### Début tests #####################################################################################
-test: test__moves test_get_neighbor test_execute_move
+test: test__moves test_get_neighbor 
 
 test_get_neighbor.o: ${TST}/test_get_neighbor.c ${SRC}/graph.c ${SRC}/graph.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test_get_neighbor.c

@@ -8,11 +8,12 @@ BIN = server
 CC = gcc
 SRC = src
 TST = tst
-CFLAGS = -std=c99 -Wall -lm -Wextra -fPIC -g3 -I$(GSL_PATH)/include 
-LDFLAGS = -lm -lgsl -lgslcblas -ldl \	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \	-Wl,--rpath=${GSL_PATH}/lib
+INSTALL = install
+CFLAGS = -std=c99 -Wall -lm -Wextra -fPIC -g3 -I$(GSL_PATH)/include -I${INSTALL} -I${SRC} 
+LDFLAGS = -lm -lgsl -lgslcblas -ldl -lgcov\	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \	-Wl,--rpath=${GSL_PATH}/lib
 # OBJS = $(SRCS:.c=.o)
 
-# CFLAGS += -fprofile-arcs -ftest-coverage 
+CFLAGS += -fprofile-arcs -ftest-coverage 
 # LDFLAGS += -fprofile-arcs -ftest-coverage 
 
 
@@ -81,7 +82,7 @@ server: server.o  grid.o moteur.o hole.o  #libplayer1.so libplayer2.so
 client: 
 
 test_execute_move.o: ${TST}/test_execute_move.c hole.o 
-	${CC} $(CFLAGS) -I ${SRC} -I ${TST} ${TST}/test_execute_move.c  -c --coverage
+	${CC} $(CFLAGS) -I ${SRC} -I ${TST} ${TST}/test_execute_move.c  -c 
 
 
 ############################# NE PAS MODIFIER ####################
@@ -118,7 +119,7 @@ test_execute_move.o: ${TST}/test_execute_move.c hole.o
 
 alltests:  ${TST}/test_execute_move.o grid.o hole.o moteur.o
 	make server
-	${CC} -L${GSL_PATH}/lib  ${TST}/test_execute_move.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov --coverage
+	${CC} -L${GSL_PATH}/lib  ${TST}/test_execute_move.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov 
 
 install: server
 	make server

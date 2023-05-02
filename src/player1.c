@@ -22,8 +22,8 @@ struct player player_blanc;
 //     return player_blanc.name;
 // }
 char const* get_player_name(){
-    char * pt = (char * )malloc (9*sizeof(char ));
-    *pt = "Dir_niya";
+    char * pt = (char * )malloc (30*sizeof(char ));
+    strcpy(pt, "Dir_niya");
     player_blanc.name = pt;
     return player_blanc.name;
 }
@@ -234,5 +234,5 @@ void finalize(){
     free(player_blanc.other_queens);
     free(player_blanc.name);
     gsl_spmatrix_uint_free(player_blanc.graph->t);
-        free(player_blanc.graph);
+    free(player_blanc.graph);
 }

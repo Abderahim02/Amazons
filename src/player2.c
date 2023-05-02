@@ -23,8 +23,8 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph);
 // }
 
 char const* get_player_name(){
-    char * pt = (char * )malloc (13*sizeof(char ));
-    *pt = "seeer_seeeer";
+    char * pt = (char *) malloc(30 * sizeof(char));
+    strcpy(pt, "seeer_seeeer");
     player_black.name = pt;
     return player_black.name;
 }

@@ -11,6 +11,8 @@ extern struct graph_t * initialize_graph(unsigned int length);
 // extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
 extern void free_graph(struct graph_t* g);
 
+extern void  make_zero_i_j(struct graph_t *g, int i, int j);
+
 void test__get_neighbor_gen(){
     unsigned int size=4;
     struct graph_t* graph = initialize_graph(size);
@@ -130,13 +132,12 @@ void test_make_i_j(){
     struct graph_t* graph = (struct graph_t*) malloc(sizeof(struct graph_t));
     gsl_spmatrix_uint *mat = gsl_spmatrix_uint_alloc(length, length);
     gsl_spmatrix_uint* g = gsl_spmatrix_uint_compress(mat, GSL_SPMATRIX_CSR);
-    unsigned int size=8;
     g->size1 = 3;
     g->size2 = 3;
     g->nz = 4;
-    g->p = (size_t*) malloc((g->size1 + 1) * sizeof(size_t));
+    g->p = (int *) malloc((g->size1 + 1) * sizeof(int *));
     g->i = (int*) malloc(g->nz * sizeof(int));
-    g->data = (double*) malloc(g->nz * sizeof(double));
+    g->data = (unsigned int *) malloc(g->nz * sizeof(unsigned int *));
     g->p[0] = 0;
     g->p[1] = 1;
     g->p[2] = 2;

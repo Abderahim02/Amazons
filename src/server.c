@@ -174,7 +174,6 @@ void make_graph(struct graph_t * g, unsigned int m ,char s ){
             g->num_vertices = m*m;
             break;
         case 'd':
-            printf("i am a donut \n");
             make_hole(g, (m/3)*m + m/3 , m/3);
             g->num_vertices = 8*m*m/9;
             break;
@@ -286,9 +285,9 @@ int main(int argc, char* argv[]){
         //The starting board
        // sdl_display(graph,queens,m,length);
         //display(graph, queens, m);
-        //sdl_display(graph,queens,m,length);
+        sdl_display(graph,queens,m,length);
         // make_hole(graph, 10, 2);
-        display(graph,queens,m);
+       // display(graph,queens,m);
 
         struct move_t move={-1,-1,-1};
         int player = start_player();
@@ -310,8 +309,8 @@ int main(int argc, char* argv[]){
         if(move.queen_dst==UINT_MAX){
             if(i==length*length) printf("eqalité\n");
             else printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
-            //sdl_display(graph,queens,m,length);
-            display(graph,queens,m);
+            sdl_display(graph,queens,m,length);
+          //  display(graph,queens,m);
             //player? printf("%d \n", 2): printf("%d \n", 1);
             free_graph(graph);
             finalize_player1();
@@ -322,8 +321,8 @@ int main(int argc, char* argv[]){
             
         }
         player=next_player(player);
-        //sdl_display(graph,queens,m,length);
-        display(graph,queens,m);
+        sdl_display(graph,queens,m,length);
+        //display(graph,queens,m);
 
         }
         //free(queens1[0]);

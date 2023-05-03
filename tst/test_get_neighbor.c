@@ -104,7 +104,7 @@ void test__get_neighbor_gen(){
 }
 
 
-int main(){
-    test__get_neighbor_gen();
-    return 0;
-}
+// int main(){
+//     test__get_neighbor_gen();
+//     return 0;
+// }

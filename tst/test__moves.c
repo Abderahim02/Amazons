@@ -15,6 +15,8 @@ void print__array(int* t){
     printf("]\n");
 }
 
+extern void test__get_neighbor_gen();
+
 extern struct graph_t * initialize_graph(unsigned int length);
 extern void initialize_graph_positions_classic(struct graph_t* g);
 extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
@@ -172,6 +174,7 @@ int main(){
     test__put_arrow();
     test__begining_position();
     test__execute_move();
+    test__get_neighbor_gen();
     printf("OK all__tests\n");
     return 0;
 }

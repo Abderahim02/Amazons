@@ -1,5 +1,4 @@
 GSL_PATH ?=/usr/local
-AMAZONS_FLAGS = -DLENGHT=$(LENGHT)
 
 
 BIN = server
@@ -8,48 +7,29 @@ SRC = src
 TST = tst
 INSTALL = install
 
-CFLAGS = -std=c99 -Wall -lm -Wextra -fPIC -g3 -I$(GSL_PATH)/include -I${INSTALL} -I${SRC} #--coverage
-LDFLAGS = -lm -lgsl -lgslcblas -ldl -lgcov\	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \	-Wl,--rpath=${GSL_PATH}/lib
-TEST = test_get_neighbor test__moves
+CFLAGS = -std=c99 -Wall -lm -Wextra -fPIC -g3 -I$(GSL_PATH)/include -I${INSTALL} -I${SRC}
+
+LDFLAGS = -lm -lgsl -lgslcblas -ldl -lgcov\ -L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \ -Wl,--rpath=${GSL_PATH}/lib
 
 export LD_LIBRARY_PATH=./
 
 all: build
-build: server install alltests libraries
+build: server install test libraries
 
 
-######################################################### Début tests #####################################################################################
-test: test_get_neighbor 
+test: tst/* src/*
+	${CC} -L${GSL_PATH}/lib -ftest-coverage -fprofile-arcs tst/test__moves.c tst/test_get_neighbor.c   src/graph.c src/moteur.c src/hole.c -lgsl -lgslcblas -lm -ldl -o alltests -ldl
 
-test_get_neighbor.o: ${TST}/test_get_neighbor.c graph.o ${SRC}/graph.h
-	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test_get_neighbor.c
-
-test_get_neighbor: test_get_neighbor.o graph.o moteur.o hole.o 
-	${CC} -fprofile-arcs -ftest-coverage -L${GSL_PATH}/lib test_get_neighbor.o graph.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
-
-test__moves.o: ${TST}/test__moves.c graph.o ${SRC}/graph.h
-	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test__moves.c
-
-test__moves: test__moves.o graph.o moteur.o hole.o 
-	${CC} -L${GSL_PATH}/lib test__moves.o graph.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
-
-test_execute_move.o: ${TST}/test_execute_move.c hole.o 
-	${CC} $(CFLAGS) -I ${SRC} -I ${TST} ${TST}/test_execute_move.c  -c 
-
-######################################################### Fin tests #####################################################################################
-
-######################################################### Début fichiers objets #####################################################################################
 
 graph.o: ${SRC}/graph.c ${SRC}/graph.h
-	${CC} -Wall  -ftest-coverage -fprofile-arcs -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/graph.c -lgcov
-	#${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -c ${SRC}/graph.c -lgcov
+	${CC}  -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/graph.c 
 
 hole.o: ${SRC}/hole.c  ${SRC}/graph.h 
-	${CC} -Wall -ftest-coverage -fprofile-arcs -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/hole.c -lgcov 
+	${CC}  -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/hole.c 
 
 moteur.o: ${SRC}/moteur.c ${SRC}/graph.h
-	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -c ${SRC}/moteur.c -lgcov
-	
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -c ${SRC}/moteur.c 
+
 player2.o:  ${SRC}/player2.c 
 	${CC} $(CFLAGS) -I${SRC} -c  $< 
 
@@ -57,51 +37,27 @@ player1.o: ${SRC}/player1.c
 	${CC} $(CFLAGS) -I${SRC} -c  $<  
 
 server.o: ${SRC}/server.c ${SRC}/player.h ${SRC}/graph.h ${SRC}/hole.h
-	${CC} $(CFLAGS) -c ${SRC}/server.c -ldl -lgcov 
+	${CC} $(CFLAGS) -c ${SRC}/server.c -ldl 
 
-######################################################### Fin fichiers objets #####################################################################################
-
-######################################################### Début libraries #####################################################################################
 
 libraries:player1.o player2.o moteur.o
 	${CC} -shared player2.o moteur.o -o libplayer2.so
 	${CC} -shared player1.o moteur.o -o libplayer1.so
 
-######################################################### Fin libraries #####################################################################################
 
-
-######################################################### Début Server #####################################################################################
-
-server: server.o  graph.o moteur.o hole.o  #libplayer1.so libplayer2.so
-	${CC} -L${GSL_PATH}/lib server.o graph.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov 
-
-######################################################### Fin Server #####################################################################################
-
-
-
-######################################################### Début Alltests #####################################################################################
-
-
-alltests:  ${TST}/test_execute_move.o graph.o  moteur.o hole.o
-	make server
-	${CC} -L${GSL_PATH}/lib  ${TST}/test_execute_move.o graph.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov 
-
-######################################################### Fin Alltests #####################################################################################
-
+server: server.o  graph.o moteur.o hole.o 
+	${CC} -L${GSL_PATH}/lib server.o graph.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
 
 install: server
 	make server
 	make libraries
-	make alltests
+	make test
 	if [ -f server ]; then cp server install/; fi
 	if [ -f alltests ]; then cp alltests install/; fi
 	cp *.so install
 	make clean
 
 clean:
-	@rm -f *~ *.so *.o  ${TST}/*.o  tst/*.gcno ${BIN} *~ */*~ ${SRC}/*.o server alltests ${TEST}
-	rm -f test_get_neighbor.o
-#	rm -f *.gcno
-#	rm -f *.gcda
+	@rm -f *~ *.so *.o  ${TST}/*.o  tst/*.gcno ${BIN} *~ */*~ ${SRC}/*.o server alltests ${TEST} *.gcda
 
 .PHONY: client install test clean

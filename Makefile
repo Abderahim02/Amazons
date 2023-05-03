@@ -81,7 +81,7 @@ server: server.o  grid.o moteur.o hole.o  #libplayer1.so libplayer2.so
 client: 
 
 test_execute_move.o: ${TST}/test_execute_move.c hole.o 
-	${CC} $(CFLAGS) -I ${SRC} -I ${TST} ${TST}/test_execute_move.c  -c --coverage
+	${CC} $(CFLAGS) -I ${SRC} -I ${TST} ${TST}/test_execute_move.c  -c +
 
 
 ############################# NE PAS MODIFIER ####################
@@ -112,7 +112,8 @@ test_execute_move.o: ${TST}/test_execute_move.c hole.o
 
 # alltests:  ${TST}/test_execute_move.o grid.o hole.o moteur.o
 # 	make server
-# 	${CC} -L${GSL_PATH}/lib  ${TST}/test_execute_move.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov
+# 	${CC} -L${GSL_PATH}/lib  ${TST}/test_execute_move.o grid.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov -fprofile-arcs
+
 
 ########################  FIN NE PAS MODIFIER ####################
 

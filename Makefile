@@ -19,15 +19,15 @@ build: server install alltests libraries
 
 
 ######################################################### Début tests #####################################################################################
-test: test__moves test_get_neighbor 
+test: test_get_neighbor 
 
-test_get_neighbor.o: ${TST}/test_get_neighbor.c ${SRC}/graph.c ${SRC}/graph.h
+test_get_neighbor.o: ${TST}/test_get_neighbor.c graph.o ${SRC}/graph.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test_get_neighbor.c
 
 test_get_neighbor: test_get_neighbor.o graph.o moteur.o hole.o 
 	${CC} -fprofile-arcs -ftest-coverage -L${GSL_PATH}/lib test_get_neighbor.o graph.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
 
-test__moves.o: ${TST}/test__moves.c ${SRC}/graph.c ${SRC}/graph.h
+test__moves.o: ${TST}/test__moves.c graph.o ${SRC}/graph.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test__moves.c
 
 test__moves: test__moves.o graph.o moteur.o hole.o 

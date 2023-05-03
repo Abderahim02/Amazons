@@ -78,11 +78,11 @@ enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t d
     return dir;
 }
 
-int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player){
+unsigned int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player){
     unsigned int length=sqrt(graph->t->size1);
-    int* t=(int *)malloc(sizeof(int)*(length*2+1));
+    unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*(length*2+1));
     int i=1;
-    int tmp=pos;
+    unsigned int tmp=pos;
     while(get_neighbor_gen(tmp,dir,graph,player)!=UINT_MAX){
         t[i]=get_neighbor_gen(tmp,dir,graph,player);
         tmp=t[i];
@@ -94,7 +94,7 @@ int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struc
 }
 
 int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player){
-    int *t=available_dst(graph, dir, pos,player);
+    unsigned int *t=available_dst(graph, dir, pos,player);
     int dst=t[(rand()%t[0])+1];
     free(t);
     return dst;

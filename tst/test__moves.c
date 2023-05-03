@@ -5,6 +5,8 @@
 #include "../src/graph.h"
 #include "../src/move.h"
 #include "../src/moteur.h"
+#include <dlfcn.h>
+
 void print__array(int* t){
     int* ptr=t;
     printf("[");
@@ -169,12 +171,15 @@ void test__execute_move(){
 
 
 
+
+
 int main(){
-    test__available_dst();
-    test__put_arrow();
-    test__begining_position();
-    test__execute_move();
-    test__get_neighbor_gen();
+    // test__available_dst();
+    // test__put_arrow();
+    // test__begining_position();
+    // test__execute_move();
+    // test__get_neighbor_gen();
+    //test_make_hole();
     printf("OK all__tests\n");
     return 0;
 }

@@ -40,7 +40,6 @@ void delete_element(struct graph_t* graph, unsigned int i, unsigned int j){
 position of the queen after the move*/
 void execute_move(struct move_t move, struct graph_t *graph, unsigned int *queens){
     unsigned int length=sqrt(graph->t->size1);
-   // printf("%d %d\n",move.arrow_dst, move.queen_dst);
     if((int)move.queen_dst>=0){
     int queen_number = 4*(length/10 + 1 );
     for(int  i =0; i < queen_number ; ++i ){
@@ -52,9 +51,7 @@ void execute_move(struct move_t move, struct graph_t *graph, unsigned int *queen
     if((int)move.arrow_dst!=-1 || move.arrow_dst!=UINT_MAX){
         put_arrow(graph, move.arrow_dst);
     }
-     //here we updates the graph, we make the position arrow_dst isolated
-    // print_sparse_matrix(graph->t);
-}
+    }
 }
 
 int element_in_array(unsigned int *array, unsigned int size, unsigned int element){
@@ -98,7 +95,6 @@ int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struc
 
 int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player){
     int *t=available_dst(graph, dir, pos,player);
-  // printf("division=%d\n",t[0]);
     int dst=t[(rand()%t[0])+1];
     free(t);
     return dst;

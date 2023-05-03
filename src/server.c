@@ -23,17 +23,7 @@ extern struct graph_t *graph_cpy(const struct graph_t *graph, int size);
 
 extern int empty_cell(struct graph_t *graph, int x, unsigned int size);
 
-// extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
 
-// extern void print_board(struct graph_t* graph);
-
-// extern void initialize_graph_positions_classic(struct graph_t* g);
-
-// extern void initialize_donut_graph(struct graph_t* graph);
-
-// extern void initialize_trefle_graph(struct graph_t* graph);
-
-// extern void initialize_eight_graph(struct graph_t* graph);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -283,8 +273,7 @@ int main(int argc, char* argv[]){
         initialize_player1(0,white_graph,m,queens1);
         initialize_player2(1,black_graph,m,queens2);
         //The starting board
-       // sdl_display(graph,queens,m,length);
-        //display(graph, queens, m);
+       /;
         sdl_display(graph,queens,m,length);
         // make_hole(graph, 10, 2);
        // display(graph,queens,m);
@@ -298,11 +287,10 @@ int main(int argc, char* argv[]){
             move=play2(move);
          //   printf("Joueur: %s\n", black_player);
             execute_move(move,graph,queens[1]);
-         //   print_move(move);
+
         }
         else{
             move=play1(move);
-         //   printf("Joueur: %s\n", white_player);
             execute_move(move,graph,queens[0]);
           //  print_move(move);
         }
@@ -311,7 +299,7 @@ int main(int argc, char* argv[]){
             else printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
             sdl_display(graph,queens,m,length);
           //  display(graph,queens,m);
-            //player? printf("%d \n", 2): printf("%d \n", 1);
+
             free_graph(graph);
             finalize_player1();
             finalize_player2();
@@ -325,11 +313,6 @@ int main(int argc, char* argv[]){
         //display(graph,queens,m);
 
         }
-        //free(queens1[0]);
-        //free(queens1[1]);
-
-        //free(queens2[0]);
-        //free(queens2[1]);
         free_graph(graph);
         finalize_player1();
         finalize_player2();

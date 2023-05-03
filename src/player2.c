@@ -61,30 +61,24 @@ struct move_t play(struct move_t previous_move){
         queen_index=r;
         queen=player_black.current_queens[queen_index];
         dir=available_dir(queen,player_black.graph,NO_DIR,player_black);
-    //    printf("available 3tat dir=%d\n",dir);
         r=(r+1)%player_black.num_queens;
        
     }
-   // printf("la direction est %d et queen %d\n", dir, queen);
     if(dir==NO_DIR){
         return move;
     }
-  // printf("dir=%d queen=%d\n",dir,queen);
      move.queen_src=queen;
      move.queen_dst=random_dst(player_black.graph,dir,queen, player_black);
      player_black.current_queens[queen_index]=move.queen_dst;
      queen=move.queen_dst;
      enum dir_t dir2=available_dir(queen,player_black.graph,dir,player_black);
 
-     //printf("DIR2 EST %d\n", dir2);
      if(dir2==NO_DIR){
         move.arrow_dst=move.queen_src;
      }
      else {
-        //printf("queen %d\n",queen);
          move.arrow_dst=random_dst(player_black.graph,dir2,move.queen_dst,player_black);
      }
-     //printf("-----------------------------\n");
     execute_move(move,player_black.graph,player_black.current_queens);
     return move;  
 }
@@ -97,7 +91,6 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
 void finalize(){
     free(player_black.current_queens);
     free(player_black.other_queens);    
-   // free(player_black.name);
     gsl_spmatrix_uint_free(player_black.graph->t);
     free(player_black.graph);
 }

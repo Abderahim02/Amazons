@@ -7,15 +7,13 @@
 #include "../src/moteur.h"
 
 extern struct graph_t * initialize_graph(unsigned int length);
-extern void initialize_graph_positions_classic(struct graph_t* g);
-extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
+// extern void initialize_graph_positions_classic(struct graph_t* g);
+// extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
 extern void free_graph(struct graph_t* g);
 
 void test__get_neighbor_gen(){
     unsigned int size=4;
     struct graph_t* graph = initialize_graph(size);
-    initialize_graph_positions_classic(graph);
-    print_sparse_matrix(graph->t);
 
     enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
     struct player player;
@@ -183,7 +181,9 @@ void test_make_i_j(){
 }
 
 
-void test_make_hole(){
+void test_make_hole
+
+(){
     // Create a graph
     int length = 3;
     struct graph_t* graph = (struct graph_t*) malloc(sizeof(struct graph_t));

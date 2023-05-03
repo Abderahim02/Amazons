@@ -10,11 +10,28 @@
 
 /*this function puts an arrow in the position idx in the graph, it puts NO_DIT with all of its neighbors*/
 void put_arrow(struct graph_t* graph, unsigned int idx){
-    unsigned int length=sqrt(graph->t->size1);
-    for(int i=0; i < length*length; ++i){
-        if(gsl_spmatrix_uint_get(graph->t, idx, i) != NO_DIR ){
-            gsl_spmatrix_uint_set(graph->t, idx, i, NO_DIR );
-            gsl_spmatrix_uint_set(graph->t, i, idx, NO_DIR);
+    for(unsigned int i=0; i< graph->num_vertices; i++){
+        delete_element(graph, i, idx);
+    }
+    for(unsigned int i=0; i<graph->num_vertices; i++){
+        delete_element(graph, idx, i);
+    }
+}
+
+void delete_element(struct graph_t* graph, unsigned int i, unsigned int j){
+    size_t row_start=graph->t->p[i];
+    size_t row_end=graph->t->p[i+1];
+
+    for(size_t k=row_start; k<row_end; k++){
+        if(graph->t->i[k]==j){
+            for(size_t l=k; l<graph->t->nz-1; l++){
+                graph->t->data[l]=graph->t->data[l+1];
+                graph->t->i[l]=graph->t->i[l+1];
+            }
+            graph->t->nz--;
+            for(size_t l=i+1; l<graph->t->size1+1; l++){
+                graph->t->p[l]--;
+            }
         }
     }
 }
@@ -40,13 +57,6 @@ void execute_move(struct move_t move, struct graph_t *graph, unsigned int *queen
 }
 }
 
-
-// int element_in_array(unsigned int *t, int size,unsigned int x){
-//     for(int i=0;i<size;i++){
-//         if(t[i]==x) return 1;
-//     }
-//     return 0;
-// }
 int element_in_array(unsigned int *array, unsigned int size, unsigned int element){
     for(unsigned int j=0; j<size; j++){
         if(array[j]==element){
@@ -59,7 +69,7 @@ int element_in_array(unsigned int *array, unsigned int size, unsigned int elemen
 enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t direction,struct player player){
     enum dir_t dir=rand()%8+1;
     int cmp=0;
-    while((get_neighbor_gen(queen,dir,graph,player)==-1 || dir==direction) && cmp<9){
+    while((get_neighbor_gen(queen,dir,graph,player)==UINT_MAX || dir==direction) && cmp<9){
         dir++;
         dir=dir%9;
         if(dir==0) dir++;
@@ -76,7 +86,7 @@ int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struc
     int* t=(int *)malloc(sizeof(int)*(length*2+1));
     int i=1;
     int tmp=pos;
-    while(get_neighbor_gen(tmp,dir,graph,player)!=-1){
+    while(get_neighbor_gen(tmp,dir,graph,player)!=UINT_MAX){
         t[i]=get_neighbor_gen(tmp,dir,graph,player);
         tmp=t[i];
         i++;
@@ -97,20 +107,17 @@ int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct pl
 
 
 unsigned int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* graph, struct player player){
-    gsl_spmatrix_uint* mat_adj = graph->t;
-    unsigned int length=graph->t->size1;
-    //printf("%d = lenght pos =%d \n",length, pos);
-    //for(int j=0;j<length;j++)
-   // printf("l'affichage matrice adja=%d  %d\n",gsl_spmatrix_uint_get(mat_adj, pos, 0),0);
-    unsigned int i = 0;
-    while(i<length){
-        if((gsl_spmatrix_uint_get(mat_adj, pos, i)==direction)&&(!element_in_array(player.other_queens,player.num_queens,i))&&(!element_in_array(player.current_queens,player.num_queens,i))){
-            return i;
+
+    unsigned int row_start=graph->t->p[pos];
+    unsigned int row_end=graph->t->p[pos+1];
+    for(size_t j=row_start; j<row_end; j++){
+        unsigned int neighbor=graph->t->i[j];
+        unsigned int dir=graph->t->data[j];
+        if(dir==direction && (!element_in_array(player.other_queens,player.num_queens,j))&&(!element_in_array(player.current_queens,player.num_queens,j))){
+            return neighbor;
         }
-        
-        i++;
     }
-    return -1;
+    return UINT_MAX;
 
 }
 

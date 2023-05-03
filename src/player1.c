@@ -4,7 +4,7 @@
 #include "moteur.h" 
 #include "player.h"
 #include "dir.h"
-#include "grid.h"
+#include "graph.h"
 #include <time.h>
 
 
@@ -22,25 +22,38 @@ struct player player_blanc;
 //     return player_blanc.name;
 // }
 char const* get_player_name(){
-    char * pt = (char * )malloc (9*sizeof(char ));
-    *pt = "Dir_niya";
-    player_blanc.name = pt;
+    // char * pt = (char * )malloc (30*sizeof(char ));
+    // strcpy(pt, "Dir_niya");
+    player_blanc.name = "Dir_niya";
     return player_blanc.name;
 }
 
 void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]){
+     int m=((graph->t->size1/10)+1)*4;
+    
     player_blanc.id=player_id;
     player_blanc.graph=graph;
     player_blanc.num_queens=num_queens;
     player_blanc.turn=0;
-    int m=((graph->num_vertices/10)+1)*4;
-    player_blanc.current_queens=(unsigned int *)malloc(sizeof(unsigned int)*m);
+    player_blanc.current_queens=queens[player_id];//(unsigned int *)malloc(sizeof(unsigned int)*m);
+    player_blanc.other_queens=queens[(player_id+1)%2];//(unsigned int *)malloc(sizeof(unsigned int)*m);
+   
+    // player_blanc.current_queens=queens[player_id];
+    // player_blanc.other_queens=queens[(player_id+1)%2];
+    // for(int i=0; i<num_queens ;i++){
+    //     printf("%d ",player_blanc.current_queens[i]);
+    //     printf("%d ",player_blanc.other_queens[i]);
+    //     printf(" id =%d ",queens[player_id][i]);
+    //     printf("id+1=%d \n",queens[(player_id+1)%2][i]);
+    // }
+    // int m=((graph->num_vertices/10)+1)*4;
+    // player_blanc.current_queens=(unsigned int *)malloc(sizeof(unsigned int)*m);
 
-    player_blanc.other_queens=(unsigned int *)malloc(sizeof(unsigned int)*m);
-    for(unsigned int i=0;i<num_queens;i++){
-        player_blanc.current_queens[i]=queens[player_id][i];
-        player_blanc.other_queens[i]=queens[(player_id+1)%2][i];
-    }
+    // player_blanc.other_queens=(unsigned int *)malloc(sizeof(unsigned int)*m);
+    // for(unsigned int i=0;i<num_queens;i++){
+    //     player_blanc.current_queens[i]=queens[player_id][i];
+    //     player_blanc.other_queens[i]=queens[(player_id+1)%2][i];
+    // }
 }
 
 
@@ -232,7 +245,7 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
 void finalize(){
     free(player_blanc.current_queens);
     free(player_blanc.other_queens);
-    free(player_blanc.name);
+   // free(player_blanc.name);
     gsl_spmatrix_uint_free(player_blanc.graph->t);
-        free(player_blanc.graph);
+    free(player_blanc.graph);
 }

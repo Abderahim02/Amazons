@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "grid.h"
+#include "graph.h"
 #include "dir.h"
 #include <dlfcn.h>
 #include <math.h>

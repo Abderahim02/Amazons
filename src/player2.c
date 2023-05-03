@@ -4,7 +4,7 @@
 #include "moteur.h" 
 #include "player.h"
 #include "dir.h"
-#include "grid.h"
+#include "graph.h"
 #include <time.h>
 
 
@@ -23,25 +23,33 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph);
 // }
 
 char const* get_player_name(){
-    char * pt = (char * )malloc (13*sizeof(char ));
-    *pt = "seeer_seeeer";
-    player_black.name = pt;
+    // char * pt = (char *) malloc(30 * sizeof(char));
+    // strcpy(pt, "seeer_seeeer");
+    player_black.name = "seeer_seeeer";
     return player_black.name;
 }
 
 void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]){
+   int m=((graph->t->size1/10)+1)*4;
     player_black.id=player_id;
     player_black.graph=graph;
     player_black.num_queens=num_queens;
     player_black.turn=0;
-    unsigned int m=((graph->num_vertices/10)+1)*4;
-    player_black.current_queens=(unsigned int *)malloc(sizeof(unsigned int)*m);
+    player_black.current_queens=queens[player_id];//(unsigned int *)malloc(sizeof(unsigned int)*m);
+    player_black.other_queens=queens[(player_id+1)%2];//(unsigned int *)malloc(sizeof(unsigned int)*m);
 
-    player_black.other_queens=(unsigned int *)malloc(sizeof(unsigned int)*m);
-    for(unsigned int i=0;i<m;i++){
-    player_black.current_queens[i]=queens[player_id][i];
-    player_black.other_queens[i]=queens[(player_id+1)%2][i];
-    }
+    // player_black.current_queens=queens[player_id];
+    // player_black.other_queens=queens[(player_id+1)%2];
+    
+    
+
+   // player_black.current_queens=(unsigned int *)malloc(sizeof(unsigned int)*m);
+
+    //player_black.other_queens=(unsigned int *)malloc(sizeof(unsigned int)*m);
+    // for(unsigned int i=0;i<m;i++){
+    // player_black.current_queens[i]=queens[player_id][i];
+    // player_black.other_queens[i]=queens[(player_id+1)%2][i];
+  //  }
 }
 
 
@@ -102,8 +110,8 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
 
 void finalize(){
     free(player_black.current_queens);
-    free(player_black.other_queens);
-    free(player_black.name);
+    free(player_black.other_queens);    
+   // free(player_black.name);
     gsl_spmatrix_uint_free(player_black.graph->t);
     free(player_black.graph);
 }

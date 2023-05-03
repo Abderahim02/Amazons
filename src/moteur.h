@@ -3,7 +3,16 @@
 
 #include "graph.h"
 #include "player.h"
+#include "dir.h"
 
+
+#define WHITE 1
+#define BLACK 0
+#define CASE -1
+
+#ifndef NUM_PLAYERS
+    #define NUM_PLAYERS 2
+#endif
 
 struct player {
     unsigned int id;
@@ -35,6 +44,7 @@ int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struc
 
 enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t direction,struct player player);
 
+void begining_position(unsigned int* queens[NUM_PLAYERS], unsigned int length);
 
 void free_player(struct player player);
 

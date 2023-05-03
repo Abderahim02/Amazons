@@ -65,7 +65,6 @@ enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t d
         if(dir==0) dir++;
         cmp++;
     }
-  //  printf("queen =%d cmp=%d get_neighbor_gen(queen,dir,graph,player)=%d\n",queen, cmp,get_neighbor_gen(queen,dir,graph,player));
     if(cmp==9){
         return NO_DIR;
     }
@@ -100,8 +99,9 @@ int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct pl
 unsigned int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* graph, struct player player){
     gsl_spmatrix_uint* mat_adj = graph->t;
     unsigned int length=graph->t->size1;
+    //printf("%d = lenght pos =%d \n",length, pos);
     //for(int j=0;j<length;j++)
-   // printf("l'affichage matrice adja=%d  %d\n",gsl_spmatrix_uint_get(mat_adj, pos, j),j);
+   // printf("l'affichage matrice adja=%d  %d\n",gsl_spmatrix_uint_get(mat_adj, pos, 0),0);
     unsigned int i = 0;
     while(i<length){
         if((gsl_spmatrix_uint_get(mat_adj, pos, i)==direction)&&(!element_in_array(player.other_queens,player.num_queens,i))&&(!element_in_array(player.current_queens,player.num_queens,i))){
@@ -112,6 +112,39 @@ unsigned int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct gra
     }
     return -1;
 
+}
+
+//this function beging positions of the queen for both players 
+void begining_position(unsigned int* queens[NUM_PLAYERS], unsigned int length){
+    unsigned int *t=queens[0];
+    unsigned int *t2=queens[1];
+    int m=((length/10)+1)*4;
+    int tmp=0;
+    for(int i=1;i<=m/4;i++){
+        t[tmp]=(1+length/7)*i+length*(length-1);
+        tmp++;
+        t[tmp]=length-1-(1+length/7)*i+length*(length-1);
+        tmp++;
+    }
+    for(int i=1;i<=m/4;i++){
+        t[tmp]=length*(length-1)-length*(1+length/7)*i;
+        tmp++;
+        t[tmp]=length*(length-1)-length*(1+length/7)*i+length-1;
+        tmp++;
+    }
+     tmp=0;
+    for(int i=1;i<=m/4;i++){
+        t2[tmp]=(1+length/7)*i;
+        tmp++;
+        t2[tmp]=length-1-(1+length/7)*i;
+        tmp++;
+    }
+    for(int i=1;i<=m/4;i++){
+        t2[tmp]=length*(1+length/7)*(i);
+        tmp++;
+        t2[tmp]=length*(1+length/7)*i+length-1;
+        tmp++;
+    }
 }
 
 void free_player(struct player player){

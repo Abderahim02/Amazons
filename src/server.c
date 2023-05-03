@@ -3,8 +3,35 @@
 #include <stdlib.h>
 #include <getopt.h>
 #include <math.h>
+#include <string.h>
 
 #include "server.h"
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////:
+
+
+extern struct graph_t * initialize_graph(unsigned int length);
+
+extern void free_graph(struct graph_t* g);
+
+extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
+
+extern void print_board(struct graph_t* graph);
+
+extern void initialize_graph_positions_classic(struct graph_t* g);
+
+extern int empty_cell(struct graph_t *graph, int x, unsigned int size);
+
+extern void initialize_donut_graph(struct graph_t* graph);
+
+extern void initialize_trefle_graph(struct graph_t* graph);
+
+extern void initialize_eight_graph(struct graph_t* graph);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 extern struct player player_blanc;
@@ -26,38 +53,6 @@ struct move_t(*play2)(struct move_t previous_move);
         
 
 
-//this function beging positions of the queen for both players 
-void begining_position(unsigned int* queens[NUM_PLAYERS], unsigned int length){
-    unsigned int *t=queens[0];
-    unsigned int *t2=queens[1];
-    int m=((length/10)+1)*4;
-    int tmp=0;
-    for(int i=1;i<=m/4;i++){
-        t[tmp]=(1+length/7)*i+length*(length-1);
-        tmp++;
-        t[tmp]=length-1-(1+length/7)*i+length*(length-1);
-        tmp++;
-    }
-    for(int i=1;i<=m/4;i++){
-        t[tmp]=length*(length-1)-length*(1+length/7)*i;
-        tmp++;
-        t[tmp]=length*(length-1)-length*(1+length/7)*i+length-1;
-        tmp++;
-    }
-     tmp=0;
-    for(int i=1;i<=m/4;i++){
-        t2[tmp]=(1+length/7)*i;
-        tmp++;
-        t2[tmp]=length-1-(1+length/7)*i;
-        tmp++;
-    }
-    for(int i=1;i<=m/4;i++){
-        t2[tmp]=length*(1+length/7)*(i);
-        tmp++;
-        t2[tmp]=length*(1+length/7)*i+length-1;
-        tmp++;
-    }
-}
 
 int *graph_table(struct graph_t *graph){
     unsigned int length=sqrt(graph->t->size1);
@@ -78,44 +73,7 @@ void table(unsigned int* queens[NUM_PLAYERS], int *t, unsigned int queens_number
     
 }
 
-/*
-void display(struct graph_t* graph, unsigned int* queens[lengthUM_PLAYERS], int queens_number) {
 
-    int *t = graph_table(graph);
-    table(queens, t, queens_number);
-
-    unsigned int max_val = 0;
-    for (int i = 0; i < graph->num_vertices; i++) {
-        unsigned int val = t[i];
-        if (val > max_val) {
-            max_val = val;
-        }
-    }
-
-    unsigned int field_width = snprintf(NULL, 0, "%u", max_val) + 1; // +1 for the space
-
-    printf("\n");
-    for (int i = 0; i < sqrt(graph->num_vertices); i++) {
-        for (int j = 0; j < sqrt(graph->num_vertices); j++) {
-            if (j % 2 == 0 && i % 2 == 0) {
-                printf("\x1b[107m %*d \x1b[0m", field_width, t[i]);
-            }
-            else if (j % 2 != 0 && i % 2 == 0) {
-                printf("\x1b[48;2;165;42;42m %*d \x1b[0m", field_width, t[i]);
-            }
-            if (j % 2 != 0 && i % 2 != 0) {
-                printf("\x1b[107m %*d \x1b[0m", field_width, t[i]);
-            }
-            else if (j % 2 == 0 && i % 2 != 0) {
-                printf("\x1b[48;2;165;42;42m %*d \x1b[0m", field_width, t[i]);
-            }
-        }
-        printf("\n");
-    }
-    printf("\n");
-}
-
-*/
 
 void sdl_display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number, int size){
     // all int numbers to display different colors with sdl.
@@ -179,29 +137,46 @@ int next_player(int player){
 void print_move(struct move_t move){
     printf("move from %d to %d and arrow at %d \n", move.queen_src, move.queen_dst,move.arrow_dst);
 }
+
+
+
+
+unsigned int* table_q(int length){
+     unsigned int m = ((length / 10) + 1) * 4;
+    unsigned int *q = malloc(m * sizeof(unsigned int));
+    
+
+    // Initialisation des tableaux
+    for (int i = 0; i < m; i++) {
+        q[i] = i;  // exemple d'initialisation
+    }
+
+    return q;
+}
+
+
+void copy(unsigned int *queen[NUM_PLAYERS],unsigned int *q[NUM_PLAYERS] ,int m){
+     for (int i = 0; i < m; i++) {
+        q[0][i] = queen[0][i];
+        q[1][i] = queen[1][i];
+    }
+
+}
 /*this function makes a graph depending on the type of graph taken as argument
 */
 void make_graph(struct graph_t * g, unsigned int m ,char s ){ 
     switch(s){
         case 'c' :
-            g->num_vertices = m*m;
+            initialize_graph_positions_classic(g);
             break;
         case 'd':
-            printf("i am a donut \n");
-            make_hole(g, (m/3)*m + m/3 , m/3);
-            g->num_vertices = 8*m*m/9;
+            initialize_donut_graph(g);
             break;
         case 't':
-            make_hole(g, m/5*m + m/5, m/5 );
-            make_hole(g, m/5*m + 3*m/5 , m/5 );
-            make_hole(g, 3*m/5*m + m/5, m/5 );
-            make_hole(g, 3*m/5*m + 3*m/5, m/5 );
-            g->num_vertices = 21*m*m / 25 ;
+            initialize_trefle_graph(g);
             break;
         case '8':
-            make_hole(g, 2*(m/4) * m + m/4, m/4 );
-            make_hole(g, (m/4) * m + 2*m/4 , m/4 );
-            g->num_vertices = 21*m*m / 25 ;
+            initialize_eight_graph(g);
             break;
         default :
             break;
@@ -241,8 +216,8 @@ int main(int argc, char* argv[]){
         }
     }
      if (argc > 1) {
-     void * lib1 = dlopen(argv[argc-2], RTLD_NOW); 
-     void * lib2 = dlopen(argv[argc-1], RTLD_NOW); 
+     void * lib1 = dlopen(argv[argc-2], RTLD_LAZY); 
+     void * lib2 = dlopen(argv[argc-1], RTLD_LAZY); 
      if (lib1 == NULL || lib2 == NULL ) { 
         printf("bibliothèque vide\n"); 
         exit(EXIT_FAILURE); 
@@ -273,10 +248,8 @@ int main(int argc, char* argv[]){
         //Initialize graphs
         struct graph_t* graph = initialize_graph(length);
         initialize_graph_positions_classic(graph);
-        
         struct graph_t* white_graph = initialize_graph(length);
         initialize_graph_positions_classic(white_graph);
-
         struct graph_t* black_graph = initialize_graph(length);
         initialize_graph_positions_classic(black_graph);
         //we make hole or not depending on the type of the grapg for the tree graphs 
@@ -289,14 +262,21 @@ int main(int argc, char* argv[]){
         unsigned int white_queens[m];
         unsigned int black_queens[m];
         unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
+
+        unsigned int *queens1[NUM_PLAYERS]= {table_q(length),table_q(length)};
+        unsigned int *queens2[NUM_PLAYERS]={table_q(length),table_q(length)};
+        
+
         begining_position(queens, length);
-        initialize_player1(0,white_graph,m,queens);
-        initialize_player2(1,black_graph,m,queens);
+         copy(queens, queens1, m);
+         copy(queens,queens2,m);
+        initialize_player1(0,white_graph,m,queens1);
+        initialize_player2(1,black_graph,m,queens2);
         //The starting board
-        sdl_display(graph,queens,m,length);
+       // sdl_display(graph,queens,m,length);
         //display(graph, queens, m);
-        //sdl_display(graph,queens,m,length);
-        display(graph,queens,m);
+        sdl_display(graph,queens,m,length);
+       // display(graph,queens,m);
         struct move_t move={-1,-1,-1};
         int player = start_player();
         //The game loop
@@ -318,7 +298,7 @@ int main(int argc, char* argv[]){
             if(i==length*length) printf("eqalité\n");
             else printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
             sdl_display(graph,queens,m,length);
-            //display(graph,queens,m);
+           // display(graph,queens,m);
             //player? printf("%d \n", 2): printf("%d \n", 1);
             free_graph(graph);
             finalize_player1();
@@ -333,6 +313,11 @@ int main(int argc, char* argv[]){
         //display(graph,queens,m);
 
         }
+        //free(queens1[0]);
+        //free(queens1[1]);
+
+        //free(queens2[0]);
+        //free(queens2[1]);
         free_graph(graph);
         finalize_player1();
         finalize_player2();

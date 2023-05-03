@@ -273,7 +273,7 @@ int main(int argc, char* argv[]){
         initialize_player1(0,white_graph,m,queens1);
         initialize_player2(1,black_graph,m,queens2);
         //The starting board
-       /;
+    
         sdl_display(graph,queens,m,length);
         // make_hole(graph, 10, 2);
        // display(graph,queens,m);

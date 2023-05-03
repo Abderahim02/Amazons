@@ -41,11 +41,11 @@ test_execute_move.o: ${TST}/test_execute_move.c hole.o
 ######################################################### Début fichiers objets #####################################################################################
 
 graph.o: ${SRC}/graph.c ${SRC}/graph.h
-	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/graph.c -lgcov
+	${CC} -Wall  -ftest-coverage -fprofile-arcs -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/graph.c -lgcov
 	#${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -c ${SRC}/graph.c -lgcov
 
 hole.o: ${SRC}/hole.c  ${SRC}/graph.h 
-	${CC} -Wall  -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/hole.c -lgcov 
+	${CC} -Wall -ftest-coverage -fprofile-arcs -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${SRC}/hole.c -lgcov 
 
 moteur.o: ${SRC}/moteur.c ${SRC}/graph.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -c ${SRC}/moteur.c -lgcov
@@ -101,7 +101,7 @@ install: server
 clean:
 	@rm -f *~ *.so *.o  ${TST}/*.o  tst/*.gcno ${BIN} *~ */*~ ${SRC}/*.o server alltests ${TEST}
 	rm -f test_get_neighbor.o
-	rm -f *.gcno
-	rm -f *.gcda
+#	rm -f *.gcno
+#	rm -f *.gcda
 
 .PHONY: client install test clean

@@ -109,7 +109,7 @@ unsigned int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct gra
     for(size_t j=row_start; j<row_end; j++){
         unsigned int neighbor=graph->t->i[j];
         unsigned int dir=graph->t->data[j];
-        if(dir==direction && (!element_in_array(player.other_queens,player.num_queens,j))&&(!element_in_array(player.current_queens,player.num_queens,j))){
+        if(dir==direction && (!element_in_array(player.other_queens,player.num_queens,neighbor))&&(!element_in_array(player.current_queens,player.num_queens,neighbor))){
             return neighbor;
         }
     }

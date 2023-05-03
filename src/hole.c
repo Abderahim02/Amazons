@@ -36,6 +36,20 @@ void hollow_matrix(gsl_spmatrix_uint *mat,int t[], int len ){
 // }
 
 
+
+// // id la position dans le tableau unidimentionnel en supposant que la matrice est non compressé, size
+// void make_hole(struct graph_t *g, int id, int size){
+//     size_t id_i =  id/g->num_vertices;
+//     size_t id_j =  id%g->num_vertices; 
+//     size_t row_start = g->t->p[id_i];
+//     size_t row_end = g->t->p[id_i + 1];
+//     for (size_t pos = row_start; pos < row_end; pos++) {
+//         if (g->t->i[pos] >= 0 || g->t->i[pos] <= id_j ) {
+//             make_zero_i_j(g, pos, id_j);
+//         }
+//     }
+// }
+
 void  make_zero_i_j(struct graph_t *g, int i, int j){
     size_t row_start = g->t->p[i];
     size_t row_end = g->t->p[i + 1];
@@ -52,35 +66,13 @@ void  make_zero_i_j(struct graph_t *g, int i, int j){
     }
 }
 
-// // id la position dans le tableau unidimentionnel en supposant que la matrice est non compressé, size
-// void make_hole(struct graph_t *g, int id, int size){
-//     size_t id_i =  id/g->num_vertices;
-//     size_t id_j =  id%g->num_vertices; 
-//     size_t row_start = g->t->p[id_i];
-//     size_t row_end = g->t->p[id_i + 1];
-//     for (size_t pos = row_start; pos < row_end; pos++) {
-//         if (g->t->i[pos] >= 0 || g->t->i[pos] <= id_j ) {
-//             make_zero_i_j(g, pos, id_j);
-//         }
-//     }
-// }
-
-
 void  make_hole(struct graph_t *g, int id, int size){
-  int vertices=g->num_vertices;
+  int vertices = g->num_vertices;
   int n=(int)sqrt(vertices);
   for(int i=0; i<vertices; i++){
     for(int j=0;j<vertices ;j++){
-      if( ((j%n>=id%n && j%n<(id+size)%n) &&//colonnes de j appartient au trou
-	                (j/n>=id/n && j/n<id/n+size))){//ligne de j appartient au trou
-	            size_t row_start = g->t->p[i];
-              size_t row_end = g->t->p[i + 1];
-              for (size_t pos = row_start; pos < row_end; ++pos) {
-                  if (g->t->i[pos] == j) {
-                      make_zero_i_j(g, i, j);
-                      break;
-                  }
-              }
+       if( (j % n >= id % n && j % n < (id + size) % n) && (j / n >= id / n && j / n < id / n + size)){//ligne de j appartient au trou
+              make_zero_i_j(g, i, j);
       }
     }
   }

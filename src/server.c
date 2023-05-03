@@ -168,24 +168,32 @@ void copy(unsigned int *queen[NUM_PLAYERS],unsigned int *q[NUM_PLAYERS] ,int m){
 }
 /*this function makes a graph depending on the type of graph taken as argument
 */
-// void make_graph(struct graph_t * g, unsigned int m ,char s ){ 
-//     switch(s){
-//         case 'c' :
-//             initialize_graph_positions_classic(g);
-//             break;
-//         case 'd':
-//             //initialize_donut_graph(g);
-//             break;
-//         case 't':
-//             //initialize_trefle_graph(g);
-//             break;
-//         case '8':
-//             //initialize_eight_graph(g);
-//             break;
-//         default :
-//             break;
-//   }
-// }
+void make_graph(struct graph_t * g, unsigned int m ,char s ){ 
+    switch(s){
+        case 'c' :
+            g->num_vertices = m*m;
+            break;
+        case 'd':
+            printf("i am a donut \n");
+            make_hole(g, (m/3)*m + m/3 , m/3);
+            g->num_vertices = 8*m*m/9;
+            break;
+        case 't':
+            make_hole(g, m/5*m + m/5, m/5 );
+            make_hole(g, m/5*m + 3*m/5 , m/5 );
+            make_hole(g, 3*m/5*m + m/5, m/5 );
+            make_hole(g, 3*m/5*m + 3*m/5, m/5 );
+            g->num_vertices = 21*m*m / 25 ;
+            break;
+        case '8':
+            make_hole(g, 2*(m/4) * m + m/4, m/4 );
+            make_hole(g, (m/4) * m + 2*m/4 , m/4 );
+            g->num_vertices = 21*m*m / 25 ;
+            break;
+        default :
+            break;
+  }
+}
 
 int main(int argc, char* argv[]){
     /* START GETOPT */
@@ -256,9 +264,9 @@ int main(int argc, char* argv[]){
         struct graph_t* black_graph = initialize_graph(length);
 
         //we make hole or not depending on the type of the grapg for the tree graphs 
-        // make_graph(graph, length, graph_type);
-        // make_graph(white_graph, length, graph_type);
-        // make_graph(black_graph, length, graph_type);
+        make_graph(graph, length, graph_type);
+        make_graph(white_graph, length, graph_type);
+        make_graph(black_graph, length, graph_type);
 
         //Initialize queens for each player
         unsigned int m=((length/10)+1)*4;
@@ -279,7 +287,9 @@ int main(int argc, char* argv[]){
        // sdl_display(graph,queens,m,length);
         //display(graph, queens, m);
         //sdl_display(graph,queens,m,length);
+        // make_hole(graph, 10, 2);
         display(graph,queens,m);
+
         struct move_t move={-1,-1,-1};
         int player = start_player();
         //The game loop
@@ -312,8 +322,8 @@ int main(int argc, char* argv[]){
             
         }
         player=next_player(player);
-        sdl_display(graph,queens,m,length);
-        //display(graph,queens,m);
+        //sdl_display(graph,queens,m,length);
+        display(graph,queens,m);
 
         }
         //free(queens1[0]);
@@ -328,4 +338,5 @@ int main(int argc, char* argv[]){
         dlclose(lib2);
     }
     return 0;
+
 }

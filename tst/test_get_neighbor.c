@@ -102,7 +102,28 @@ void test__get_neighbor_gen(){
 }
 
 
+void display_matrix_of_graph(struct graph_t * g){
+    for (size_t i = 0; i < g->t->size1; ++i) {
+        for (size_t j = 0; j < g->t->size2; ++j) {
+            size_t row_start = g->t->p[i];
+            size_t row_end = g->t->p[i + 1];
+            int found = 0;
+            for (size_t pos = row_start; pos < row_end; ++pos) {
+                if (g->t->i[pos] == j) {
+                    printf("%d ", g->t->data[pos]);
+                    found = 1;
+                    break;
+                }
+            }
+            if (!found) {
+                printf("0 ");
+            }
+        }
+        printf("\n");
+    }
+    printf("\n");
 
+}
 void test_make_i_j(){
     // Create a graph
     int length = 3;
@@ -130,92 +151,39 @@ void test_make_i_j(){
 
     // Print the initial graph
     printf("Initial graph:\n");
-    for (size_t i = 0; i < g->size1; ++i) {
-        for (size_t j = 0; j < g->size2; ++j) {
-            size_t row_start = g->p[i];
-            size_t row_end = g->p[i + 1];
-            int found = 0;
-            for (size_t pos = row_start; pos < row_end; ++pos) {
-                if (g->i[pos] == j) {
-                    printf("%g ", g->data[pos]);
-                    found = 1;
-                    break;
-                }
-            }
-            if (!found) {
-                printf("0 ");
-            }
-        }
-        printf("\n");
-    }
+    display_matrix_of_graph(graph);
     printf("\n");
 
     // Make the element at (1, 2) zero
     printf("After making (0, 1) zero:\n");
     make_zero_i_j(graph, 0, 1);
-    for (size_t i = 0; i < g->size1; ++i) {
-        for (size_t j = 0; j < g->size2; ++j) {
-            size_t row_start = g->p[i];
-            size_t row_end = g->p[i + 1];
-            int found = 0;
-            for (size_t pos = row_start; pos < row_end; ++pos) {
-                if (g->i[pos] == j) {
-                    printf("%g ", g->data[pos]);
-                    found = 1;
-                    break;
-                }
-            }
-            if (!found) {
-                printf("0 ");
-            }
-        }
-        printf("\n");
-    }
+    display_matrix_of_graph(graph);
     printf("\n");
 
     // Free memory
-    // free(g->p);
-    // free(g->i);
-    // free(g->data);
-    // free(g);
+    free(g->p);
+    free(g->i);
+    free(g->data);
+    free(g);
 }
 
 
-void test_make_hole
-
-(){
-    // Create a graph
-    int length = 3;
-    struct graph_t* graph = (struct graph_t*) malloc(sizeof(struct graph_t));
-    gsl_spmatrix_uint *mat = gsl_spmatrix_uint_alloc(length, length);
-    gsl_spmatrix_uint* g = gsl_spmatrix_uint_compress(mat, GSL_SPMATRIX_CSR);
-    unsigned int size=8;
-    g->size1 = 3;
-    g->size2 = 3;
-    g->nz = 4;
-    g->p = (size_t*) malloc((g->size1 + 1) * sizeof(size_t));
-    g->i = (int*) malloc(g->nz * sizeof(int));
-    g->data = (double*) malloc(g->nz * sizeof(double));
-    g->p[0] = 0;
-    g->p[1] = 1;
-    g->p[2] = 2;
-    g->p[3] = 3;
-    g->i[0] = 1;
-    g->i[1] = 2;
-    g->i[2] = 0;
-    g->data[0] = 1;
-    g->data[1] = 2;
-    g->data[2] = 3;
-    graph->t = g;
-    // Free memory
-    // free(g->p);
-    // free(g->i);
-    // free(g->data);
-    // free(g);
-}
+// void test_make_hole(){
+//     // Create a graph
+//     unsigned int size=8;
+//     struct graph_t* graph = initialize_graph(size);
+//     display_matrix_of_graph(graph);
+//     make_hole(graph, 10, 2);
+//     // make_zero_i_j(graph, 0, 1);
+    
+    
+//     display_matrix_of_graph(graph);
+//     free_graph(graph);
+// }
 
  int main(){
     //  test__get_neighbor_gen();
-     test_make_i_j();
+    //test_make_hole();
+    //  test_make_i_j();
      return 0;
  }

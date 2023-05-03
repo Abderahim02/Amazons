@@ -17,19 +17,23 @@ extern struct graph_t * initialize_graph(unsigned int length);
 
 extern void free_graph(struct graph_t* g);
 
-extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
+extern gsl_spmatrix_uint* copy_matrix(struct graph_t *graph,int size);
 
-extern void print_board(struct graph_t* graph);
-
-extern void initialize_graph_positions_classic(struct graph_t* g);
+extern struct graph_t *graph_cpy(const struct graph_t *graph, int size);
 
 extern int empty_cell(struct graph_t *graph, int x, unsigned int size);
 
-extern void initialize_donut_graph(struct graph_t* graph);
+// extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
 
-extern void initialize_trefle_graph(struct graph_t* graph);
+// extern void print_board(struct graph_t* graph);
 
-extern void initialize_eight_graph(struct graph_t* graph);
+// extern void initialize_graph_positions_classic(struct graph_t* g);
+
+// extern void initialize_donut_graph(struct graph_t* graph);
+
+// extern void initialize_trefle_graph(struct graph_t* graph);
+
+// extern void initialize_eight_graph(struct graph_t* graph);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -90,7 +94,6 @@ void sdl_display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int qu
    table(queens,t,queens_number);
   for(int i=0;i<size*size;i++){
     if(i%size==0 && i!=0) printf("\n");
-    // printf("%d " ,t[i]);
     if(t[i]==0) printf("%d ",nh );
     if(t[i]==-1) printf("%d ",bh);
     if(t[i]==1) printf("%d ",b);
@@ -114,6 +117,7 @@ void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],unsigned i
     
     free(t);
 }
+
 
 void print_queens(struct player p, int num_queens ){
     for(int i=0; i < num_queens ; ++i){
@@ -147,7 +151,7 @@ unsigned int* table_q(int length){
     
 
     // Initialisation des tableaux
-    for (int i = 0; i < m; i++) {
+    for (unsigned int i = 0; i < m; i++) {
         q[i] = i;  // exemple d'initialisation
     }
 
@@ -164,24 +168,24 @@ void copy(unsigned int *queen[NUM_PLAYERS],unsigned int *q[NUM_PLAYERS] ,int m){
 }
 /*this function makes a graph depending on the type of graph taken as argument
 */
-void make_graph(struct graph_t * g, unsigned int m ,char s ){ 
-    switch(s){
-        case 'c' :
-            initialize_graph_positions_classic(g);
-            break;
-        case 'd':
-            initialize_donut_graph(g);
-            break;
-        case 't':
-            initialize_trefle_graph(g);
-            break;
-        case '8':
-            initialize_eight_graph(g);
-            break;
-        default :
-            break;
-  }
-}
+// void make_graph(struct graph_t * g, unsigned int m ,char s ){ 
+//     switch(s){
+//         case 'c' :
+//             initialize_graph_positions_classic(g);
+//             break;
+//         case 'd':
+//             //initialize_donut_graph(g);
+//             break;
+//         case 't':
+//             //initialize_trefle_graph(g);
+//             break;
+//         case '8':
+//             //initialize_eight_graph(g);
+//             break;
+//         default :
+//             break;
+//   }
+// }
 
 int main(int argc, char* argv[]){
     /* START GETOPT */
@@ -247,15 +251,14 @@ int main(int argc, char* argv[]){
     char *black_player = get_player2_name();
         //Initialize graphs
         struct graph_t* graph = initialize_graph(length);
-        initialize_graph_positions_classic(graph);
+
         struct graph_t* white_graph = initialize_graph(length);
-        initialize_graph_positions_classic(white_graph);
         struct graph_t* black_graph = initialize_graph(length);
-        initialize_graph_positions_classic(black_graph);
+
         //we make hole or not depending on the type of the grapg for the tree graphs 
-        make_graph(graph, length, graph_type);
-        make_graph(white_graph, length, graph_type);
-        make_graph(black_graph, length, graph_type);
+        // make_graph(graph, length, graph_type);
+        // make_graph(white_graph, length, graph_type);
+        // make_graph(black_graph, length, graph_type);
 
         //Initialize queens for each player
         unsigned int m=((length/10)+1)*4;
@@ -275,8 +278,8 @@ int main(int argc, char* argv[]){
         //The starting board
        // sdl_display(graph,queens,m,length);
         //display(graph, queens, m);
-        sdl_display(graph,queens,m,length);
-       // display(graph,queens,m);
+        //sdl_display(graph,queens,m,length);
+        display(graph,queens,m);
         struct move_t move={-1,-1,-1};
         int player = start_player();
         //The game loop
@@ -297,8 +300,8 @@ int main(int argc, char* argv[]){
         if(move.queen_dst==UINT_MAX){
             if(i==length*length) printf("eqalité\n");
             else printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
-            sdl_display(graph,queens,m,length);
-           // display(graph,queens,m);
+            //sdl_display(graph,queens,m,length);
+            display(graph,queens,m);
             //player? printf("%d \n", 2): printf("%d \n", 1);
             free_graph(graph);
             finalize_player1();

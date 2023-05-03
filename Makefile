@@ -85,7 +85,6 @@ server: server.o  graph.o moteur.o hole.o  #libplayer1.so libplayer2.so
 alltests:  ${TST}/test_execute_move.o graph.o  moteur.o hole.o
 	make server
 	${CC} -L${GSL_PATH}/lib  ${TST}/test_execute_move.o graph.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov 
-
 ######################################################### Fin Alltests #####################################################################################
 
 
@@ -101,7 +100,7 @@ install: server
 clean:
 	@rm -f *~ *.so *.o  ${TST}/*.o  tst/*.gcno ${BIN} *~ */*~ ${SRC}/*.o server alltests ${TEST}
 	rm -f test_get_neighbor.o
-#	rm -f *.gcno
-#	rm -f *.gcda
+	rm -f *.gcno
+	rm -f *.gcda
 
 .PHONY: client install test clean

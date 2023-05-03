@@ -30,26 +30,12 @@ char const* get_player_name(){
 }
 
 void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]){
-   int m=((graph->t->size1/10)+1)*4;
     player_black.id=player_id;
     player_black.graph=graph;
     player_black.num_queens=num_queens;
     player_black.turn=0;
-    player_black.current_queens=queens[player_id];//(unsigned int *)malloc(sizeof(unsigned int)*m);
-    player_black.other_queens=queens[(player_id+1)%2];//(unsigned int *)malloc(sizeof(unsigned int)*m);
-
-    // player_black.current_queens=queens[player_id];
-    // player_black.other_queens=queens[(player_id+1)%2];
-    
-    
-
-   // player_black.current_queens=(unsigned int *)malloc(sizeof(unsigned int)*m);
-
-    //player_black.other_queens=(unsigned int *)malloc(sizeof(unsigned int)*m);
-    // for(unsigned int i=0;i<m;i++){
-    // player_black.current_queens[i]=queens[player_id][i];
-    // player_black.other_queens[i]=queens[(player_id+1)%2][i];
-  //  }
+    player_black.current_queens=queens[player_id];
+    player_black.other_queens=queens[(player_id+1)%2];
 }
 
 

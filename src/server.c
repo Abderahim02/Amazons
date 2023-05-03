@@ -168,33 +168,69 @@ void copy(unsigned int *queen[NUM_PLAYERS],unsigned int *q[NUM_PLAYERS] ,int m){
 }
 /*this function makes a graph depending on the type of graph taken as argument
 */
+
+void initialize_donut_graph(struct graph_t* g, unsigned int m){
+    make_hole(g, (m/3)*m + m/3 , m/3);
+    g->num_vertices = 8*m*m/9;
+}
+
+void initialize_trefle_graph(struct graph_t* g, unsigned int m){
+    make_hole(g, m/5*m + m/5, m/5 );
+    make_hole(g, m/5*m + 3*m/5 , m/5 );
+    make_hole(g, 3*m/5*m + m/5, m/5 );
+    make_hole(g, 3*m/5*m + 3*m/5, m/5 );
+    g->num_vertices = 21*m*m / 25 ;
+}
+
+void initialize_eight_graph(struct graph_t* g , unsigned int m){
+    make_hole(g, 2*(m/4) * m + m/4, m/4 );
+    make_hole(g, (m/4) * m + 2*m/4 , m/4 );
+    g->num_vertices = 21*m*m / 25 ;
+}
+
+// void make_graph(struct graph_t * g, unsigned int m ,char s ){ 
+//     switch(s){
+//         case 'c' :
+//             g->num_vertices = m*m;
+//             break;
+//         case 'd':
+//             make_hole(g, (m/3)*m + m/3 , m/3);
+//             g->num_vertices = 8*m*m/9;
+//             break;
+//         case 't':
+//             make_hole(g, m/5*m + m/5, m/5 );
+//             make_hole(g, m/5*m + 3*m/5 , m/5 );
+//             make_hole(g, 3*m/5*m + m/5, m/5 );
+//             make_hole(g, 3*m/5*m + 3*m/5, m/5 );
+//             g->num_vertices = 21*m*m / 25 ;
+//             break;
+//         case '8':
+//             make_hole(g, 2*(m/4) * m + m/4, m/4 );
+//             make_hole(g, (m/4) * m + 2*m/4 , m/4 );
+//             g->num_vertices = 21*m*m / 25 ;
+//             break;
+//         default :
+//             break;
+//   }
+// }
 void make_graph(struct graph_t * g, unsigned int m ,char s ){ 
     switch(s){
         case 'c' :
             g->num_vertices = m*m;
             break;
         case 'd':
-            printf("i am a donut \n");
-            make_hole(g, (m/3)*m + m/3 , m/3);
-            g->num_vertices = 8*m*m/9;
+            initialize_donut_graph(g, m);
             break;
         case 't':
-            make_hole(g, m/5*m + m/5, m/5 );
-            make_hole(g, m/5*m + 3*m/5 , m/5 );
-            make_hole(g, 3*m/5*m + m/5, m/5 );
-            make_hole(g, 3*m/5*m + 3*m/5, m/5 );
-            g->num_vertices = 21*m*m / 25 ;
+            initialize_trefle_graph(g, m);
             break;
         case '8':
-            make_hole(g, 2*(m/4) * m + m/4, m/4 );
-            make_hole(g, (m/4) * m + 2*m/4 , m/4 );
-            g->num_vertices = 21*m*m / 25 ;
+            initialize_eight_graph(g, m);
             break;
         default :
             break;
   }
 }
-
 int main(int argc, char* argv[]){
     /* START GETOPT */
     unsigned int length=8;
@@ -279,8 +315,8 @@ int main(int argc, char* argv[]){
         
 
         begining_position(queens, length);
-         copy(queens, queens1, m);
-         copy(queens,queens2,m);
+        copy(queens, queens1, m);
+        copy(queens,queens2,m);
         initialize_player1(0,white_graph,m,queens1);
         initialize_player2(1,black_graph,m,queens2);
         //The starting board
@@ -288,7 +324,7 @@ int main(int argc, char* argv[]){
         //display(graph, queens, m);
         //sdl_display(graph,queens,m,length);
         // make_hole(graph, 10, 2);
-        display(graph,queens,m);
+        //display(graph,queens,m);
 
         struct move_t move={-1,-1,-1};
         int player = start_player();
@@ -324,11 +360,9 @@ int main(int argc, char* argv[]){
         player=next_player(player);
         //sdl_display(graph,queens,m,length);
         display(graph,queens,m);
-
         }
         //free(queens1[0]);
         //free(queens1[1]);
-
         //free(queens2[0]);
         //free(queens2[1]);
         free_graph(graph);

@@ -124,31 +124,6 @@ gsl_spmatrix_uint* copy_matrix(struct graph_t *graph,int size) {
 // }
 
 
-// void initialize_donut_graph(struct graph_t* graph){
-//     initialize_graph_positions_classic(graph);
-//     unsigned int length=graph->t->size1;
-//     make_hole(graph, (length/3)*length + length/3 , length/3);
-//     graph->num_vertices = 8*length*length/9;
-// }
-
-// void initialize_trefle_graph(struct graph_t* graph){
-//     initialize_graph_positions_classic(graph);
-//     unsigned int length=graph->t->size1;
-//     make_hole(graph, length/5*length + length/5, length/5 );
-//     make_hole(graph, length/5*length + 3*length/5 , length/5 );
-//     make_hole(graph, 3*length/5*length + length/5, length/5 );
-//     make_hole(graph, 3*length/5*length + 3*length/5, length/5 );
-//     graph->num_vertices = 21*length*length / 25 ;
-// }
-
-// void initialize_eight_graph(struct graph_t* graph){
-//     initialize_graph_positions_classic(graph);
-//     unsigned int length=graph->t->size1;
-//     make_hole(graph, 2*(length/4) * length + length/4, length/4 );
-//     make_hole(graph, (length/4) * length + 2*length/4 , length/4 );
-//     graph->num_vertices = 21*length*length / 25 ;
-// }
-
 //this function can be useful for checking if a vertex can be occupied by a queen in a game
 int empty_cell(struct graph_t *graph, int x, unsigned int size){
     unsigned int row_start=graph->t->p[x];

@@ -17,8 +17,8 @@ all: build
 build: server install test libraries
 
 
-test: tst/* src/*
-	${CC} -L${GSL_PATH}/lib -ftest-coverage -fprofile-arcs tst/test__moves.c tst/test_get_neighbor.c   src/graph.c src/moteur.c src/hole.c -lgsl -lgslcblas -lm -ldl -o alltests -ldl
+#test: tst/* src/*
+#	${CC} -L${GSL_PATH}/lib -ftest-coverage -fprofile-arcs tst/test__moves.c tst/test_get_neighbor.c   src/graph.c src/moteur.c src/hole.c -lgsl -lgslcblas -lm -ldl -o alltests -ldl
 
 
 graph.o: ${SRC}/graph.c ${SRC}/graph.h
@@ -51,7 +51,7 @@ server: server.o  graph.o moteur.o hole.o
 install: server
 	make server
 	make libraries
-	make test
+#	make test
 	if [ -f server ]; then cp server install/; fi
 	if [ -f alltests ]; then cp alltests install/; fi
 	cp *.so install

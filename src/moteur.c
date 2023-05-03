@@ -40,7 +40,6 @@ void delete_element(struct graph_t* graph, unsigned int i, unsigned int j){
 position of the queen after the move*/
 void execute_move(struct move_t move, struct graph_t *graph, unsigned int *queens){
     unsigned int length=sqrt(graph->t->size1);
-   // printf("%d %d\n",move.arrow_dst, move.queen_dst);
     if((int)move.queen_dst>=0){
     int queen_number = 4*(length/10 + 1 );
     for(int  i =0; i < queen_number ; ++i ){
@@ -52,9 +51,7 @@ void execute_move(struct move_t move, struct graph_t *graph, unsigned int *queen
     if((int)move.arrow_dst!=-1 || move.arrow_dst!=UINT_MAX){
         put_arrow(graph, move.arrow_dst);
     }
-     //here we updates the graph, we make the position arrow_dst isolated
-    // print_sparse_matrix(graph->t);
-}
+    }
 }
 
 int element_in_array(unsigned int *array, unsigned int size, unsigned int element){
@@ -81,11 +78,11 @@ enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t d
     return dir;
 }
 
-int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player){
+unsigned int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player){
     unsigned int length=sqrt(graph->t->size1);
-    int* t=(int *)malloc(sizeof(int)*(length*2+1));
+    unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*(length*2+1));
     int i=1;
-    int tmp=pos;
+    unsigned int tmp=pos;
     while(get_neighbor_gen(tmp,dir,graph,player)!=UINT_MAX){
         t[i]=get_neighbor_gen(tmp,dir,graph,player);
         tmp=t[i];
@@ -97,8 +94,7 @@ int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struc
 }
 
 int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player){
-    int *t=available_dst(graph, dir, pos,player);
-  // printf("division=%d\n",t[0]);
+    unsigned int *t=available_dst(graph, dir, pos,player);
     int dst=t[(rand()%t[0])+1];
     free(t);
     return dst;
@@ -113,7 +109,7 @@ unsigned int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct gra
     for(size_t j=row_start; j<row_end; j++){
         unsigned int neighbor=graph->t->i[j];
         unsigned int dir=graph->t->data[j];
-        if(dir==direction && (!element_in_array(player.other_queens,player.num_queens,j))&&(!element_in_array(player.current_queens,player.num_queens,j))){
+        if(dir==direction && (!element_in_array(player.other_queens,player.num_queens,neighbor))&&(!element_in_array(player.current_queens,player.num_queens,neighbor))){
             return neighbor;
         }
     }

@@ -43,7 +43,7 @@ void test_execute_move();
 
 int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player);
 
-int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player);
+unsigned int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player);
 
 
 enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t direction,struct player player);

@@ -11,6 +11,8 @@ extern struct graph_t * initialize_graph(unsigned int length);
 // extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
 extern void free_graph(struct graph_t* g);
 
+extern void  make_zero_i_j(struct graph_t *g, int i, int j);
+
 void test__get_neighbor_gen(){
     unsigned int size=4;
     struct graph_t* graph = initialize_graph(size);

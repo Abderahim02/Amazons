@@ -17,13 +17,9 @@ struct player player_blanc;
  * RETURNS:
  * - the player name as an [a-zA-Z0-9 -_]* string
  */
-// char const* get_player_name(){
-//     player_blanc.name = "Dir_niya";
-//     return player_blanc.name;
-// }
+
+
 char const* get_player_name(){
-    // char * pt = (char * )malloc (30*sizeof(char ));
-    // strcpy(pt, "Dir_niya");
     player_blanc.name = "Dir_niya";
     return player_blanc.name;
 }
@@ -88,8 +84,6 @@ struct move_t best_move(struct graph_t *graph, unsigned int* queens, int num_que
     //fill the moves array with all the possible moves for each queen
     int counter=0;
     for(int i=0;i<num_queens;i++){
-        //printf("first iteration we have i = %d\n",i);
-        //printf("queen %d\n   ",queens[i]);
         //loop over all the directions
         for(int j=1;j<9;j++){
             if(get_neighbor(queens[i],j,graph)!=-1){
@@ -125,14 +119,8 @@ struct move_t best_move(struct graph_t *graph, unsigned int* queens, int num_que
             max_pos=i;
         }
     }
-    //         printf("the array moves is :\n");
-    //     printf("capcity = %d\n",capcity);
-    //     print_array(moves,capcity);
-    // printf("max is %d\n",max);
-    // printf("max pos is %d\n",max_pos);
+ 
     struct move_t move2 ={moves[max_pos].queen_src,moves[max_pos].queen_dst,moves[max_pos].arrow_dst};
-    // printf("the movement we are going to do is %d",moves[max_pos].queen_src);
-    // printf("the movement we are going to do is %d to %d",moves[max_pos].queen_src,moves[max_pos].queen_dst);
     return move2;
 }
 //function that returns the number of neighbors of a queen
@@ -178,7 +166,6 @@ struct move_t play(struct move_t previous_move){
         queen_index=r;
         queen=player_blanc.current_queens[queen_index];
         dir=available_dir(queen,player_blanc.graph,NO_DIR,player_blanc);
-    //    printf("available 3tat dir=%d\n",dir);
         r=(r+1)%player_blanc.num_queens;
     }
     
@@ -190,7 +177,6 @@ struct move_t play(struct move_t previous_move){
      player_blanc.current_queens[(r-1)%player_blanc.num_queens]=move.queen_dst;
      queen=move.queen_dst;
      enum dir_t dir2=available_dir(queen,player_blanc.graph,dir,player_blanc);
-    // printf("DIR2 EST %d\n", dir2);
      if(dir2==NO_DIR){
         move.arrow_dst=move.queen_src;
      }
@@ -218,7 +204,7 @@ struct move_t play(struct move_t previous_move){
 //     execute_move(move,player_blanc.graph,player_blanc.current_queens);
 //     //printf("move is %d %d %d",move.queen_src,move.queen_dst,move.arrow_dst);
 //     return move;
-// }
+// }    
 int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
     return get_neighbor_gen(pos, dir, graph,player_blanc);
 }

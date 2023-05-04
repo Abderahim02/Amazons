@@ -22,17 +22,17 @@
 void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],unsigned int queens_number);
 void sdl_display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number, int size);
 
-
 void table(unsigned int* queens[NUM_PLAYERS], int *t, unsigned int queens_number);
 
 int *graph_table(struct graph_t *graph);
 
-unsigned int* table_q(int length);
+unsigned int* allouer_table(int length);
 
-void copy(unsigned int *queen[NUM_PLAYERS],unsigned int *q[NUM_PLAYERS] ,int m);
+void queens_copy(unsigned int *queen[NUM_PLAYERS],unsigned int *q[NUM_PLAYERS] ,int m);
 
 int start_player();
 
 int next_player(int player);
+void make_graph(struct graph_t * g, unsigned int m ,char s );
 
 #endif

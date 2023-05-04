@@ -43,44 +43,18 @@ void(*finalize_player2)(void );
 struct move_t(*play1)(struct move_t previous_move);
 struct move_t(*play2)(struct move_t previous_move);
         
-
+// to display the queens positions
 void print_queens(struct player p, int num_queens ){
     for(int i=0; i < num_queens ; ++i){
         printf("current [%d] = %d /// other[%d] = %d\n", i,p.current_queens[i] ,i, p.other_queens[i]);
     }
 }
 
-
 //function that prints the move
 void print_move(struct move_t move){
     printf("move from %d to %d and arrow at %d \n", move.queen_src, move.queen_dst,move.arrow_dst);
 }
 
-
-
-
-
-/*this function makes a graph depending on the type of graph taken as argument
-*/
-
-void initialize_donut_graph(struct graph_t* g, unsigned int m){
-    make_hole(g, (m/3)*m + m/3 , m/3);
-    g->num_vertices = 8*m*m/9;
-}
-
-void initialize_trefle_graph(struct graph_t* g, unsigned int m){
-    make_hole(g, m/5*m + m/5, m/5 );
-    make_hole(g, m/5*m + 3*m/5 , m/5 );
-    make_hole(g, 3*m/5*m + m/5, m/5 );
-    make_hole(g, 3*m/5*m + 3*m/5, m/5 );
-    g->num_vertices = 21*m*m / 25 ;
-}
-
-void initialize_eight_graph(struct graph_t* g , unsigned int m){
-    make_hole(g, 2*(m/4) * m + m/4, m/4 );
-    make_hole(g, (m/4) * m + 2*m/4 , m/4 );
-    g->num_vertices = 21*m*m / 25 ;
-}
 
 // void make_graph(struct graph_t * g, unsigned int m ,char s ){ 
 //     switch(s){
@@ -107,24 +81,8 @@ void initialize_eight_graph(struct graph_t* g , unsigned int m){
 //             break;
 //   }
 // }
-void make_graph(struct graph_t * g, unsigned int m ,char s ){ 
-    switch(s){
-        case 'c' :
-            g->num_vertices = m*m;
-            break;
-        case 'd':
-            initialize_donut_graph(g, m);
-            break;
-        case 't':
-            initialize_trefle_graph(g, m);
-            break;
-        case '8':
-            initialize_eight_graph(g, m);
-            break;
-        default :
-            break;
-  }
-}
+
+
 int main(int argc, char* argv[]){
     /* START GETOPT */
     unsigned int length=8;
@@ -203,37 +161,34 @@ int main(int argc, char* argv[]){
         unsigned int white_queens[m];
         unsigned int black_queens[m];
         unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
-
-        unsigned int *queens1[NUM_PLAYERS]= {table_q(length),table_q(length)};
-        unsigned int *queens2[NUM_PLAYERS]={table_q(length),table_q(length)};
-        
-
+        //to creat a copy of the table queens for the first player
+        unsigned int *queens1[NUM_PLAYERS]= {allouer_table(length),allouer_table(length)};
+        //to creat a copy of the table queens for the first player
+        unsigned int *queens2[NUM_PLAYERS]={allouer_table(length),allouer_table(length)};
+        // to initialize queens table 
         begining_position(queens, length);
-        copy(queens, queens1, m);
-        copy(queens,queens2,m);
+        // copy queens in queens1 and queens2
+        queens_copy(queens, queens1, m);
+        queens_copy(queens,queens2,m);
+
         initialize_player1(0,white_graph,m,queens1);
         initialize_player2(1,black_graph,m,queens2);
         //The starting board
     
         sdl_display(graph,queens,m,length);
-        // make_hole(graph, 10, 2);
         //display(graph,queens,m);
 
         struct move_t move={-1,-1,-1};
         int player = start_player();
         //The game loop
         for(unsigned int i=0;i<turns;i++){
-         //  printf("########## TOUR: %d ##########\n", i+1);
         if(player==BLACK){
             move=play2(move);
-         //   printf("Joueur: %s\n", black_player);
             execute_move(move,graph,queens[1]);
-
         }
         else{
             move=play1(move);
             execute_move(move,graph,queens[0]);
-          //  print_move(move);
         }
         if(move.queen_dst==UINT_MAX){
             if(i==length*length) printf("eqalité\n");

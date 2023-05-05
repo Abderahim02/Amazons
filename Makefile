@@ -39,6 +39,9 @@ test_execute_move.o: ${TST}/test_execute_move.c ${SRC}/server_functions.h src/ho
 test_execute_move: test_execute_move.o server_functions.o graph.o hole.o
 	${CC} -fprofile-arcs -ftest-coverage -L${GSL_PATH}/lib  test_execute_move.o graph.o hole.o server_functions.o  -lgsl -lgslcblas -lm -ldl -o $@ -lm
 
+test_execute_move: test_execute_move.o graph.o moteur.o hole.o 
+	${CC} -L${GSL_PATH}/lib test_execute_move.o graph.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
+
 ######################################################### Fin tests ###########################################################
 
 ######################################################### Début fichiers objets #################################################

@@ -113,15 +113,15 @@ gsl_spmatrix_uint* copy_matrix(struct graph_t *graph,int size) {
   return graph_copy;
 }
 
-// struct graph_t *graph_cpy(const struct graph_t *graph, int size){
-//   struct graph_t *graph_dst = malloc(sizeof(struct graph_t));
-//   gsl_spmatrix_uint *tmp=initialize_graph(size);
-//   graph_dst->t=gsl_spmatrix_uint_compress(tmp, GSL_SPMATRIX_CSR);
-//   gsl_spmatrix_uint_free(tmp);
-//   gsl_spmatrix_uint_memcpy(graph_dst->t, graph->t); 
-//   graph_dst->num_vertices = graph->num_vertices;
-//   return graph_dst;
-// }
+struct graph_t *graph_cpy(const struct graph_t *graph, int size){
+  struct graph_t *graph_cpy = malloc(sizeof(struct graph_t));
+  gsl_spmatrix_uint *matrix_copy=gsl_spmatrix_uint_alloc(graph->t->size1,graph->t->size2);
+  graph_cpy->t=gsl_spmatrix_uint_compress(matrix_copy, GSL_SPMATRIX_CSR);
+  gsl_spmatrix_uint_free(matrix_copy);
+  gsl_spmatrix_uint_memcpy(graph_cpy->t, graph->t); 
+  graph_cpy->num_vertices = graph->num_vertices;
+  return graph_cpy;
+}
 
 
 //this function can be useful for checking if a vertex can be occupied by a queen in a game

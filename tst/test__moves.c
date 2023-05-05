@@ -19,8 +19,6 @@ void print__array(int* t){
 
 
 extern struct graph_t * initialize_graph(unsigned int length);
-extern void initialize_graph_positions_classic(struct graph_t* g);
-extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
 extern void free_graph(struct graph_t* g);
 extern int empty_cell(struct graph_t *graph, int x, unsigned int size);
 
@@ -64,7 +62,6 @@ void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],unsigned i
 void test__available_dst(){
     unsigned int size=8;
     struct graph_t* graph = initialize_graph(size);
-    initialize_graph_positions_classic(graph);
     enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
     struct player player;
     player.num_queens=0;
@@ -99,6 +96,8 @@ void test__available_dst(){
     printf("OK test__available_dst\n");
 }
 
+void test__delete_element(struct graph_t)
+
 void test__put_arrow(){
     unsigned int size=4;
     struct graph_t* graph = initialize_graph(size);    // enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
@@ -112,7 +111,6 @@ void test__put_arrow(){
 void test__begining_position(){
     unsigned int size=5;
     struct graph_t* graph = initialize_graph(size);
-    initialize_graph_positions_classic(graph);
     // enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
     
     unsigned int m=((size/10)+1)*4;
@@ -161,9 +159,9 @@ void test__execute_move(){
 
 int main(){
     test__available_dst();
-    // test__put_arrow();
-    // test__begining_position();
-    // test__execute_move();
+    test__put_arrow();
+    test__begining_position();
+    test__execute_move();
     printf("OK all__tests\n");
     return 0;
 }

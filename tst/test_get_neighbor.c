@@ -187,8 +187,6 @@ void display_matrix_of_graph(struct graph_t * g){
 // }
 
  int main(){
-    //test__get_neighbor_gen();
-    //test_make_hole();
-    //test_make_i_j();
+    test__get_neighbor_gen();
     return 0;
  }

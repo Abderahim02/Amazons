@@ -8,6 +8,7 @@
 
 extern struct graph_t * initialize_graph(unsigned int length);
 extern void free_graph(struct graph_t* g);
+extern void make_graph(struct graph_t * g, unsigned int m ,char s );
 
 void test_graph_table(void){
     struct graph_t* graph=initialize_graph(4);

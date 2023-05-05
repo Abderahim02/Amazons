@@ -21,6 +21,8 @@ extern struct graph_t * initialize_donut_graph(struct graph_t* graph, unsigned i
 
 extern void free_graph(struct graph_t* g);
 
+extern void make_graph(struct graph_t * g, unsigned int m ,char s );
+
 
 extern struct graph_t *graph_cpy(const struct graph_t *graph, int size);
 

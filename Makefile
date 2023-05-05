@@ -31,10 +31,13 @@ test__moves.o: ${TST}/test__moves.c graph.o ${SRC}/graph.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test__moves.c
 
 test__moves: test__moves.o graph.o moteur.o hole.o 
-	${CC} -L${GSL_PATH}/lib test__moves.o graph.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
+	${CC} -fprofile-arcs -ftest-coverage -L${GSL_PATH}/lib test__moves.o graph.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
 
-test_execute_move.o: ${TST}/test_execute_move.c hole.o 
-	${CC} $(CFLAGS) -I ${SRC} -I ${TST} ${TST}/test_execute_move.c  -c 
+test_execute_move.o: ${TST}/test_execute_move.c ${SRC}/server_functions.h src/hole.h
+	${CC} -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -I ${SRC}  ${TST}/test_execute_move.c   -c
+
+test_execute_move: test_execute_move.o server_functions.o graph.o hole.o
+	${CC} -fprofile-arcs -ftest-coverage -L${GSL_PATH}/lib  test_execute_move.o graph.o hole.o server_functions.o  -lgsl -lgslcblas -lm -ldl -o $@ -lm
 
 ######################################################### Fin tests ###########################################################
 
@@ -56,7 +59,7 @@ player1.o: ${SRC}/player1.c
 server_functions.o: src/server_functions.c src/hole.h src/moteur.h src/server_functions.h
 	${CC} $(CFLAGS) -I${SRC} -c  $<
 
-server.o: ${SRC}/server.c  ${SRC}/player.h ${SRC}/graph.h ${SRC}/hole.h
+server.o: ${SRC}/server.c  ${SRC}/player.h graph.o ${SRC}/hole.h
 	${CC} $(CFLAGS) -c -I${SRC} $< -o $@ -ldl -lgcov
 
 

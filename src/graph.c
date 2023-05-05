@@ -12,7 +12,7 @@ values in the matrix representing the graph (la matrice d'adjacence)we consider 
 every sommit of the graph has a maximum of 8 neighbors*/
 void initialize_graph_positions_classic(struct graph_t* g){ 
     size_t graph_size = sqrt(g->t->size1); 
-    for (size_t i = 0; i < graph_size*graph_size-graph_size-1  ; i++) { 
+    for (size_t i = 0; i < graph_size*graph_size-graph_size  ; i++) { 
         //beginning with corners
         if(i==0){
             gsl_spmatrix_uint_set(g->t, i, i+1, DIR_EAST);
@@ -59,7 +59,7 @@ void initialize_graph_positions_classic(struct graph_t* g){
 
     }
     
-    for(size_t i=graph_size*graph_size-graph_size-1; i<graph_size*graph_size; i++){
+    for(size_t i=graph_size*graph_size-graph_size; i<graph_size*graph_size; i++){
 
         if(i==graph_size*graph_size-1){
             gsl_spmatrix_uint_set(g->t, i, i-1, DIR_WEST);

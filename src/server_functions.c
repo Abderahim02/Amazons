@@ -8,6 +8,39 @@
 
 extern int empty_cell(struct graph_t *graph, int x, unsigned int size);
 
+
+void get_opt(int argc, char* argv[], char* type, unsigned int *length, unsigned int* turns){
+    extern char *optarg;
+    int opt=0; //we set the default type of world at squared world
+    while((opt=getopt(argc, argv, "s:m:t:h")) != -1){
+        switch(opt){
+            case 'm':
+                if(optarg!=NULL){
+                    *length=atoi(optarg); // update the value of length
+                }
+                break;
+            case 's':
+                if(optarg!=NULL){
+                    printf("turns = %d\n", *turns);
+                    *turns=atoi(optarg); // update the value of turns
+                    printf("turns = %d\n", *turns);
+                }
+                break;
+            case 't':
+                 if(optarg!=NULL){
+                    *type = optarg[0]; // update the value of type
+                }
+                break;
+            case 'h':
+                printf("usage: ./project [-h help]\n \t \t [-m allows you to specify the width of the game board] \n \t \t [-t allows you to specify the shape of the game board (square grid c, donut d, cloverleaf t or figure eight 8 ) \n]");
+                return;
+                break;
+            default:
+                break;
+        }
+    }
+}
+
 int *graph_table(struct graph_t *graph){
     unsigned int length=sqrt(graph->t->size1);
     int *t=(int *)malloc(sizeof(int)*length*length);

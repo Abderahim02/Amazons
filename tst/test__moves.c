@@ -5,7 +5,12 @@
 #include "../src/graph.h"
 #include "../src/move.h"
 #include "../src/moteur.h"
+#include "../src/server_functions.h"
 #include <dlfcn.h>
+
+
+extern struct graph_t * initialize_graph(unsigned int length);
+extern void free_graph(struct graph_t* g);
 
 void print__array(int* t){
     int* ptr=t;
@@ -18,42 +23,6 @@ void print__array(int* t){
 }
 
 
-extern struct graph_t * initialize_graph(unsigned int length);
-extern void free_graph(struct graph_t* g);
-extern int empty_cell(struct graph_t *graph, int x, unsigned int size);
-
-
-unsigned int *graph_table(struct graph_t *graph){
-    unsigned int length=sqrt(graph->t->size1);
-    unsigned int *t=(unsigned int *)malloc(sizeof(unsigned int)*length*length);
-    for(unsigned int i=0 ; i<length*length;i++){
-     if(empty_cell(graph,i,length*length))   
-            t[i]=UINT_MAX;
-        else t[i]=0;
-    }
-    return t;
-}
-
-void table(unsigned int* queens[NUM_PLAYERS], unsigned int *t, unsigned int queens_number){
-    for(unsigned int i=0;i<queens_number;i++){
-        t[queens[0][i]]=1;
-        t[queens[1][i]]=2;
-    }
-    
-}
-
-void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],unsigned int queens_number){
-    unsigned int length=sqrt(graph->t->size1);
-    unsigned int *t = graph_table(graph);
-    table(queens,t,queens_number);
-    for(unsigned int i=0;i<length*length;i++){
-        if(i!=0 && i%length==0) printf("\n");
-        if(t[i]==UINT_MAX) printf("  ");
-    else printf("%d ",t[i] );
-    }
-    printf("\n");
-    free(t);
-}
 
 
 
@@ -96,7 +65,10 @@ void test__available_dst(){
     printf("OK test__available_dst\n");
 }
 
-void test__delete_element(struct graph_t)
+void test__delete_element(){
+    
+    printf("test__delete_element OK\n");
+}
 
 void test__put_arrow(){
     unsigned int size=4;
@@ -108,7 +80,95 @@ void test__put_arrow(){
     printf("OK test__put_arrow\n");
 }
 
-void test__begining_position(){
+void test__begining_position_size_5(){
+    unsigned int size=5;
+    struct graph_t* graph = initialize_graph(size);
+    // enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
+    
+    unsigned int m=((size/10)+1)*4;
+    unsigned int white_queens[m];
+    unsigned int black_queens[m];
+    unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
+    begining_position(queens, size);
+    assert(black_queens[0]==1);
+    assert(black_queens[1]==3);
+    assert(black_queens[2]==5);
+    assert(black_queens[3]==9);
+    assert(white_queens[0]==21);
+    assert(white_queens[1]==23);
+    assert(white_queens[2]==15);
+    assert(white_queens[3]==19);
+    printf("test__begining_position_size_5 OK\n");
+    free_graph(graph);
+}
+
+void test__begining_position_size_8(){
+    unsigned int size=8;
+    struct graph_t* graph = initialize_graph(size);
+    // enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
+    
+    unsigned int m=((size/10)+1)*4;
+    unsigned int white_queens[m];
+    unsigned int black_queens[m];
+    unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
+    begining_position(queens, size);
+    assert(black_queens[0]==2);
+    assert(black_queens[1]==5);
+    assert(black_queens[2]==16);
+    assert(black_queens[3]==23);
+    assert(white_queens[0]==58);
+    assert(white_queens[1]==61);
+    assert(white_queens[2]==40);
+    assert(white_queens[3]==47);
+    printf("test__begining_position_size_8 OK\n");
+    free_graph(graph);
+}
+
+void test__begining_position_size_9(){
+    unsigned int size=9;
+    struct graph_t* graph = initialize_graph(size);
+    // enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
+    
+    unsigned int m=((size/10)+1)*4;
+    unsigned int white_queens[m];
+    unsigned int black_queens[m];
+    unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
+    begining_position(queens, size);
+    assert(black_queens[0]==2);
+    assert(black_queens[1]==6);
+    assert(black_queens[2]==18);
+    assert(black_queens[3]==26);
+    assert(white_queens[0]==74);
+    assert(white_queens[1]==78);
+    assert(white_queens[2]==54);
+    assert(white_queens[3]==62);
+    printf("test__begining_position_size_9 OK\n");
+    free_graph(graph);
+}
+
+void test__begining_position_size_12(){
+    unsigned int size=12;
+    struct graph_t* graph = initialize_graph(size);
+    // enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
+    
+    unsigned int m=((size/10)+1)*4;
+    unsigned int white_queens[m];
+    unsigned int black_queens[m];
+    unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
+    begining_position(queens, size);
+    assert(white_queens[4]==108);
+    assert(white_queens[5]==119);
+    assert(white_queens[6]==84);
+    assert(white_queens[7]==95);
+    assert(white_queens[0]==134);
+    assert(white_queens[1]==141);
+    assert(white_queens[2]==136);
+    assert(white_queens[3]==139);
+    printf("test__begining_position_size_12 OK\n");
+    free_graph(graph);
+}
+
+void test__begining_position_size_15(){
     unsigned int size=5;
     struct graph_t* graph = initialize_graph(size);
     // enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
@@ -160,7 +220,10 @@ void test__execute_move(){
 int main(){
     test__available_dst();
     test__put_arrow();
-    test__begining_position();
+    test__begining_position_size_5();
+    test__begining_position_size_8();
+    test__begining_position_size_9();
+    test__begining_position_size_12();
     test__execute_move();
     printf("OK all__tests\n");
     return 0;

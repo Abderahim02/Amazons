@@ -30,9 +30,10 @@ unsigned int* allouer_table(int length);
 
 void queens_copy(unsigned int *queen[NUM_PLAYERS],unsigned int *q[NUM_PLAYERS] ,int m);
 
+
 int start_player();
 
 int next_player(int player);
-void make_graph(struct graph_t * g, unsigned int m ,char s );
+
 
 #endif

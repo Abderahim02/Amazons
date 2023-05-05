@@ -13,6 +13,12 @@
 
 extern struct graph_t * initialize_graph(unsigned int length);
 
+extern struct graph_t* initialize_eight_graph(struct graph_t* graph, unsigned int length);
+
+extern struct graph_t* initialize_trefle_graph(struct graph_t* graph, unsigned int length);
+
+extern struct graph_t * initialize_donut_graph(struct graph_t* graph, unsigned int length);
+
 extern void free_graph(struct graph_t* g);
 
 
@@ -53,33 +59,6 @@ void print_queens(struct player p, int num_queens ){
 void print_move(struct move_t move){
     printf("move from %d to %d and arrow at %d \n", move.queen_src, move.queen_dst,move.arrow_dst);
 }
-
-
-// void make_graph(struct graph_t * g, unsigned int m ,char s ){ 
-//     switch(s){
-//         case 'c' :
-//             g->num_vertices = m*m;
-//             break;
-//         case 'd':
-//             make_hole(g, (m/3)*m + m/3 , m/3);
-//             g->num_vertices = 8*m*m/9;
-//             break;
-//         case 't':
-//             make_hole(g, m/5*m + m/5, m/5 );
-//             make_hole(g, m/5*m + 3*m/5 , m/5 );
-//             make_hole(g, 3*m/5*m + m/5, m/5 );
-//             make_hole(g, 3*m/5*m + 3*m/5, m/5 );
-//             g->num_vertices = 21*m*m / 25 ;
-//             break;
-//         case '8':
-//             make_hole(g, 2*(m/4) * m + m/4, m/4 );
-//             make_hole(g, (m/4) * m + 2*m/4 , m/4 );
-//             g->num_vertices = 21*m*m / 25 ;
-//             break;
-//         default :
-//             break;
-//   }
-// }
 
 
 int main(int argc, char* argv[]){
@@ -146,14 +125,11 @@ int main(int argc, char* argv[]){
     char *black_player = get_player2_name();
         //Initialize graphs
         struct graph_t* graph = initialize_graph(length);
-
+        make_graph(graph, length, graph_type);
         struct graph_t* white_graph = graph_cpy(graph, length);
         struct graph_t* black_graph = graph_cpy(graph, length);
 
         //we make hole or not depending on the type of the grapg for the tree graphs 
-        // make_graph(graph, length, graph_type);
-        // make_graph(white_graph, length, graph_type);
-        // make_graph(black_graph, length, graph_type);
 
         //Initialize queens for each player
         unsigned int m=((length/10)+1)*4;

@@ -55,7 +55,7 @@ void  make_zero_i_j(struct graph_t *g, int i, int j){
     size_t row_end = g->t->p[i + 1];
     for( size_t pos = row_start; pos < row_end; ++pos){
         if(g->t->i[pos] == j){
-            for( size_t k = pos ; k < g->t->nz ; ++k){
+            for( size_t k = pos ; k < g->t->nz - 1 ; ++k){
                 g->t->data[k] = g->t->data[k+1];
                 g->t->i[k] = g->t->i[k+1];
         }
@@ -73,6 +73,7 @@ void  make_hole(struct graph_t *g, int id, int size){
     for(int j=0;j<vertices ;j++){
        if( (j % n >= id % n && j % n < (id + size) % n) && (j / n >= id / n && j / n < id / n + size)){//ligne de j appartient au trou
               make_zero_i_j(g, i, j);
+              make_zero_i_j(g, j, i);
       }
     }
   }

@@ -207,7 +207,6 @@ int main(int argc, char* argv[]){
         player=next_player(player);
         sdl_display(graph,queens,m,length);
         //display(graph,queens,m);
-
         }
         free_graph(graph);
         finalize_player1();

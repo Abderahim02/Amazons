@@ -6,7 +6,7 @@
 
 
 
-int empty_cell(struct graph_t *graph, int x, unsigned int size);
+extern int empty_cell(struct graph_t *graph, int x, unsigned int size);
 
 int *graph_table(struct graph_t *graph){
     unsigned int length=sqrt(graph->t->size1);
@@ -105,45 +105,4 @@ void queens_copy(unsigned int *queen[NUM_PLAYERS],unsigned int *q[NUM_PLAYERS] ,
 
 }
 
-
-
-void initialize_donut_graph(struct graph_t* g, unsigned int m){
-    make_hole(g, (m/3)*m + m/3 , m/3);
-    g->num_vertices = 8*m*m/9;
-}
-
-void initialize_trefle_graph(struct graph_t* g, unsigned int m){
-    make_hole(g, m/5*m + m/5, m/5 );
-    make_hole(g, m/5*m + 3*m/5 , m/5 );
-    make_hole(g, 3*m/5*m + m/5, m/5 );
-    make_hole(g, 3*m/5*m + 3*m/5, m/5 );
-    g->num_vertices = 21*m*m / 25 ;
-}
-
-void initialize_eight_graph(struct graph_t* g , unsigned int m){
-    make_hole(g, 2*(m/4) * m + m/4, m/4 );
-    make_hole(g, (m/4) * m + 2*m/4 , m/4 );
-    g->num_vertices = 21*m*m / 25 ;
-}
-
-/*this function makes a graph depending on the type of graph taken as argument
-*/
-void make_graph(struct graph_t * g, unsigned int m ,char s ){ 
-    switch(s){
-        case 'c' :
-            g->num_vertices = m*m;
-            break;
-        case 'd':
-            initialize_donut_graph(g, m);
-            break;
-        case 't':
-            initialize_trefle_graph(g, m);
-            break;
-        case '8':
-            initialize_eight_graph(g, m);
-            break;
-        default :
-            break;
-  }
-}
 

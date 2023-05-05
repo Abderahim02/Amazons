@@ -13,95 +13,6 @@ extern void free_graph(struct graph_t* g);
 
 extern void  make_zero_i_j(struct graph_t *g, int i, int j);
 
-void test__get_neighbor_gen(){
-    unsigned int size=4;
-    struct graph_t* graph = initialize_graph(size);
-
-    enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
-    struct player player;
-    player.num_queens=0;
-    //Positions in the corners
-    //position 0, 3 neighbors
-    unsigned int position=0;
-    assert(get_neighbor_gen(position, DIR_NORTH, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_SOUTH, graph, player)==position+size);
-    assert(get_neighbor_gen(position, DIR_EAST, graph, player)==position+1);
-    assert(get_neighbor_gen(position, DIR_WEST, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_NE, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_NW, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_SE, graph, player)==position+size+1);
-    assert(get_neighbor_gen(position, DIR_SW, graph, player)==-1);
-    
-    //position 15(size*size-1)
-    position=size*size-1;
-    assert(get_neighbor_gen(position, DIR_NORTH, graph, player)==position-size);
-    assert(get_neighbor_gen(position, DIR_SOUTH, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_EAST, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_WEST, graph, player)==position-1);
-    assert(get_neighbor_gen(position, DIR_NE, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_NW, graph, player)==position-size-1);
-    assert(get_neighbor_gen(position, DIR_SE, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_SW, graph, player)==-1);
-
-    //position 11
-    position=size*size-size-1;
-    assert(get_neighbor_gen(position, DIR_NORTH, graph, player)==position-size);
-    assert(get_neighbor_gen(position, DIR_SOUTH, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_EAST, graph, player)==position+1);
-    assert(get_neighbor_gen(position, DIR_WEST, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_NE, graph, player)==position-size+1);
-    assert(get_neighbor_gen(position, DIR_NW, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_SE, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_SW, graph, player)==-1);
-
-    //position 3(size-1)
-    position=size-1;
-    assert(get_neighbor_gen(position, DIR_NORTH, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_SOUTH, graph, player)==position+size);
-    assert(get_neighbor_gen(position, DIR_EAST, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_WEST, graph, player)==position-1);
-    assert(get_neighbor_gen(position, DIR_NE, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_NW, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_SE, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_SW, graph, player)==position+size-1);
-
-    //position in the left of the board
-    position=size;
-    assert(get_neighbor_gen(position, DIR_NORTH, graph, player)==position-size);
-    assert(get_neighbor_gen(position, DIR_SOUTH, graph, player)==position+size);
-    assert(get_neighbor_gen(position, DIR_EAST, graph, player)==position+1);
-    assert(get_neighbor_gen(position, DIR_WEST, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_NE, graph, player)==position-size+1);
-    assert(get_neighbor_gen(position, DIR_NW, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_SE, graph, player)==position+size+1);
-    assert(get_neighbor_gen(position, DIR_SW, graph, player)==-1);
-
-
-    //position in the upper of the board
-    position=2;
-    assert(get_neighbor_gen(position, DIR_NORTH, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_SOUTH, graph, player)==position+size);
-    assert(get_neighbor_gen(position, DIR_EAST, graph, player)==position+1);
-    assert(get_neighbor_gen(position, DIR_WEST, graph, player)==position-1);
-    assert(get_neighbor_gen(position, DIR_NE, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_NW, graph, player)==-1);
-    assert(get_neighbor_gen(position, DIR_SE, graph, player)==position+size+1);
-    assert(get_neighbor_gen(position, DIR_SW, graph, player)==position+size-1); 
-
-    //In the center of the board
-    position=size+1;
-    assert(get_neighbor_gen(position, DIR_NORTH, graph, player)==position-size);
-    assert(get_neighbor_gen(position, DIR_SOUTH, graph, player)==position+size);
-    assert(get_neighbor_gen(position, DIR_EAST, graph, player)==position+1);
-    assert(get_neighbor_gen(position, DIR_WEST, graph, player)==position-1);
-    assert(get_neighbor_gen(position, DIR_NE, graph, player)==position-size+1);
-    assert(get_neighbor_gen(position, DIR_NW, graph, player)==position-size-1);
-    assert(get_neighbor_gen(position, DIR_SE, graph, player)==position+size+1);
-    assert(get_neighbor_gen(position, DIR_SW, graph, player)==position+size-1);
-
-    free_graph(graph);
-    printf("OK\n");
-}
 
 
 void display_matrix_of_graph(struct graph_t * g){
@@ -126,6 +37,107 @@ void display_matrix_of_graph(struct graph_t * g){
     printf("\n");
 
 }
+
+
+void test__get_neighbor_gen(){
+    printf("-----Started Testing get_neighbor_gen---------- \n");
+
+    unsigned int size=5;
+    struct graph_t* graph = initialize_graph(size);
+
+    enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
+    struct player player;
+    player.num_queens=0;
+    //Positions in the corners
+    //position 0, 3 neighbors
+    unsigned int position=0;
+    assert(get_neighbor_gen(position, DIR_NORTH, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_SOUTH, graph, player)==position+size);
+    assert(get_neighbor_gen(position, DIR_EAST, graph, player)==position+1);
+    assert(get_neighbor_gen(position, DIR_WEST, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_NE, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_NW, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_SE, graph, player)==position+size+1);
+    assert(get_neighbor_gen(position, DIR_SW, graph, player)==-1);
+    printf("\033[32mTest 1/7 PASSED\033[0m\n");
+    //position 15(size*size-1)
+    position=size*size-1;
+    assert(get_neighbor_gen(position, DIR_NORTH, graph, player)==position-size);
+    assert(get_neighbor_gen(position, DIR_SOUTH, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_EAST, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_WEST, graph, player)==position-1);
+    assert(get_neighbor_gen(position, DIR_NE, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_NW, graph, player)==position-size-1);
+    assert(get_neighbor_gen(position, DIR_SE, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_SW, graph, player)==-1);
+    printf("\033[32mTest 2/7 PASSED\033[0m\n");
+
+    //
+    position=size*size-size-1;
+    assert(get_neighbor_gen(position, DIR_NORTH, graph, player)==position-size);
+    assert(get_neighbor_gen(position, DIR_SOUTH, graph, player)==position+size);
+    assert(get_neighbor_gen(position, DIR_EAST, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_WEST, graph, player)==position-1);
+    assert(get_neighbor_gen(position, DIR_NE, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_NW, graph, player)==position-size-1);
+    assert(get_neighbor_gen(position, DIR_SE, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_SW, graph, player)==position+size-1);
+    printf("\033[32mTest 3/7 PASSED\033[0m\n");
+
+    //position 3(size-1)
+    position=size-1;
+    assert(get_neighbor_gen(position, DIR_NORTH, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_SOUTH, graph, player)==position+size);
+    assert(get_neighbor_gen(position, DIR_EAST, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_WEST, graph, player)==position-1);
+    assert(get_neighbor_gen(position, DIR_NE, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_NW, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_SE, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_SW, graph, player)==position+size-1);
+    printf("\033[32mTest 4/7 PASSED\033[0m\n");
+
+    //position in the left of the board
+    position=size;
+    assert(get_neighbor_gen(position, DIR_NORTH, graph, player)==position-size);
+    assert(get_neighbor_gen(position, DIR_SOUTH, graph, player)==position+size);
+    assert(get_neighbor_gen(position, DIR_EAST, graph, player)==position+1);
+    assert(get_neighbor_gen(position, DIR_WEST, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_NE, graph, player)==position-size+1);
+    assert(get_neighbor_gen(position, DIR_NW, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_SE, graph, player)==position+size+1);
+    assert(get_neighbor_gen(position, DIR_SW, graph, player)==-1);
+    printf("\033[32mTest 5/7 PASSED\033[0m\n");
+
+
+    //position in the upper of the board
+    position=2;
+    assert(get_neighbor_gen(position, DIR_NORTH, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_SOUTH, graph, player)==position+size);
+    assert(get_neighbor_gen(position, DIR_EAST, graph, player)==position+1);
+    assert(get_neighbor_gen(position, DIR_WEST, graph, player)==position-1);
+    assert(get_neighbor_gen(position, DIR_NE, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_NW, graph, player)==-1);
+    assert(get_neighbor_gen(position, DIR_SE, graph, player)==position+size+1);
+    assert(get_neighbor_gen(position, DIR_SW, graph, player)==position+size-1); 
+    printf("\033[32mTest 6/7 PASSED\033[0m\n");
+
+    //In the center of the board
+    position=size+1;
+    assert(get_neighbor_gen(position, DIR_NORTH, graph, player)==position-size);
+    assert(get_neighbor_gen(position, DIR_SOUTH, graph, player)==position+size);
+    assert(get_neighbor_gen(position, DIR_EAST, graph, player)==position+1);
+    assert(get_neighbor_gen(position, DIR_WEST, graph, player)==position-1);
+    assert(get_neighbor_gen(position, DIR_NE, graph, player)==position-size+1);
+    assert(get_neighbor_gen(position, DIR_NW, graph, player)==position-size-1);
+    assert(get_neighbor_gen(position, DIR_SE, graph, player)==position+size+1);
+    assert(get_neighbor_gen(position, DIR_SW, graph, player)==position+size-1);
+    printf("\033[32mTest 7/7 PASSED\033[0m\n");
+    free_graph(graph);
+    printf("-----Started Testing get_neighbor_gen---------- \n");
+}
+
+
+
 
 
 void test_initialize_graph_positions_classic(){
@@ -273,5 +285,6 @@ void test_make_hole(){
     test_make_hole();
     test_make_i_j();
     test_initialize_graph_positions_classic();
+    test__get_neighbor_gen();
     return 0;
  }

@@ -101,6 +101,47 @@ struct graph_t * initialize_graph(unsigned int length){
 }
 
 
+void initialize_donut_graph(struct graph_t* g, unsigned int m){
+    make_hole(g, (m/3)*m + m/3 , m/3);
+    g->num_vertices = 8*m*m/9;
+}
+
+void initialize_trefle_graph(struct graph_t* g, unsigned int m){
+    make_hole(g, m/5*m + m/5, m/5 );
+    make_hole(g, m/5*m + 3*m/5 , m/5 );
+    make_hole(g, 3*m/5*m + m/5, m/5 );
+    make_hole(g, 3*m/5*m + 3*m/5, m/5 );
+    g->num_vertices = 21*m*m / 25 ;
+}
+
+void initialize_eight_graph(struct graph_t* g , unsigned int m){
+    make_hole(g, 2*(m/4) * m + m/4, m/4 );
+    make_hole(g, (m/4) * m + 2*m/4 , m/4 );
+    g->num_vertices = 21*m*m / 25 ;
+}
+
+
+/*this function makes a graph depending on the type of graph taken as argument
+*/
+void make_graph(struct graph_t * g, unsigned int m ,char s ){ 
+    switch(s){
+        case 'c' :
+            g->num_vertices = m*m;
+            break;
+        case 'd':
+            initialize_donut_graph(g, m);
+            break;
+        case 't':
+            initialize_trefle_graph(g, m);
+            break;
+        case '8':
+            initialize_eight_graph(g, m);
+            break;
+        default :
+            break;
+  }
+}
+
 gsl_spmatrix_uint* copy_matrix(struct graph_t *graph,int size) {
   gsl_spmatrix_uint *graph_copy=gsl_spmatrix_uint_alloc(graph->t->size1,graph->t->size2);
   for (unsigned int i = 0; i <size*size ; i++) {
@@ -113,15 +154,15 @@ gsl_spmatrix_uint* copy_matrix(struct graph_t *graph,int size) {
   return graph_copy;
 }
 
-// struct graph_t *graph_cpy(const struct graph_t *graph, int size){
-//   struct graph_t *graph_dst = malloc(sizeof(struct graph_t));
-//   gsl_spmatrix_uint *tmp=initialize_graph(size);
-//   graph_dst->t=gsl_spmatrix_uint_compress(tmp, GSL_SPMATRIX_CSR);
-//   gsl_spmatrix_uint_free(tmp);
-//   gsl_spmatrix_uint_memcpy(graph_dst->t, graph->t); 
-//   graph_dst->num_vertices = graph->num_vertices;
-//   return graph_dst;
-// }
+struct graph_t *graph_cpy(const struct graph_t *graph, int size){
+  struct graph_t *graph_cpy = malloc(sizeof(struct graph_t));
+  gsl_spmatrix_uint *matrix_copy=gsl_spmatrix_uint_alloc(graph->t->size1,graph->t->size2);
+  graph_cpy->t=gsl_spmatrix_uint_compress(matrix_copy, GSL_SPMATRIX_CSR);
+  gsl_spmatrix_uint_free(matrix_copy);
+  gsl_spmatrix_uint_memcpy(graph_cpy->t, graph->t); 
+  graph_cpy->num_vertices = graph->num_vertices;
+  return graph_cpy;
+}
 
 
 //this function can be useful for checking if a vertex can be occupied by a queen in a game

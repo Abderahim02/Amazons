@@ -35,6 +35,44 @@ void delete_element(struct graph_t* graph, unsigned int i, unsigned int j){
         }
     }
 }
+//function available_dst_all
+unsigned int* available_dst_all(struct graph_t *graph, unsigned int pos,struct player player){
+    unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*(graph->t->size1));
+    for(int i = 0 ; i<graph->t->size1 ; i++){
+        t[i]=UINT_MAX;
+    }
+    int i=1;
+    for(enum dir_t dir = 1; dir <= 8; dir++) {
+        unsigned int tmp=pos;
+        while(get_neighbor_gen(tmp,dir,graph,player)!=UINT_MAX){
+            t[i]=get_neighbor_gen(tmp,dir,graph,player);
+            tmp=t[i];
+            i++;
+        }
+    }
+    t[0]=i-1;
+    printf("for pos %d\n", pos);
+    printf("available_dst_all: ");
+    printf("size is %d\n", t[0]);
+    //printos(t);
+    printf("leaving the function\n");
+    return t;
+}
+//just  a get neighbor that takes into account the other queens
+unsigned int get_neighbor_queens(unsigned int pos, enum dir_t direction, struct graph_t* graph, unsigned int* curr_queens,unsigned int* other_queens , unsigned int length){
+
+    unsigned int row_start=graph->t->p[pos];
+    unsigned int row_end=graph->t->p[pos+1];
+    for(size_t j=row_start; j<row_end; j++){
+        unsigned int neighbor=graph->t->i[j];
+        unsigned int dir=graph->t->data[j];
+        if(dir==direction && (!element_in_array(other_queens,length,neighbor))&&(!element_in_array(curr_queens,length,neighbor))){
+            return neighbor;
+        }
+    }
+    return UINT_MAX;
+
+}
 
 /*this function updates the graph taken as argument and the array of positions queens with the new 
 position of the queen after the move*/

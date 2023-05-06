@@ -15,7 +15,7 @@ TEST = test_get_neighbor test__moves
 export LD_LIBRARY_PATH=./
 
 all: build
-build: server  libraries test install
+build: server  libraries test 
 
 
 graph.o: ${SRC}/graph.c ${SRC}/graph.h
@@ -31,6 +31,7 @@ player2.o:  ${SRC}/player2.c
 
 player1.o: ${SRC}/player1.c 
 	${CC} $(CFLAGS) -I${SRC} -c  $<
+
 server_functions.o: src/server_functions.c src/hole.h src/moteur.h src/server_functions.h
 	${CC} $(CFLAGS) -I${SRC} -c  $<
 

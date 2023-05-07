@@ -11,9 +11,6 @@ extern void initialize_graph_positions_classic(struct graph_t* g);
 extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
 extern void free_graph(struct graph_t* g);
 void  make_hole(struct graph_t *g, int id, int size);
-
-// extern graph_t* graph_copy(struct graph_t *);
-
 extern void  make_zero_i_j(struct graph_t *g, int i, int j);
 extern void make_hole(struct graph_t *g, int id, int size);
 
@@ -137,7 +134,7 @@ void test__get_neighbor_gen(){
     assert(get_neighbor_gen(position, DIR_SW, graph, player)==position+size-1);
     printf("\033[32mTest 7/7 PASSED\033[0m\n");
     free_graph(graph);
-    printf("-----Started Testing get_neighbor_gen---------- \n");
+    printf("-----Finished Testing get_neighbor_gen---------- \n");
 }
 
 

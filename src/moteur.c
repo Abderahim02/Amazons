@@ -36,7 +36,7 @@ void delete_element(struct graph_t* graph, unsigned int i, unsigned int j){
     }
 }
 //function available_dst_all
-unsigned int* available_dst_all(struct graph_t *graph, unsigned int pos,struct player player){
+unsigned int* available_dst_all(const struct graph_t *graph, unsigned int pos, const struct player player){
     unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*(graph->t->size1));
     for(int i = 0 ; i<graph->t->size1 ; i++){
         t[i]=UINT_MAX;
@@ -44,18 +44,16 @@ unsigned int* available_dst_all(struct graph_t *graph, unsigned int pos,struct p
     int i=1;
     for(enum dir_t dir = 1; dir <= 8; dir++) {
         unsigned int tmp=pos;
-        while(get_neighbor_gen(tmp,dir,graph,player)!=UINT_MAX){
-            t[i]=get_neighbor_gen(tmp,dir,graph,player);
+        while(get_neighbor_gen(tmp, dir, graph, player)!=UINT_MAX){
+            t[i]=get_neighbor_gen(tmp, dir, graph, player);
             tmp=t[i];
             i++;
         }
     }
     t[0]=i-1;
-    printf("for pos %d\n", pos);
-    printf("available_dst_all: ");
-    printf("size is %d\n", t[0]);
-    //printos(t);
-    printf("leaving the function\n");
+    // printf("for pos %d\n , available_dst_all are : size is %d\n ", pos, t[0]);
+    // //printos(t);
+    // printf("leaving the function\n");
     return t;
 }
 //just  a get neighbor that takes into account the other queens
@@ -79,16 +77,16 @@ position of the queen after the move*/
 void execute_move(struct move_t move, struct graph_t *graph, unsigned int *queens){
     unsigned int length=sqrt(graph->t->size1);
     if((int)move.queen_dst>=0){
-    int queen_number = 4*(length/10 + 1 );
-    for(int  i =0; i < queen_number ; ++i ){
-        if ( queens[i] == move.queen_src ){ //we look for the ex_position and then we put the new position
-            queens[i] = move.queen_dst;
-            break;
+        int queen_number = 4*(length/10 + 1 );
+        for(int  i =0; i < queen_number ; ++i ){
+            if ( queens[i] == move.queen_src ){ //we look for the ex_position and then we put the new position
+                queens[i] = move.queen_dst;
+                break;
+            }
         }
-    }
-    if((int)move.arrow_dst!=-1 || move.arrow_dst!=UINT_MAX){
-        put_arrow(graph, move.arrow_dst);
-    }
+        if((int)move.arrow_dst!=-1 && move.arrow_dst!=UINT_MAX){
+            put_arrow(graph, move.arrow_dst);
+        }
     }
 }
 

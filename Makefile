@@ -53,9 +53,9 @@ test_execute_move.o: ${TST}/test_execute_move.c ${SRC}/server_functions.h src/ho
 
 
 test.o: tst/test.c
-	gcc -c tst/test.c
+	gcc -c -I$(GSL_PATH)/include tst/test.c
 test: test.o test_execute_move.o test__moves.o test_get_neighbor.o  graph.o src/moteur.c hole.o src/server_functions.c
-	${CC} -L${GSL_PATH}/lib -fprofile-arcs -ftest-coverage $^ -lgsl -lgslcblas -lm -ldl -o alltests -ldl
+	${CC} -L${GSL_PATH}/lib -I$(GSL_PATH)/include -fprofile-arcs -ftest-coverage $^ -lgsl -lgslcblas -lm -ldl -o alltests -ldl
 
 ######################################################### Fin tests ###########################################################
 

@@ -39,21 +39,7 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
     player_brown.other_queens=queens[(player_id+1)%2];
 }
 
-unsigned int *liberté_queen(int queen, struct graph_t* graph, struct player player){
-    enum dir_t dir=0;
-    unsigned int degre=0;
-    unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*9);
-    t[0]=0;
-    for(int i=1; i<9; i++){
-        if(get_neighbor_gen(queen, dir, graph, player)!=UINT_MAX){
-            t[degre+1]=get_neighbor_gen(queen, dir, graph, player);
-            degre++;
-        }
-        dir++;
-    }
-    t[0]=degre;
-    return t;
-}
+
 
 
 unsigned int range_free_1_step(int pos, struct graph_t* g, struct player p){
@@ -135,25 +121,44 @@ unsigned int least_queen_range(struct graph_t* g, struct player p){
 }
 
 
-
+unsigned int *liberté_queen(int queen, struct graph_t* graph, struct player player){
+    enum dir_t dir=0;
+    unsigned int degre=0;
+    unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*9);
+    t[0]=0;
+    for(int i=1; i<9; i++){
+        if(get_neighbor_gen(queen, i, graph, player)!=UINT_MAX){
+            t[degre+1]=get_neighbor_gen(queen, dir, graph, player);
+            degre++;
+        }
+    }
+    t[0]=degre;
+    return t;
+}
 
 
 unsigned int least_queen_move(struct graph_t* g, struct player p){
     unsigned int queen_index=0;
+    unsigned int* res=malloc(sizeof(unsigned int)*p.num_queens);
     for(unsigned int i=0; i<p.num_queens; i++){
-        unsigned int* t=liberté_queen(p.other_queens[queen_index], g, p);
-        unsigned int* t2=liberté_queen(p.other_queens[i], g, p);
-        if(t[0]>=t2[0]){
-            free(t);
-            free(t2);
+        unsigned int* t=liberté_queen(p.other_queens[i], g, p);
+        res[i]=t[0];
+        free(t);
+    }
+    queen_index=0;
+    for(unsigned int i=1; i<p.num_queens; i++){
+        if(res[queen_index]==0){
             queen_index=i;
         }
-        else{
-            free(t);
-            free(t2);
+        else if(res[queen_index]>res[i]){
+            queen_index=i;
         }
-
     }
+    unsigned int* t=liberté_queen(p.other_queens[queen_index], g, p);
+    if(t[0]==0){
+        return UINT_MAX;
+    }
+    free(res);
     return queen_index;
 }
 
@@ -180,9 +185,23 @@ unsigned int possible_block(int pos, int queen, struct graph_t* g, struct player
 
 
 unsigned int block_arrow(int pos, struct graph_t* g, struct player p){
-    unsigned int possible=possible_block(pos, least_queen_move(g, p), g, p);
-    if(possible!=UINT_MAX){
-        return possible;
+    unsigned int possible=0;
+    unsigned int least=least_queen_move(g, p);
+    if(least==UINT_MAX){
+        int i=0;
+        while(i<p.num_queens && possible==UINT_MAX){
+            possible=possible_block(pos, p.other_queens[i], g, p);
+            i++;
+        }
+        if(possible!=UINT_MAX){
+            return possible;
+        }
+    }
+    else{
+        possible=possible_block(pos, p.other_queens[least], g, p);
+        if(possible!=UINT_MAX){
+            return possible;
+        }
     }
     for(unsigned int i=0; i<p.num_queens; i++){
         possible=possible_block(pos, p.other_queens[i], g, p);
@@ -205,10 +224,10 @@ unsigned int choice_block_random_arrow(int pos, struct player p, struct graph_t*
 }
 
 unsigned int choise_dsr(int queen, struct player p, struct graph_t* g){
-    unsigned int dst=0;//perfect_dst_for_a_queen(queen, g, p);
-    // if(dst!=UINT_MAX){
-    //     return dst;
-    // }
+    unsigned int dst=perfect_dst_for_a_queen(queen, g, p);
+    if(dst!=UINT_MAX){
+        return dst;
+    }
     enum dir_t dir=NO_DIR;
     dir=available_dir(queen, g, dir, p);
     dst=random_dst(g, dir, queen, p);
@@ -261,19 +280,16 @@ struct move_t play2(struct move_t previous_move){
     // }
     move.queen_src=queen;
     move.queen_dst=choise_dsr(queen,player_brown,player_brown.graph);
-    if(move.queen_dst==UINT_MAX){
-        move.queen_dst=random_dst(player_brown.graph,dir,queen, player_brown);
-    }
-     player_brown.current_queens[queen_index]=move.queen_dst;
-     queen=move.queen_dst;
-     enum dir_t dir2=available_dir(queen,player_brown.graph,dir,player_brown);
+    player_brown.current_queens[queen_index]=move.queen_dst;
+    queen=move.queen_dst;
+    enum dir_t dir2=available_dir(queen,player_brown.graph,dir,player_brown);
 
-     if(dir2==NO_DIR){
+    if(dir2==NO_DIR){
         move.arrow_dst=move.queen_src;
-     }
-     else {
-         move.arrow_dst=choice_block_random_arrow(queen, player_brown, player_brown.graph);
-     }
+    }
+    else {
+        move.arrow_dst=choice_block_random_arrow(queen, player_brown, player_brown.graph);
+    }
     execute_move(move,player_brown.graph,player_brown.current_queens);
     return move;  
 }

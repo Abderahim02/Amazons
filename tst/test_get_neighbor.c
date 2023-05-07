@@ -8,9 +8,12 @@
 
 extern struct graph_t * initialize_graph(unsigned int length);
 extern void initialize_graph_positions_classic(struct graph_t* g);
-// extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
+extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
 extern void free_graph(struct graph_t* g);
+void  make_hole(struct graph_t *g, int id, int size);
+
 // extern graph_t* graph_copy(struct graph_t *);
+
 extern void  make_zero_i_j(struct graph_t *g, int i, int j);
 extern void make_hole(struct graph_t *g, int id, int size);
 
@@ -281,6 +284,9 @@ void test_make_hole(){
     free_graph(graph);
 }
 
+/*
+=======
+
 // struct player player_blanc;
 // struct player player_black;
 
@@ -476,6 +482,7 @@ void test_available_dst_all(){
     printf("player_2.current_queens[3] == %d\n",player_2.current_queens[3]);
     print_arr2(available_dst_all(graph ,player_2.current_queens[3], player_2), available_dst_all(graph ,player_2.current_queens[3], player_2)[0] );
 }
+
  int main(){
     //test__get_neighbor_gen();
     // test_make_hole();
@@ -485,3 +492,4 @@ void test_available_dst_all(){
     test_available_dst_all();
     return 0;
  }
+*/

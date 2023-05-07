@@ -17,7 +17,7 @@ void put_arrow(struct graph_t* graph, unsigned int idx){
         delete_element(graph, idx, i);
     }
 }
-
+//a function that removes a specific element (i.e., edge) from the graph.
 void delete_element(struct graph_t* graph, unsigned int i, unsigned int j){
     size_t row_start=graph->t->p[i];
     size_t row_end=graph->t->p[i+1];
@@ -35,7 +35,9 @@ void delete_element(struct graph_t* graph, unsigned int i, unsigned int j){
         }
     }
 }
-//function available_dst_all
+/*a function that returns an array of all available destinations for a player given a 
+current position on the board. This function takes into account the presence of 
+other players and is used to generate valid moves.*/
 unsigned int* available_dst_all(struct graph_t *graph, unsigned int pos, const struct player player){
     unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*(graph->t->size1));
     for(int i = 1 ; i<graph->t->size1 ; i++){
@@ -52,12 +54,10 @@ unsigned int* available_dst_all(struct graph_t *graph, unsigned int pos, const s
         }
     }
     t[0]=i-1;
-    // printf("for pos %d\n , available_dst_all are : size is %d\n ", pos, t[0]);
-    // //printos(t);
-    // printf("leaving the function\n");
     return t;
 }
-//just  a get neighbor that takes into account the other queens
+/*a function that returns the neighbor of a given position in a particular
+ direction, considering the presence of other players.*/
 unsigned int get_neighbor_queens(unsigned int pos, enum dir_t direction, struct graph_t* graph, unsigned int* curr_queens,unsigned int* other_queens , unsigned int length){
 
     unsigned int row_start=graph->t->p[pos];
@@ -90,7 +90,7 @@ void execute_move(struct move_t move, struct graph_t *graph, unsigned int *queen
         }
     }
 }
-
+//a function that checks if a particular element is present in an array.
 int element_in_array(unsigned int *array, unsigned int size, unsigned int element){
     for(unsigned int j=0; j<size; j++){
         if(array[j]==element){
@@ -99,7 +99,7 @@ int element_in_array(unsigned int *array, unsigned int size, unsigned int elemen
     }
     return 0;
 }
-
+//a function that returns a random direction in which a player can move.
 enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t direction,struct player player){
     enum dir_t dir=rand()%8+1;
     int cmp=0;
@@ -115,6 +115,8 @@ enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t d
     return dir;
 }
 
+/*a function that returns an array of available destinations for a player given a 
+direction of movement.*/
 unsigned int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player){
     unsigned int length=sqrt(graph->t->size1);
     unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*(length*2+1));
@@ -130,6 +132,7 @@ unsigned int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int 
 
 }
 
+//a function that returns a random distination
 int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player){
     unsigned int *t=available_dst(graph, dir, pos,player);
     int dst=t[(rand()%t[0])+1];
@@ -140,7 +143,7 @@ int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct pl
 
 
 
-
+//a function that returns the neighbor of a position in specific direction
 unsigned int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* graph, struct player player){
     if(direction==NO_DIR){
             return UINT_MAX;
@@ -191,6 +194,7 @@ void begining_position(unsigned int* queens[NUM_PLAYERS], unsigned int length){
     }
 }
 
+//a function that frees the memory allocated for a player
 void free_player(struct player player){
     free(player.current_queens);
     free(player.other_queens);

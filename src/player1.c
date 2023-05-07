@@ -8,7 +8,6 @@
 #include <time.h>
 #include "server_functions.h"
 
-// extern unsigned int* allouer_table(int length);
 
 
 int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph);
@@ -19,16 +18,7 @@ void free_graph2(struct graph_t* g){
   g=NULL;
 }
 
-//extern struct graph_t *graph_cpy(const struct graph_t *graph, int size);
-// struct graph_t *graph_cpy2(const struct graph_t *graph, int size){
-//   struct graph_t *graph_cpy = malloc(sizeof(struct graph_t));
-//   gsl_spmatrix_uint *matrix_copy=gsl_spmatrix_uint_alloc(graph->t->size1,graph->t->size2);
-//   graph_cpy->t=gsl_spmatrix_uint_compress(matrix_copy, GSL_SPMATRIX_CSR);
-//   gsl_spmatrix_uint_memcpy(graph_cpy->t, graph->t); 
-//   gsl_spmatrix_uint_free(matrix_copy);
-//   graph_cpy->num_vertices = graph->num_vertices;
-//   return graph_cpy;
-// }
+
 
 struct player player_blanc;
 /* Access to player informations
@@ -164,7 +154,6 @@ struct move_t random_move(unsigned int queen,unsigned int t[]){
   move.arrow_dst = random_arrow_dst(t,move.queen_src);
   return move;
 }
-
 
 
 

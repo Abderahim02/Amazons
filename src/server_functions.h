@@ -18,7 +18,6 @@
 
 
 
-// void print_queens(struct player p, int num_queens );
 
 
 void get_opt(int argc, char* argv[], char* type, unsigned int *length, unsigned int* turns);
@@ -32,6 +31,7 @@ void table(unsigned int* queens[NUM_PLAYERS], int *t, unsigned int queens_number
 
 int *graph_table(struct graph_t *graph);
 
+struct graph_t *graph_cpy(const struct graph_t *graph);
 unsigned int* allouer_table(unsigned int length);
 
 void queens_copy(unsigned int *queen[NUM_PLAYERS],unsigned int *q[NUM_PLAYERS] ,int m);

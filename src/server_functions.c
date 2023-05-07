@@ -5,7 +5,6 @@
 
 
 
-
 extern int empty_cell(struct graph_t *graph, int x, unsigned int size);
 
 
@@ -138,4 +137,13 @@ void queens_copy(unsigned int *queen[NUM_PLAYERS],unsigned int *q[NUM_PLAYERS] ,
 
 }
 
+struct graph_t *graph_cpy(const struct graph_t *graph){
+  struct graph_t *graph_cpy = malloc(sizeof(struct graph_t));
+  gsl_spmatrix_uint *matrix_copy=gsl_spmatrix_uint_alloc(graph->t->size1,graph->t->size2);
+  graph_cpy->t=gsl_spmatrix_uint_compress(matrix_copy, GSL_SPMATRIX_CSR);
 
+  gsl_spmatrix_uint_memcpy(graph_cpy->t, graph->t); 
+  gsl_spmatrix_uint_free(matrix_copy);
+  graph_cpy->num_vertices = graph->num_vertices;
+  return graph_cpy;
+}

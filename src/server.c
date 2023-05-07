@@ -23,7 +23,7 @@ extern void free_graph(struct graph_t* g);
 extern void make_graph(struct graph_t * g, unsigned int m ,char s );
 
 
-extern struct graph_t *graph_cpy(const struct graph_t *graph, int size);
+extern struct graph_t *graph_cpy(const struct graph_t *graph);
 
 extern int empty_cell(struct graph_t *graph, int x, unsigned int size);
 
@@ -89,8 +89,8 @@ int main(int argc, char* argv[]){
         //Initialize graphs
         struct graph_t* graph = initialize_graph(length);
         make_graph(graph, length, graph_type);
-        struct graph_t* white_graph = graph_cpy(graph, length);
-        struct graph_t* black_graph = graph_cpy(graph, length);
+        struct graph_t* white_graph = graph_cpy(graph);
+        struct graph_t* black_graph = graph_cpy(graph);
 
         //Initialize queens for each player
         unsigned int m=((length/10)+1)*4;
@@ -111,7 +111,7 @@ int main(int argc, char* argv[]){
         initialize_player2(1,black_graph,m,queens2);
         //The starting board
         // sdl_display(graph,queens,m,length);
-        //display(graph,queens,m);
+        display(graph,queens,m);
 
         struct move_t move={-1,-1,-1};
         int player = start_player();
@@ -127,10 +127,10 @@ int main(int argc, char* argv[]){
                 execute_move(move, graph, queens[0]);
             }
             if(move.queen_dst==UINT_MAX){
-                // if(i==length*length) printf("eqalité\n");
-                // else printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
+                if(i==length*length) printf("eqalité\n");
+                else printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
                 // // sdl_display(graph,queens,m,length);
-                //display(graph,queens,m);
+                display(graph,queens,m);
                 printf("%d\n" , (player+1)%2);
                 free_graph(graph);
                 finalize_player1();
@@ -142,7 +142,7 @@ int main(int argc, char* argv[]){
             }
             player=next_player(player);
             // sdl_display(graph,queens,m,length);
-            //display(graph,queens,m);
+            display(graph,queens,m);
 
         }
         free_graph(graph);

@@ -52,8 +52,8 @@ struct move_t(*play2)(struct move_t previous_move);
 
 
 int main(int argc, char* argv[]){
-    unsigned int length=11;
-    unsigned int turns=150;
+    unsigned int length=8;
+    unsigned int turns=200;
     char graph_type='c';
     //get_opt(argc, argv, &graph_type, &length, &turns);
     // printf("turns = %d\n", turns);
@@ -119,7 +119,8 @@ int main(int argc, char* argv[]){
         for(unsigned int i=0;i<turns;i++){
             if(player==BLACK){
                 move=play2(move);
-                execute_move(move, graph, queens[1]);
+                //printf("ANA\n");
+                execute_move(move,graph,queens[1]);
             }
             else{
                 move=play1(move);

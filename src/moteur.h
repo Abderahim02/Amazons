@@ -46,6 +46,9 @@ int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct pl
 
 unsigned int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player player);
 
+// unsigned int range_free_1_step(unsigned int pos, struct graph_t* g, struct player p);
+
+unsigned int least_queen_move(struct graph_t* g, struct player p);
 
 enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t direction,struct player player);
 

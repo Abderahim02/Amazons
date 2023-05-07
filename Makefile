@@ -86,10 +86,10 @@ test: test.o test_execute_move.o test__moves.o test_get_neighbor.o  graph.o src/
 
 ######################################################### Début libraries ##########################################################
 
-libraries:player1.o player2.o  moteur.o strategyplayer2.o player3.o
-	${CC} -shared player3.o moteur.o  strategyplayer2.o -o libplayer3.so
-	${CC} -shared player1.o moteur.o -o libplayer1.so
-	${CC} -shared player2.o moteur.o -o libplayer2.so
+libraries:player1.o player2.o moteur.o server_functions.o #strategyplayer2.o player3.o
+	#${CC} -shared player3.o moteur.o  strategyplayer2.o -o libplayer3.so
+	${CC} -shared player2.o moteur.o  -o libplayer2.so
+	${CC} -shared player1.o moteur.o server_functions.o -o libplayer1.so
 
 ######################################################### Fin libraries #########################################################
 

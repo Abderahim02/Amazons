@@ -117,7 +117,7 @@ int next_player(int player){
 
 
 unsigned int* allouer_table(int length){
-     unsigned int m = ((length / 10) + 1) * 4;
+    unsigned int m = ((length / 10) + 1) * 4;
     unsigned int *q = malloc(m * sizeof(unsigned int));
     
 

@@ -26,13 +26,19 @@ hole.o: ${SRC}/hole.c  ${SRC}/graph.h
 
 moteur.o: ${SRC}/moteur.c ${SRC}/graph.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -c ${SRC}/moteur.c -lgcov
+
+strategyplayer2.o: ${SRC}/strategyplayer2.c ${SRC}/graph.h ${SRC}/strategyplayer2.h
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -c ${SRC}/strategyplayer2.c -lgcov
+
+
+
 player2.o:  ${SRC}/player2.c 
 	${CC} $(CFLAGS) -I${SRC} -c  $< 
 
 player1.o: ${SRC}/player1.c 
 	${CC} $(CFLAGS) -I${SRC} -c  $<
 
-server_functions.o: src/server_functions.c src/hole.h src/moteur.h src/server_functions.h
+server_functions.o: src/server_functions.c src/hole.h src/moteur.h src/server_functions.h src/strategyplayer2.h
 	${CC} $(CFLAGS) -I${SRC} -c  $<
 
 server.o: ${SRC}/server.c  ${SRC}/player.h graph.o ${SRC}/hole.h
@@ -57,6 +63,14 @@ test__moves: test__moves.o graph.o moteur.o hole.o
 test_execute_move.o: ${TST}/test_execute_move.c ${SRC}/server_functions.h src/hole.h
 	${CC} -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -I ${SRC}  ${TST}/test_execute_move.c   -c
 
+strategy.o: ${TST}/strategy.c graph.o ${SRC}/graph.h
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/strategy.c
+
+
+strategy: strategy.o graph.o moteur.o hole.o strategyplayer2.o server_functions.o
+	${CC} -fprofile-arcs -ftest-coverage -L${GSL_PATH}/lib strategy.o graph.o moteur.o hole.o strategyplayer2.o server_functions.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
+
+
 #test_execute_move: test_execute_move.o server_functions.o graph.o hole.o
 #	${CC} -fprofile-arcs -ftest-coverage -L${GSL_PATH}/lib  test_execute_move.o graph.o hole.o server_functions.o  -lgsl -lgslcblas -lm -ldl -o $@ -lm
 
@@ -73,8 +87,8 @@ test_execute_move: test_execute_move.o server_functions.o graph.o moteur.o hole.
 
 ######################################################### Début libraries ##########################################################
 
-libraries:player1.o player2.o moteur.o
-	${CC} -shared player2.o moteur.o -o libplayer2.so
+libraries:player1.o player2.o moteur.o strategyplayer2.o
+	${CC} -shared player2.o moteur.o strategyplayer2.o -o libplayer2.so
 	${CC} -shared player1.o moteur.o -o libplayer1.so
 
 ######################################################### Fin libraries #########################################################

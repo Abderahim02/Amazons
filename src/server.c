@@ -53,12 +53,12 @@ struct move_t(*play2)(struct move_t previous_move);
 
 int main(int argc, char* argv[]){
     unsigned int length=8;
-    unsigned int turns=5;
+    unsigned int turns=200;
     char graph_type='c';
-    get_opt(argc, argv, &graph_type, &length, &turns);
-    printf("turns = %d\n", turns);
-    printf("%d %d \n",length, length);
-    printf("#\n");
+    //get_opt(argc, argv, &graph_type, &length, &turns);
+    // printf("turns = %d\n", turns);
+    // printf("%d %d \n",length, length);
+    // printf("#\n");
     if (argc > 1) {
         void * lib1 = dlopen(argv[argc-2], RTLD_LAZY); 
         void * lib2 = dlopen(argv[argc-1], RTLD_LAZY); 
@@ -110,7 +110,7 @@ int main(int argc, char* argv[]){
         initialize_player1(0,white_graph,m,queens1);
         initialize_player2(1,black_graph,m,queens2);
         //The starting board
-        sdl_display(graph,queens,m,length);
+        //sdl_display(graph,queens,m,length);
         //display(graph,queens,m);
 
         struct move_t move={-1,-1,-1};
@@ -119,6 +119,7 @@ int main(int argc, char* argv[]){
         for(unsigned int i=0;i<turns;i++){
             if(player==BLACK){
                 move=play2(move);
+                //printf("ANA\n");
                 execute_move(move,graph,queens[1]);
             }
             else{
@@ -126,10 +127,11 @@ int main(int argc, char* argv[]){
                 execute_move(move,graph,queens[0]);
             }
             if(move.queen_dst==UINT_MAX){
-                if(i==length*length) printf("eqalité\n");
-                else printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
-                sdl_display(graph,queens,m,length);
-            //  display(graph,queens,m);
+                //if(i==length*length) printf("eqalité\n");
+                //else printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
+                printf("%d\n" , (player+1)%2);
+                //sdl_display(graph,queens,m,length);
+                //display(graph,queens,m);
 
                 free_graph(graph);
                 finalize_player1();
@@ -140,7 +142,7 @@ int main(int argc, char* argv[]){
             
             }
             player=next_player(player);
-            sdl_display(graph,queens,m,length);
+            //sdl_display(graph,queens,m,length);
             //display(graph,queens,m);
 
         }

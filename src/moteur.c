@@ -102,8 +102,12 @@ int random_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct pl
 }
 
 
-unsigned int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* graph, struct player player){
 
+
+unsigned int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct graph_t* graph, struct player player){
+    if(direction==NO_DIR){
+            return UINT_MAX;
+    }
     unsigned int row_start=graph->t->p[pos];
     unsigned int row_end=graph->t->p[pos+1];
     for(size_t j=row_start; j<row_end; j++){

@@ -205,10 +205,10 @@ unsigned int choice_block_random_arrow(int pos, struct player p, struct graph_t*
 }
 
 unsigned int choise_dsr(int queen, struct player p, struct graph_t* g){
-    unsigned int dst=perfect_dst_for_a_queen(queen, g, p);
-    if(dst!=UINT_MAX){
-        return dst;
-    }
+    unsigned int dst=0;//perfect_dst_for_a_queen(queen, g, p);
+    // if(dst!=UINT_MAX){
+    //     return dst;
+    // }
     enum dir_t dir=NO_DIR;
     dir=available_dir(queen, g, dir, p);
     dst=random_dst(g, dir, queen, p);

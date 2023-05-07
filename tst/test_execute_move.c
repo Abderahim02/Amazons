@@ -75,7 +75,7 @@ void test_copy_queens(void){
 }
 
 
-
+/*
 int main(){
     //test_execute_move();
     test_graph_table();
@@ -83,4 +83,4 @@ int main(){
     start_next();
     test_copy_queens();
     return 0;
-}
+}*/

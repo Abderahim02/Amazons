@@ -40,28 +40,22 @@ server.o: ${SRC}/server.c  ${SRC}/player.h graph.o ${SRC}/hole.h
 
 
 ######################################################### Début tests ##########################################################
-test: test_execute_move 
 
 test_get_neighbor.o: ${TST}/test_get_neighbor.c graph.o ${SRC}/graph.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test_get_neighbor.c
 
-test_get_neighbor: test_get_neighbor.o graph.o moteur.o hole.o 
-	${CC} -fprofile-arcs -ftest-coverage -L${GSL_PATH}/lib test_get_neighbor.o graph.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
 
 test__moves.o: ${TST}/test__moves.c graph.o ${SRC}/graph.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test__moves.c
 
-test__moves: test__moves.o graph.o moteur.o hole.o 
-	${CC} -fprofile-arcs -ftest-coverage -L${GSL_PATH}/lib test__moves.o graph.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
-
 test_execute_move.o: ${TST}/test_execute_move.c ${SRC}/server_functions.h src/hole.h
 	${CC} -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -I ${SRC}  ${TST}/test_execute_move.c   -c
 
-#test_execute_move: test_execute_move.o server_functions.o graph.o hole.o
-#	${CC} -fprofile-arcs -ftest-coverage -L${GSL_PATH}/lib  test_execute_move.o graph.o hole.o server_functions.o  -lgsl -lgslcblas -lm -ldl -o $@ -lm
 
-test_execute_move: test_execute_move.o server_functions.o graph.o moteur.o hole.o 
-	${CC} -L${GSL_PATH}/lib -fprofile-arcs -ftest-coverage test_execute_move.o server_functions.o graph.o moteur.o hole.o -lgsl -lgslcblas -lm -ldl -o alltests -ldl 
+test.o: tst/test.c
+	gcc -c -I$(GSL_PATH)/include tst/test.c
+test: test.o test_execute_move.o test__moves.o test_get_neighbor.o  graph.o src/moteur.c hole.o src/server_functions.c
+	${CC} -L${GSL_PATH}/lib -I$(GSL_PATH)/include -fprofile-arcs -ftest-coverage $^ -lgsl -lgslcblas -lm -ldl -o alltests -ldl
 
 ######################################################### Fin tests ###########################################################
 
@@ -98,7 +92,7 @@ server: server.o  server_functions.o graph.o moteur.o hole.o
 install: server
 	make server
 	make libraries
-	make test
+#	make test
 	if [ -f server ]; then cp server install/; fi
 	if [ -f alltests ]; then cp alltests install/; fi
 	cp *.so install

@@ -11,19 +11,22 @@ extern void free_graph(struct graph_t* g);
 extern void make_graph(struct graph_t * g, unsigned int m ,char s );
 
 void test_graph_table(void){
+    printf("-----Started Testing graph_table---------- \n");
     struct graph_t* graph=initialize_graph(4);
     make_graph(graph,4,'c');
     int *t=graph_table(graph);
     for(int i=0;i<9;i++){
         assert(t[0]==0);
     }
-    printf("graph_table passed\n");
-free(t);
-free_graph(graph);
+    free(t);
+    free_graph(graph);
+    printf("\033[32mTest 1/1 PASSED\033[0m\n");
+    printf("-----Finished Testing graph_table---------- \n");
 
 }
 
 void test_table(void){
+    printf("-----Started Testing table---------- \n");
     struct graph_t* graph=initialize_graph(3);
     make_graph(graph,3,'c');
     int *t=graph_table(graph);
@@ -35,27 +38,28 @@ void test_table(void){
     assert(t[0]==1);
     assert(t[8]==2);
     assert(t[3]==0);
-    printf("table passed\n");
-    printf("%d %d \n#\n", 3, 3);
-    sdl_display(graph,queens,1,3);
-    printf("sdl passed \n");
+    printf("\033[32mTest 1/1 PASSED\033[0m\n");
     free(t);
     free_graph(graph);
+    printf("-----FinishedTesting table---------- \n");
 }
 
 void start_next(void){
+    printf("-----Started Testing strat_next_players---------- \n");
     assert(start_player()>=0);
     assert(start_player()<=1);
-    printf("start_player passed\n");
+    printf("\033[32mTest 1/2 PASSED\033[0m\n");
 
     int player=BLACK;
     assert(next_player(player)==WHITE);
     assert(next_player(WHITE)==BLACK);
-    printf("next_player passed\n");
+    printf("\033[32mTest 2/2 PASSED\033[0m\n");
+    printf("-----Finished Testing strat_next_players---------- \n");
 
 }
 
 void test_copy_queens(void){
+    printf("-----Started Testing copy_queens---------- \n");
     unsigned int t[2]={2,4};
     unsigned int h[2]={1,3};
     unsigned int *queens[2]={t, h};
@@ -65,22 +69,10 @@ void test_copy_queens(void){
     assert(queens1[0][1]==queens[0][1]);
     assert(queens1[1][0]==queens[1][0]);
     assert(queens1[1][1]==queens[1][1]);
-    printf("queens_copy passed\n");
+    printf("\033[32mTest 1/1 PASSED\033[0m\n");
     free(queens1[0]);
     free(queens1[1]);
-
-
-
+    printf("-----Finished Testing copy_queens---------- \n");
 
 }
 
-
-/*
-int main(){
-    //test_execute_move();
-    test_graph_table();
-    test_table();
-    start_next();
-    test_copy_queens();
-    return 0;
-}*/

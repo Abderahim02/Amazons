@@ -1,6 +1,11 @@
 #ifndef _HOLE_H_
 #define _HOLE_H_
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <stddef.h>
+#include <math.h>
+
 #include "graph.h"
 #include "dir.h"
 

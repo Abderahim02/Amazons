@@ -13,7 +13,7 @@
  * RETURNS: - the next move for the player.
  */
 struct move_t play(struct move_t previous_move){
-    
+   
 }
 
 

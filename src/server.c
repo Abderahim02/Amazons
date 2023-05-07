@@ -124,7 +124,7 @@ int main(int argc, char* argv[]){
             }
             else{
                 move=play1(move);
-                execute_move(move,graph,queens[0]);
+                execute_move(move, graph, queens[0]);
             }
             if(move.queen_dst==UINT_MAX){
                 //if(i==length*length) printf("eqalité\n");

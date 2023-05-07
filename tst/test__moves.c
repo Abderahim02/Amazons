@@ -38,29 +38,43 @@ void test__available_dst(){
     unsigned int position=0;
     unsigned int* t=available_dst(graph, DIR_NORTH, position, player);
     assert(t[0]==0);
+    free(t);
     t=available_dst(graph, DIR_SOUTH, position, player);
     assert(t[0]==size-1);
     assert(t[1]==position+size);
     assert(t[2]==position+size*2);
     assert(t[3]==position+size*3);
+    free(t);
     t=available_dst(graph, DIR_EAST, position, player);
     assert(t[0]==size-1);
     assert(t[1]==position+1);
     assert(t[2]==position+2);
     assert(t[3]==position+3);
+    free(t);
+
     t=available_dst(graph, DIR_SE, position, player);
     assert(t[0]==size-1);
     assert(t[1]==position+size+1);
     assert(t[2]==position+size*2+2);
     assert(t[3]==position+size*3+3);
+    free(t);
+
     t=available_dst(graph, DIR_WEST, position, player);
     assert(t[0]==0);
+    free(t);
+
     t=available_dst(graph, DIR_NE, position, player);
     assert(t[0]==0);
+    free(t);
+
     t=available_dst(graph, DIR_NW, position, player);
     assert(t[0]==0);
+    free(t);
+
     t=available_dst(graph, DIR_SW, position, player);
     assert(t[0]==0);
+
+    free(t);
     free_graph(graph);
     printf("OK test__available_dst\n");
 }
@@ -74,7 +88,7 @@ void test__put_arrow(){
     unsigned int size=4;
     struct graph_t* graph = initialize_graph(size);    // enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
     
-    unsigned int position=0;
+   // unsigned int position=0;
 
     free_graph(graph);
     printf("OK test__put_arrow\n");
@@ -215,7 +229,7 @@ void test__execute_move(){
 
 
 
-
+/*
 
 int main(){
     test__available_dst();
@@ -227,4 +241,4 @@ int main(){
     test__execute_move();
     printf("OK all__tests\n");
     return 0;
-}
+}*/

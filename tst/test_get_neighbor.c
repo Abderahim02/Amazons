@@ -8,10 +8,14 @@
 
 extern struct graph_t * initialize_graph(unsigned int length);
 extern void initialize_graph_positions_classic(struct graph_t* g);
-// extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
+extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
 extern void free_graph(struct graph_t* g);
+void  make_hole(struct graph_t *g, int id, int size);
+
+// extern graph_t* graph_copy(struct graph_t *);
 
 extern void  make_zero_i_j(struct graph_t *g, int i, int j);
+extern void make_hole(struct graph_t *g, int id, int size);
 
 
 
@@ -279,12 +283,3 @@ void test_make_hole(){
     printf("-----Finished Testing make hole?--OK ---------- \n");
     free_graph(graph);
 }
-
- int main(){
-    //test__get_neighbor_gen();
-    test_make_hole();
-    test_make_i_j();
-    test_initialize_graph_positions_classic();
-    test__get_neighbor_gen();
-    return 0;
- }

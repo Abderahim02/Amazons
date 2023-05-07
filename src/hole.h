@@ -11,9 +11,6 @@
 
 void  make_hole(struct graph_t *g, int id, int size);
 
-void remove_node(int n,gsl_spmatrix_uint *mat);
-
-void hollow_matrix(gsl_spmatrix_uint *mat,int *t, int len );
 
 void  make_zero_i_j(struct graph_t *g, int i, int j);
 void make_hole(struct graph_t *g, int id, int size);

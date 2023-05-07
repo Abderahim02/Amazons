@@ -13,6 +13,10 @@
 
 
 
+
+
+
+
 /*This function parses command-line arguments to extract the game 
 settings, including the game type, board size, and number of turns.
 It takes in argc and argv[] parameters from the command line and 
@@ -44,6 +48,7 @@ void table(unsigned int* queens[NUM_PLAYERS], int *t, unsigned int queens_number
 It returns an integer pointer to the table.*/
 int *graph_table(struct graph_t *graph);
 
+struct graph_t *graph_cpy(const struct graph_t *graph);
 
 /*This function allocates memory for a table with the given length and returns 
 a pointer to the table.*/

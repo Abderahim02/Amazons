@@ -123,8 +123,8 @@ int main(int argc, char* argv[]){
                 execute_move(move, graph, queens[0]);
             }
             if(move.queen_dst==UINT_MAX){
-                // if(i==length*length) printf("eqalité\n");
-                // else printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
+                //if(i==length*length) printf("eqalité\n");
+                //printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
                 // // sdl_display(graph,queens,m,length);
                 //display(graph,queens,m);
                 printf("%d\n" , (player+1)%2);

@@ -28,7 +28,20 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
 
 
 
-
+struct move_t random_move(struct move_t move, enum dir_t dir, unsigned int queen_index, struct player player){
+    move.queen_src=player_black.current_queens[queen_index];
+    move.queen_dst=random_dst(player_black.graph,dir,player_black.current_queens[queen_index], player_black);
+    player_black.current_queens[queen_index]=move.queen_dst;
+    unsigned int queen=move.queen_dst;
+    enum dir_t dir2=available_dir(queen,player_black.graph,dir,player_black);
+    if(dir2==NO_DIR){
+        move.arrow_dst=move.queen_src;
+    }
+    else {
+        move.arrow_dst=random_dst(player_black.graph,dir2,move.queen_dst,player_black);
+    }
+    return move;
+}
 
 
 struct move_t play(struct move_t previous_move){
@@ -36,7 +49,7 @@ struct move_t play(struct move_t previous_move){
         execute_move(previous_move,player_black.graph,player_black.other_queens);
     struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
     int r=rand()%player_black.num_queens;
-    int queen_index=r;
+    unsigned int queen_index=r;
     int queen=player_black.current_queens[r];
     enum dir_t dir=NO_DIR;
     unsigned int cmp=0;
@@ -51,18 +64,7 @@ struct move_t play(struct move_t previous_move){
     if(dir==NO_DIR){
         return move;
     }
-     move.queen_src=queen;
-     move.queen_dst=random_dst(player_black.graph,dir,queen, player_black);
-     player_black.current_queens[queen_index]=move.queen_dst;
-     queen=move.queen_dst;
-     enum dir_t dir2=available_dir(queen,player_black.graph,dir,player_black);
-
-     if(dir2==NO_DIR){
-        move.arrow_dst=move.queen_src;
-     }
-     else {
-         move.arrow_dst=random_dst(player_black.graph,dir2,move.queen_dst,player_black);
-     }
+    move=random_move(move, dir, queen_index, player_black);
     execute_move(move,player_black.graph,player_black.current_queens);
     return move;  
 }

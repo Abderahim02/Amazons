@@ -218,8 +218,7 @@ unsigned int choise_dsr(int queen, struct player p, struct graph_t* g){
 
 
 
-struct move_t play(struct move_t previous_move){
-   //    srand(300);
+struct move_t play2(struct move_t previous_move){
     if(previous_move.queen_dst!= (unsigned int) -1 && previous_move.queen_dst!= (unsigned int) -1 ){
         execute_move(previous_move,player_brown.graph,player_brown.other_queens);
         player_brown.turn++;
@@ -229,11 +228,8 @@ struct move_t play(struct move_t previous_move){
     int r=rand()%player_brown.num_queens;
     int queen_index=r;
     int queen=player_brown.current_queens[r];
-    // we search for available direction for queen, else we change the queen 
-    // cmp to avoid the infinite loop 
     enum dir_t dir=NO_DIR;
     unsigned int cmp=0;
-    //finds an avaliable direction for a queen
     while(dir==NO_DIR && cmp<player_brown.num_queens){
         cmp++;
         queen_index=r;
@@ -254,15 +250,17 @@ struct move_t play(struct move_t previous_move){
             return move;
         }
     }
-    if(player_brown.turn<4){
-        move.queen_src=queen;
-        move.queen_dst=opening_dst(player_brown.graph, dir, queen,player_brown);
-    }
-    if(player_brown.turn>=4 || move.queen_dst==UINT_MAX){
-        move.queen_src=queen;
-        move.queen_dst=choise_dsr(queen,player_brown,player_brown.graph);
+    // if(player_brown.turn<4){
+    //     move.queen_src=queen;
+    //     move.queen_dst=opening_dst(player_brown.graph, dir, queen,player_brown);
+    // }
+    // if(player_brown.turn>=4 || move.queen_dst==UINT_MAX){
+    //     move.queen_src=queen;
+    //     move.queen_dst=choise_dsr(queen,player_brown,player_brown.graph);
      
-    }
+    // }
+    move.queen_src=queen;
+    move.queen_dst=choise_dsr(queen,player_brown,player_brown.graph);
     if(move.queen_dst==UINT_MAX){
         move.queen_dst=random_dst(player_brown.graph,dir,queen, player_brown);
     }
@@ -275,6 +273,42 @@ struct move_t play(struct move_t previous_move){
      }
      else {
          move.arrow_dst=choice_block_random_arrow(queen, player_brown, player_brown.graph);
+     }
+    execute_move(move,player_brown.graph,player_brown.current_queens);
+    return move;  
+}
+
+struct move_t play(struct move_t previous_move){
+    if(previous_move.queen_dst!= (unsigned int) -1 && previous_move.queen_dst!= (unsigned int) -1 )
+        execute_move(previous_move,player_brown.graph,player_brown.other_queens);
+    struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
+    int r=rand()%player_brown.num_queens;
+    int queen_index=r;
+    int queen=player_brown.current_queens[r];
+    enum dir_t dir=NO_DIR;
+    unsigned int cmp=0;
+    while(dir==NO_DIR && cmp<player_brown.num_queens){
+        cmp++;
+        queen_index=r;
+        queen=player_brown.current_queens[queen_index];
+        dir=available_dir(queen,player_brown.graph,NO_DIR,player_brown);
+        r=(r+1)%player_brown.num_queens;
+       
+    }
+    if(dir==NO_DIR){
+        return move;
+    }
+     move.queen_src=queen;
+     move.queen_dst=random_dst(player_brown.graph,dir,queen, player_brown);
+     player_brown.current_queens[queen_index]=move.queen_dst;
+     queen=move.queen_dst;
+     enum dir_t dir2=available_dir(queen,player_brown.graph,dir,player_brown);
+
+     if(dir2==NO_DIR){
+        move.arrow_dst=move.queen_src;
+     }
+     else {
+         move.arrow_dst=random_dst(player_brown.graph,dir2,move.queen_dst,player_brown);
      }
     execute_move(move,player_brown.graph,player_brown.current_queens);
     return move;  

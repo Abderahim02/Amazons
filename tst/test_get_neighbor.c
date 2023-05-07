@@ -280,28 +280,7 @@ void test_make_hole(){
     printf("-----Finished Testing make hole?--OK ---------- \n");
     free_graph(graph);
 }
-
-// struct player player_blanc;
-// struct player player_black;
-
-// void initialize1 (unsigned int player_id, struct graph_t* graph, unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]){
-//     player_black.id=player_id;
-//     player_black.graph=graph;
-//     player_black.num_queens=num_queens;
-//     player_black.turn=0;
-//     player_black.current_queens=queens[player_id];
-//     player_black.other_queens=queens[(player_id+1)%2];
-// }
-// void initialize2(unsigned int player_id, struct graph_t* graph, unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]){
-//     player_blanc.id=player_id;
-//     player_blanc.graph=graph;
-//     player_blanc.num_queens=num_queens;
-//     player_blanc.turn=0;
-//     player_blanc.current_queens=queens[player_id];
-//     player_blanc.other_queens=queens[(player_id+1)%2];
-// }
-
-
+/* 
 extern struct graph_t *graph_cpy(const struct graph_t *graph, int size);
 extern int empty_cell(struct graph_t *graph, int x, unsigned int size);
 unsigned int* allouer_table(int length){
@@ -317,38 +296,6 @@ unsigned int* allouer_table(int length){
     return q;
 }
 
-// //this function beging positions of the queen for both players 
-// void begining_position(unsigned int* queens[NUM_PLAYERS], unsigned int length){
-//     unsigned int *t=queens[0];
-//     unsigned int *t2=queens[1];
-//     int m=((length/10)+1)*4;
-//     int tmp=0;
-//     for(int i=1;i<=m/4;i++){
-//         t[tmp]=(1+length/7)*i+length*(length-1);
-//         tmp++;
-//         t[tmp]=length-1-(1+length/7)*i+length*(length-1);
-//         tmp++;
-//     }
-//     for(int i=1;i<=m/4;i++){
-//         t[tmp]=length*(length-1)-length*(1+length/7)*i;
-//         tmp++;
-//         t[tmp]=length*(length-1)-length*(1+length/7)*i+length-1;
-//         tmp++;
-//     }
-//      tmp=0;
-//     for(int i=1;i<=m/4;i++){
-//         t2[tmp]=(1+length/7)*i;
-//         tmp++;
-//         t2[tmp]=length-1-(1+length/7)*i;
-//         tmp++;
-//     }
-//     for(int i=1;i<=m/4;i++){
-//         t2[tmp]=length*(1+length/7)*(i);
-//         tmp++;
-//         t2[tmp]=length*(1+length/7)*i+length-1;
-//         tmp++;
-//     }
-// }
 
 void queens_copy(unsigned int *queen[NUM_PLAYERS],unsigned int *q[NUM_PLAYERS] ,int m){
      for (int i = 0; i < m; i++) {
@@ -421,67 +368,44 @@ void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],unsigned i
     
     free(t);
 }
-
-
-//function available_dst_all
-// unsigned int* available_dst_all(struct graph_t *graph, unsigned int pos,struct player player){
-//     unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*(graph->t->size1));
-//     for(int i = 0 ; i<graph->t->size1 ; i++){
-//         t[i]=UINT_MAX;
-//     }
-//     int i=1;
-//     for(enum dir_t dir = 1; dir <= 8; dir++) {
-//         unsigned int tmp=pos;
-//         while(get_neighbor_gen(tmp,dir,graph,player)!=UINT_MAX){
-//             t[i]=get_neighbor_gen(tmp,dir,graph,player);
-//             tmp=t[i];
-//             i++;
-//         }
-//     }
-//     t[0]=i-1;
-//     printf("for pos %d\n", pos);
-//     printf("available_dst_all: ");
-//     printf("size is %d\n", t[0]);
-//     //printos(t);
-//     printf("leaving the function\n");
-//     return t;
-// }
+ */
 // extern void display(struct graph_t * g, unsigned int *[2], unsigned int m);
-void test_available_dst_all(){
-    int length = 6;
-    struct graph_t * graph = initialize_graph(length);
-    struct graph_t* white_graph = graph_cpy(graph, length);
-    struct graph_t* black_graph = graph_cpy(graph, length);
+// void test_available_dst_all(){
+//     int length = 6;
+//     struct graph_t * graph = initialize_graph(length);
+//     struct graph_t* white_graph = graph_cpy(graph, length);
+//     struct graph_t* black_graph = graph_cpy(graph, length);
 
-        //Initialize queens for each player
-        unsigned int m=((length/10)+1)*4;
-        unsigned int white_queens[m];
-        unsigned int black_queens[m];
-        unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
-        //to creat a copy of the table queens for the first player
-        unsigned int *queens1[NUM_PLAYERS]= {allouer_table(length),allouer_table(length)};
-        //to creat a copy of the table queens for the first player
-        unsigned int *queens2[NUM_PLAYERS]={allouer_table(length),allouer_table(length)};
-        // to initialize queens table 
-        begining_position(queens, length);
-        // copy queens in queens1 and queens2
-        queens_copy(queens, queens1, m);
-        queens_copy(queens,queens2,m);
-    // initialize();
-    initialize1(0, white_graph, m, queens1 );
-    initialize2(1, black_graph, m, queens2 );
-    display(graph, queens, m);
+//         //Initialize queens for each player
+//         unsigned int m=((length/10)+1)*4;
+//         unsigned int white_queens[m];
+//         unsigned int black_queens[m];
+//         unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
+//         //to creat a copy of the table queens for the first player
+//         unsigned int *queens1[NUM_PLAYERS]= {allouer_table(length),allouer_table(length)};
+//         //to creat a copy of the table queens for the first player
+//         unsigned int *queens2[NUM_PLAYERS]={allouer_table(length),allouer_table(length)};
+//         // to initialize queens table 
+//         begining_position(queens, length);
+//         // copy queens in queens1 and queens2
+//         queens_copy(queens, queens1, m);
+//         queens_copy(queens,queens2,m);
+//     // initialize();
+//     initialize1(0, white_graph, m, queens1 );
+//     initialize2(1, black_graph, m, queens2 );
+//     display(graph, queens, m);
 
-    // print_arr2(allouer_table(length), m);
-    printf("player_2.current_queens[3] == %d\n",player_2.current_queens[3]);
-    print_arr2(available_dst_all(graph ,player_2.current_queens[3], player_2), available_dst_all(graph ,player_2.current_queens[3], player_2)[0] );
-}
+//     // print_arr2(allouer_table(length), m);
+//     printf("player_2.current_queens[3] == %d\n",player_2.current_queens[3]);
+//     print_arr2(available_dst_all(graph ,player_2.current_queens[3], player_2), available_dst_all(graph ,player_2.current_queens[3], player_2)[0] );
+//     free_graph();
+// }
  int main(){
     //test__get_neighbor_gen();
     // test_make_hole();
     // test_make_i_j();
     // test_initialize_graph_positions_classic();
     // test__get_neighbor_gen();
-    test_available_dst_all();
+    // test_available_dst_all();
     return 0;
  }

@@ -36,7 +36,7 @@ position of the queen after the move*/
 void execute_move(struct move_t move, struct graph_t *graph, unsigned int *queens);
 
 int element_in_array(unsigned int *array, unsigned int size, unsigned int element);
-unsigned int* available_dst_all(const struct graph_t *graph, unsigned int pos,const struct player player);
+unsigned int* available_dst_all(struct graph_t *graph, unsigned int pos,const struct player player);
 unsigned int get_neighbor_queens(unsigned int pos, enum dir_t direction, struct graph_t* graph, unsigned int* curr_queens,unsigned int* other_queens , unsigned int length);
 
 /*a test function */

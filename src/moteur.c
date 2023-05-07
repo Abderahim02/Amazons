@@ -36,11 +36,12 @@ void delete_element(struct graph_t* graph, unsigned int i, unsigned int j){
     }
 }
 //function available_dst_all
-unsigned int* available_dst_all(const struct graph_t *graph, unsigned int pos, const struct player player){
+unsigned int* available_dst_all(struct graph_t *graph, unsigned int pos, const struct player player){
     unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*(graph->t->size1));
-    for(int i = 0 ; i<graph->t->size1 ; i++){
+    for(int i = 1 ; i<graph->t->size1 ; i++){
         t[i]=UINT_MAX;
     }
+    t[0]=0;
     int i=1;
     for(enum dir_t dir = 1; dir <= 8; dir++) {
         unsigned int tmp=pos;

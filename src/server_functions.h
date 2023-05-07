@@ -32,7 +32,7 @@ void table(unsigned int* queens[NUM_PLAYERS], int *t, unsigned int queens_number
 
 int *graph_table(struct graph_t *graph);
 
-unsigned int* allouer_table(int length);
+unsigned int* allouer_table(unsigned int length);
 
 void queens_copy(unsigned int *queen[NUM_PLAYERS],unsigned int *q[NUM_PLAYERS] ,int m);
 

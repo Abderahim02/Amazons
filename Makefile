@@ -8,7 +8,7 @@ SRC = src
 TST = tst
 INSTALL = install
 
-CFLAGS = -std=c99 -Wall -lm -Wextra -fPIC -g3 -I$(GSL_PATH)/include -I${INSTALL} -I${SRC} 
+CFLAGS = -std=c99 -Wall -lm -Wextra -fPIC -g3 -g -I$(GSL_PATH)/include -I${INSTALL} -I${SRC} 
 LDFLAGS = -lm -lgsl -lgslcblas -ldl -lgcov\	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \	-Wl,--rpath=${GSL_PATH}/lib
 TEST = test_get_neighbor test__moves
 
@@ -84,6 +84,10 @@ libraries:player1.o player2.o moteur.o
 
 server: server.o  server_functions.o graph.o moteur.o hole.o 
 	${CC} -L${GSL_PATH}/lib server.o  server_functions.o graph.o moteur.o hole.o  -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov 
+
+server1: 
+	make 
+	./server libplayer1.so libplayer2.so -s 150 -m 6
 
 ######################################################### Fin Server #############################################################
 

@@ -6,7 +6,7 @@
 #include "dir.h"
 #include "graph.h"
 #include <time.h>
-// #include "server_functions.h"
+//#include "server_functions.h"
 
 // extern unsigned int* allouer_table(int length);
 
@@ -16,6 +16,7 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph);
 void free_graph2(struct graph_t* g){
     gsl_spmatrix_uint_free(g->t);
     free(g);
+    g=NULL;
 }
 
 //extern struct graph_t *graph_cpy(const struct graph_t *graph, int size);
@@ -23,8 +24,8 @@ struct graph_t *graph_cpy2(const struct graph_t *graph, int size){
   struct graph_t *graph_cpy = malloc(sizeof(struct graph_t));
   gsl_spmatrix_uint *matrix_copy=gsl_spmatrix_uint_alloc(graph->t->size1,graph->t->size2);
   graph_cpy->t=gsl_spmatrix_uint_compress(matrix_copy, GSL_SPMATRIX_CSR);
-  gsl_spmatrix_uint_free(matrix_copy);
   gsl_spmatrix_uint_memcpy(graph_cpy->t, graph->t); 
+  gsl_spmatrix_uint_free(matrix_copy);
   graph_cpy->num_vertices = graph->num_vertices;
   return graph_cpy;
 }
@@ -78,7 +79,7 @@ int number_neighbors_player(unsigned int* queens, struct graph_t *graph ){
     int cmp=0;
     unsigned int length = sqrt(graph->t->size1);
     unsigned int m=((length/10)+1)*4;
-    for(int i=0;i<(int) m;i++){
+    for(unsigned int i=0;i<m;i++){
         cmp+=number_neighbors(queens[i],graph);
     }
     return cmp;
@@ -92,15 +93,15 @@ int number_neighbors_player(unsigned int* queens, struct graph_t *graph ){
 //     }
 //     return cmp;
 // }
-unsigned int random_arrow_dst(struct graph_t *graph, unsigned int pos, const struct player player, unsigned int positions_possible[],unsigned int source_place) {
-        if (positions_possible[0] == 0) {
+unsigned int random_arrow_dst(struct graph_t *graph, unsigned int pos, struct player player, unsigned int positions_possible[],unsigned int source_place) {
+    if (positions_possible[0] == 0) {
         return source_place;
     }else{
     unsigned int dst = positions_possible[(rand() % (positions_possible[0])) + 1];
     return dst;
     }
 }
-unsigned int random_queen_dst(struct graph_t *graph, unsigned int pos, const struct player player, unsigned int positions_possible[]) {
+unsigned int random_queen_dst(struct graph_t *graph, unsigned int pos,struct player player, unsigned int positions_possible[]) {
     if (positions_possible[0] == 0) {
         return UINT_MAX;
     }else{
@@ -108,57 +109,61 @@ unsigned int random_queen_dst(struct graph_t *graph, unsigned int pos, const str
     return dst;
     }
 }
-unsigned int best_arrow(struct graph_t *graph, unsigned int pos, unsigned int src, const struct player player, unsigned int enemy_queens_neighbors[], int num_enemy_queens){
+unsigned int best_arrow(struct graph_t *graph, unsigned int pos, unsigned int src, struct player player, unsigned int enemy_queens_neighbors[], int num_enemy_queens){
     // printf("best arrow is caling it \n");
     unsigned int *t = available_dst_all(graph, pos, player);
     unsigned int best_arrow_pos = UINT_MAX;
     int max_occurence = -1;
 
     // Find the arrow position that hits the most enemy queen neighbors
-    for(int i = 1; i <= t[0]; i++){
-        if(t[i] == src){
-            // Skip the source position if it is in the list of available destinations
-            continue;
-        }
+    for(unsigned int i = 1; i <= t[0]; i++){
+        // if(t[i] == src){
+        //     // Skip the source position if it is in the list of available destinations
+        //     continue;
+        // }
         int occurence = occurence_in_array(enemy_queens_neighbors, num_enemy_queens, t[i]);
-        if(occurence > max_occurence){
+        if(occurence >= max_occurence){
             best_arrow_pos = t[i];
             max_occurence = occurence;
         }
     }
 
     // If there are multiple arrow positions with the same max number of hits, choose randomly
-    if(best_arrow_pos != UINT_MAX){
-        int num_max_occurences = 0;
-        for(int i = 1; i <= t[0]; i++){
-            if(t[i] == src){
-                continue;
-            }
-            int occurence = occurence_in_array(enemy_queens_neighbors, num_enemy_queens, t[i]);
-            if(occurence == max_occurence){
-                num_max_occurences++;
-            }
-        }
-        int random_index = rand() % num_max_occurences + 1;
-        int count = 0;
-        for(int i = 1; i <= t[0]; i++){
-            if(t[i] == src){
-                continue;
-            }
-            int occurence = occurence_in_array(enemy_queens_neighbors, num_enemy_queens, t[i]);
-            if(occurence == max_occurence){
-                count++;
-                if(count == random_index){
-                    best_arrow_pos = t[i];
-                    break;
-                }
-            }
-        }
-    } else {
-        // If no arrow position hits any enemy queen neighbor, choose randomly from all available positions
+    // if(best_arrow_pos != UINT_MAX){
+    //     int num_max_occurences = 0;
+    //     for(int i = 1; i <= t[0]; i++){
+    //         if(t[i] == src){
+    //             continue;
+    //         }
+    //         int occurence = occurence_in_array(enemy_queens_neighbors, num_enemy_queens, t[i]);
+    //         if(occurence == max_occurence){
+    //             num_max_occurences++;
+    //         }
+    //     }
+    //     int random_index = rand() % num_max_occurences + 1;
+    //     int count = 0;
+    //     for(int i = 1; i <= t[0]; i++){
+    //         if(t[i] == src){
+    //             continue;
+    //         }
+    //         int occurence = occurence_in_array(enemy_queens_neighbors, num_enemy_queens, t[i]);
+    //         if(occurence == max_occurence){
+    //             count++;
+    //             if(count == random_index){
+    //                 best_arrow_pos = t[i];
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //}
+    //  else {
+    //     // If no arrow position hits any enemy queen neighbor, choose randomly from all available positions
+    //     best_arrow_pos = random_arrow_dst(graph, pos, player, t, src);
+    // }
+    // // printf("freeing from BEST ARROW \n");
+    if(best_arrow_pos == UINT_MAX){
         best_arrow_pos = random_arrow_dst(graph, pos, player, t, src);
     }
-    // printf("freeing from BEST ARROW \n");
     free(t);
     return best_arrow_pos;
 }
@@ -178,12 +183,12 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
 }
 
 unsigned int* allouer_table(int length){
-     unsigned int m = ((length / 10) + 1) * 4;
-    unsigned int *q = malloc(m * sizeof(unsigned int));
+    unsigned int m = ((length / 10) + 1) * 4;
+    unsigned int *q = (unsigned int *)malloc(sizeof(unsigned int)*(m+1));
     
 
     // Initialisation des tableaux
-    for (unsigned int i = 0; i < m; i++) {
+    for (unsigned int i = 0; i <m; i++) {
         q[i] = i;  // exemple d'initialisation
     }
 
@@ -192,30 +197,34 @@ unsigned int* allouer_table(int length){
 
 
 //function that calculates the heuristic whcich is the difference between the number of neighbors of the player and the number of neighbors of the adversary
-int heuristic(const struct graph_t *graph, struct move_t move, const struct player player) {
+int heuristic(struct graph_t *graph, struct move_t move, struct player player) {
     int h = 0;
-    int length = sqrt(graph->t->size1);
+    unsigned int length = sqrt(graph->t->size1);
     unsigned int m=((length/10)+1)*4;
 
     struct graph_t* graph_copy = graph_cpy2(graph, length);
-    unsigned int * cp1 = allouer_table(m );
-    unsigned int * cp2 = allouer_table(m );
+    unsigned int * cp1 = allouer_table(length);
+    unsigned int * cp2 = allouer_table(length);
     
     unsigned int *queens[NUM_PLAYERS] ={cp1, cp2};
-    for(int i=0; i < m ; ++i){
+    //printf("la valeur de m %u \n", m);
+    for(unsigned int i=0; i < m ; ++i){
         queens[0][i] = player.current_queens[i];
         queens[1][i] = player.other_queens[i];
     }
     // Apply the move to the graph copy
-    execute_move(move, graph_copy, queens);
+    execute_move(move, graph_copy, queens[0]);
     h = number_neighbors_player(queens[0], graph_copy) - number_neighbors_player(queens[1],  graph_copy);
     free_graph2(graph_copy);
     free(cp1);
     free(cp2);
+    cp1=NULL;
+    cp2=NULL;
     return h;
 }
 
-struct move_t random_move(const struct graph_t * graph , unsigned int queen,unsigned int t[]){
+struct move_t random_move(
+    struct graph_t * graph , unsigned int queen,unsigned int t[]){
     struct move_t move;
     move.queen_src = queen;
     move.queen_dst = random_queen_dst(graph,move.queen_src,player_blanc,t);
@@ -231,7 +240,7 @@ void printos2(unsigned int *array){
 }
 
 void print_arr2(const unsigned int *tab, int len){
-    printf("\nsize = %d , elements : ",len);
+    //printf("\nsize = %d , elements : ",len);
     for(int i = 0; i<len ; ++i){
         printf("%d  ", tab[i]);
     }
@@ -247,7 +256,7 @@ void print_array(struct move_t *moves, int size){
         printf("\n");}
 
 //function that fills an array with all neighbors of an adversary queen
-struct move_t best_move(const struct graph_t * graph, const unsigned int* queens , int num_queens){
+struct move_t best_move(struct graph_t * graph, const unsigned int* queens , int num_queens){
     struct move_t moves[graph->t->size1*graph->t->size1];
     unsigned int enemy_queens_neighbors[graph->t->size1];
     int num_enemy_queens=0;
@@ -270,21 +279,20 @@ struct move_t best_move(const struct graph_t * graph, const unsigned int* queens
         unsigned int * t = available_dst_all(graph, queens[i], player_blanc);
         if (t[0]==0){
             free(t);
-            continue;
         }
         else{
-        for (int j = 1 ; j<(int)t[0]+1; j++){
-            if (element_in_array(enemy_queens_neighbors, num_enemy_queens, t[j])){
+            for (unsigned int j = 1 ; j<t[0]+1; j++){
+                if (element_in_array(enemy_queens_neighbors, num_enemy_queens, t[j])){
                     moves[moves_counter].queen_src = queens[i];
                     moves[moves_counter].queen_dst = t[j];
                     moves[moves_counter].arrow_dst = best_arrow(graph,t[j],queens[i],player_blanc,enemy_queens_neighbors,num_enemy_queens); 
                     moves_counter++;
+                }
             }
+            free(t);
         }
-        free(t);
     }
-    }
-    printf("moves counter = %d\n",moves_counter);
+    //printf("moves counter = %d\n",moves_counter);
         if (moves_counter>0){
             //loops over all moves and find the move with the highest heuristic value
             int max=-1000;
@@ -302,9 +310,8 @@ struct move_t best_move(const struct graph_t * graph, const unsigned int* queens
             move = moves[max_pos];
          }
        else{
-                
                 int move_found = 0;
-                int copy_num_queens = 3*num_queens;
+                int copy_num_queens = num_queens;
                 // loop until a valid move is found or all queens have been checked
                 while (!move_found && copy_num_queens > 0) {
                     // get a random queen
@@ -312,31 +319,33 @@ struct move_t best_move(const struct graph_t * graph, const unsigned int* queens
                     int random_queen = rand() % copy_num_queens;
                     // get available destinations for the queen
                     // check if there are any available destinations
-                    printf("pritig available pos for %d", queens[random_queen]);
+                    //printf("pritig available pos for %d", queens[random_queen]);
                     unsigned int * t = available_dst_all(graph, queens[random_queen], player_blanc);  
-                    print_arr2(t, t[0] + 1);
-                    if (t[0] != 0) {
+                    //print_arr2(t, t[0] + 1);
+                    if(t[0]==0){
+                        copy_num_queens--;
+                        free(t);
+                    }
+                    else if (t[0] != 0) {
                         // found a valid move, set flag to true and set move variable
                         move_found = 1;
                         move = random_move(graph, queens[random_queen], t);
-                        printf("move chosen   is  = %d %d %d\n",move.queen_src,move.queen_dst,move.arrow_dst);
+                        //printf("move chosen   is  = %d %d %d\n",move.queen_src,move.queen_dst,move.arrow_dst);
                         // printf("the random move we found is : %d %d %d\n",move.queen_src,move.queen_dst,move.arrow_dst);
+                        free(t);
                         break;
                     }
 
                 // free the memory allocated for available destinations
-                free(t);
+                
 
                 // if no valid move was found, decrement the number of queens and try again
-                if (!move_found) {
-                    copy_num_queens--;
-                    // random_queen = rand() % copy_num_queens;
-                }
+                
              }
 
 
         } 
-        printf("end of function move chosen  is : %d %d %d\n",move.queen_src,move.queen_dst,move.arrow_dst);
+        //printf("end of function move chosen  is : %d %d %d\n",move.queen_src,move.queen_dst,move.arrow_dst);
         return move;
 
 }
@@ -414,52 +423,52 @@ int find_queen(unsigned int queen, unsigned int* queens, int num_queens){
 
 
 
-struct move_t play(struct move_t previous_move){
-    print_arr2(player_blanc.current_queens, player_blanc.num_queens);
-    if(previous_move.queen_dst != (unsigned int)-1 && previous_move.queen_dst != (unsigned int)-1 ){
-        execute_move(previous_move,player_blanc.graph,player_blanc.other_queens);
-        player_blanc.turn++;
-    }
-    struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
-    int r=rand()%player_blanc.num_queens;
-    int queen_index=r;
-    int queen=player_blanc.current_queens[r];
-    // we search for available direction for queen, else we change the queen 
-    // cmp to avoid the infinite loop 
-    enum dir_t dir=NO_DIR;
-    unsigned int cmp=0;
-    while(dir==NO_DIR && cmp<player_blanc.num_queens){
-        cmp++;
-        queen_index=r;
-        queen=player_blanc.current_queens[queen_index];
-        dir=available_dir(queen,player_blanc.graph,NO_DIR,player_blanc);
-        r=(r+1)%player_blanc.num_queens;
-    }
+// struct move_t play(struct move_t previous_move){
+//     print_arr2(player_blanc.current_queens, player_blanc.num_queens);
+//     if(previous_move.queen_dst != (unsigned int)-1 && previous_move.queen_dst != (unsigned int)-1 ){
+//         execute_move(previous_move,player_blanc.graph,player_blanc.other_queens);
+//         player_blanc.turn++;
+//     }
+//     struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
+//     int r=rand()%player_blanc.num_queens;
+//     int queen_index=r;
+//     int queen=player_blanc.current_queens[r];
+//     // we search for available direction for queen, else we change the queen 
+//     // cmp to avoid the infinite loop 
+//     enum dir_t dir=NO_DIR;
+//     unsigned int cmp=0;
+//     while(dir==NO_DIR && cmp<player_blanc.num_queens){
+//         cmp++;
+//         queen_index=r;
+//         queen=player_blanc.current_queens[queen_index];
+//         dir=available_dir(queen,player_blanc.graph,NO_DIR,player_blanc);
+//         r=(r+1)%player_blanc.num_queens;
+//     }
     
-    if(dir==NO_DIR){
-        return move;
-    }
-     move.queen_src = queen;
-     move.queen_dst = random_dst(player_blanc.graph,dir,queen, player_blanc);
-     player_blanc.current_queens[(r-1)%player_blanc.num_queens] = move.queen_dst;
-     queen = move.queen_dst;
-     enum dir_t dir2=available_dir(queen,player_blanc.graph,dir,player_blanc);
-     if(dir2==NO_DIR){
-        move.arrow_dst = move.queen_src;
-     }
-     else {
-         move.arrow_dst = random_dst(player_blanc.graph,dir2,queen,player_blanc);
-     }
-    execute_move(move, player_blanc.graph, player_blanc.current_queens);
-    print_arr2(player_blanc.current_queens, player_blanc.num_queens);
-    return move;  
-}
+//     if(dir==NO_DIR){
+//         return move;
+//     }
+//      move.queen_src = queen;
+//      move.queen_dst = random_dst(player_blanc.graph,dir,queen, player_blanc);
+//      player_blanc.current_queens[(r-1)%player_blanc.num_queens] = move.queen_dst;
+//      queen = move.queen_dst;
+//      enum dir_t dir2=available_dir(queen,player_blanc.graph,dir,player_blanc);
+//      if(dir2==NO_DIR){
+//         move.arrow_dst = move.queen_src;
+//      }
+//      else {
+//          move.arrow_dst = random_dst(player_blanc.graph,dir2,queen,player_blanc);
+//      }
+//     execute_move(move, player_blanc.graph, player_blanc.current_queens);
+//     print_arr2(player_blanc.current_queens, player_blanc.num_queens);
+//     return move;  
+// }
 
 
 
 
   // function play2 that uses the best_move function to find the best move
-/*  struct move_t play(struct move_t previous_move ){
+  struct move_t play(struct move_t previous_move ){
     if(previous_move.queen_dst!= (unsigned int)-1 && previous_move.queen_dst != (unsigned int) -1){
         execute_move(previous_move, player_blanc.graph, player_blanc.other_queens);
         player_blanc.turn++;
@@ -471,7 +480,7 @@ struct move_t play(struct move_t previous_move){
     move.arrow_dst=best.arrow_dst;
     execute_move(move,player_blanc.graph,player_blanc.current_queens);
     return move;
-}  */
+}  
 int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
     return get_neighbor_gen(pos, dir, graph,player_blanc);
 }
@@ -479,6 +488,8 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
 void finalize(){
     free(player_blanc.current_queens);
     free(player_blanc.other_queens);
+    player_blanc.current_queens=NULL;
+    player_blanc.other_queens=NULL;
    // free(player_blanc.name);
     gsl_spmatrix_uint_free(player_blanc.graph->t);
     free(player_blanc.graph);

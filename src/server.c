@@ -55,7 +55,7 @@ int main(int argc, char* argv[]){
     unsigned int length=8;
     unsigned int turns=200;
     char graph_type='c';
-    //get_opt(argc, argv, &graph_type, &length, &turns);
+    get_opt(argc, argv, &graph_type, &length, &turns);
     // printf("turns = %d\n", turns);
     // printf("%d %d \n",length, length);
     // printf("#\n");

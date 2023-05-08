@@ -8,7 +8,7 @@
 #include <time.h>
 
 
-struct player player_black;
+struct player_t player_black;
 
 int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph);
 

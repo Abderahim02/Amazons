@@ -32,7 +32,7 @@ extern int empty_cell(struct graph_t *graph, int x, unsigned int size);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-//extern struct player player_blanc;
+//extern struct player_t player_blanc;
 
 char *(*get_player1_name)(void);
 char *(*get_player2_name)(void);

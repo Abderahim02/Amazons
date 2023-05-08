@@ -49,7 +49,7 @@ struct graph_t *graph_cpy2(const struct graph_t *graph, int size){
 //     return graph_cpy;
 // }
 
-struct player player_blanc;
+struct player_t player_blanc;
 /* Access to player informations
  * RETURNS:
  * - the player name as an [a-zA-Z0-9 -_]* string
@@ -93,7 +93,7 @@ int number_neighbors_player(unsigned int* queens, struct graph_t *graph ){
 //     }
 //     return cmp;
 // }
-unsigned int random_arrow_dst(struct graph_t *graph, unsigned int pos, struct player player, unsigned int positions_possible[],unsigned int source_place) {
+unsigned int random_arrow_dst(struct graph_t *graph, unsigned int pos, struct player_t player, unsigned int positions_possible[],unsigned int source_place) {
     if (positions_possible[0] == 0) {
         return source_place;
     }else{
@@ -101,7 +101,7 @@ unsigned int random_arrow_dst(struct graph_t *graph, unsigned int pos, struct pl
     return dst;
     }
 }
-unsigned int random_queen_dst(struct graph_t *graph, unsigned int pos,struct player player, unsigned int positions_possible[]) {
+unsigned int random_queen_dst(struct graph_t *graph, unsigned int pos,struct player_t player, unsigned int positions_possible[]) {
     if (positions_possible[0] == 0) {
         return UINT_MAX;
     }else{
@@ -109,7 +109,7 @@ unsigned int random_queen_dst(struct graph_t *graph, unsigned int pos,struct pla
     return dst;
     }
 }
-unsigned int best_arrow(struct graph_t *graph, unsigned int pos, unsigned int src, struct player player, unsigned int enemy_queens_neighbors[], int num_enemy_queens){
+unsigned int best_arrow(struct graph_t *graph, unsigned int pos, unsigned int src, struct player_t player, unsigned int enemy_queens_neighbors[], int num_enemy_queens){
     // printf("best arrow is caling it \n");
     unsigned int *t = available_dst_all(graph, pos, player);
     unsigned int best_arrow_pos = UINT_MAX;
@@ -197,7 +197,7 @@ unsigned int* allouer_table(int length){
 
 
 //function that calculates the heuristic whcich is the difference between the number of neighbors of the player and the number of neighbors of the adversary
-int heuristic(struct graph_t *graph, struct move_t move, struct player player) {
+int heuristic(struct graph_t *graph, struct move_t move, struct player_t player) {
     int h = 0;
     unsigned int length = sqrt(graph->t->size1);
     unsigned int m=((length/10)+1)*4;

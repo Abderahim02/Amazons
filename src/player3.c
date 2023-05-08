@@ -9,7 +9,7 @@
 #include <time.h>
 
 
-struct player player_black;
+struct player_t player_black;
 
 int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph);
 
@@ -39,7 +39,7 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
     player_black.other_queens=queens[(player_id+1)%2];
 }
 
-unsigned int *liberté_queen(int queen, struct graph_t* graph, struct player player){
+unsigned int *liberté_queen(int queen, struct graph_t* graph, struct player_t player){
     enum dir_t dir=0;
     unsigned int degre=0;
     unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*9);
@@ -56,7 +56,7 @@ unsigned int *liberté_queen(int queen, struct graph_t* graph, struct player pla
 }
 
 
-unsigned int range_free_1_step(int pos, struct graph_t* g, struct player p){
+unsigned int range_free_1_step(int pos, struct graph_t* g, struct player_t p){
     enum dir_t dir=0;
     unsigned int degre=0;
     for(int i=1; i<9; i++){
@@ -68,7 +68,7 @@ unsigned int range_free_1_step(int pos, struct graph_t* g, struct player p){
     return degre;
 }
 
-unsigned int range_free_2_step(unsigned int pos, struct graph_t* g, struct player p){
+unsigned int range_free_2_step(unsigned int pos, struct graph_t* g, struct player_t p){
     enum dir_t dir=0;
     unsigned int degre=1;
     for(int i=1; i<9; i++){
@@ -109,7 +109,7 @@ unsigned int range_free_2_step(unsigned int pos, struct graph_t* g, struct playe
 //     return move;
 // }
 
-unsigned int perfect_dst_for_a_queen(unsigned int queen, struct graph_t* g, struct player p){
+unsigned int perfect_dst_for_a_queen(unsigned int queen, struct graph_t* g, struct player_t p){
     unsigned max_index=0;
     for(enum dir_t i=1; i<9; i++){
         unsigned int* t=available_dst(g, i, queen, p);
@@ -124,7 +124,7 @@ unsigned int perfect_dst_for_a_queen(unsigned int queen, struct graph_t* g, stru
     return max_index;
 }
 
-unsigned int least_queen_range(struct graph_t* g, struct player p){
+unsigned int least_queen_range(struct graph_t* g, struct player_t p){
     unsigned int queen_index=rand()%p.num_queens;
     for(int i=1; i<p.num_queens; i++){
         if(perfect_dst_for_a_queen(p.current_queens[queen_index], g, p)<perfect_dst_for_a_queen(p.current_queens[i], g, p)){
@@ -138,7 +138,7 @@ unsigned int least_queen_range(struct graph_t* g, struct player p){
 
 
 
-unsigned int least_queen_move(struct graph_t* g, struct player p){
+unsigned int least_queen_move(struct graph_t* g, struct player_t p){
     unsigned int queen_index=0;
     for(int i=0; i<p.num_queens; i++){
         unsigned int* t=liberté_queen(p.other_queens[queen_index], g, p);
@@ -157,7 +157,7 @@ unsigned int least_queen_move(struct graph_t* g, struct player p){
     return queen_index;
 }
 
-unsigned int possible_block(int pos, int queen, struct graph_t* g, struct player p){
+unsigned int possible_block(int pos, int queen, struct graph_t* g, struct player_t p){
     unsigned int* t=liberté_queen(queen, g, p);
     for(enum dir_t i=1; i<9; i++){
         unsigned int* t2=available_dst(g, i, pos, p);
@@ -179,7 +179,7 @@ unsigned int possible_block(int pos, int queen, struct graph_t* g, struct player
 
 
 
-unsigned int block_arrow(int pos, struct graph_t* g, struct player p){
+unsigned int block_arrow(int pos, struct graph_t* g, struct player_t p){
     unsigned int possible=possible_block(pos, least_queen_move(g, p), g, p);
     if(possible!=UINT_MAX){
         return possible;
@@ -193,7 +193,7 @@ unsigned int block_arrow(int pos, struct graph_t* g, struct player p){
     return UINT_MAX;
 }
 
-unsigned int choice_block_random_arrow(int pos, struct player p, struct graph_t* g){
+unsigned int choice_block_random_arrow(int pos, struct player_t p, struct graph_t* g){
     unsigned int dst=block_arrow(pos, g, p);
     if(dst!=UINT_MAX){
         return dst;
@@ -204,7 +204,7 @@ unsigned int choice_block_random_arrow(int pos, struct player p, struct graph_t*
     return dst;
 }
 
-unsigned int choise_dsr(int queen, struct player p, struct graph_t* g){
+unsigned int choise_dsr(int queen, struct player_t p, struct graph_t* g){
     unsigned int dst=perfect_dst_for_a_queen(queen, g, p);
     if(dst!=UINT_MAX){
         return dst;

@@ -5,7 +5,7 @@
 
 #include "strategyplayer2.h"
 
-int position_inside(int queen, struct graph_t* graph, enum dir_t dir, struct player player){
+int position_inside(int queen, struct graph_t* graph, enum dir_t dir, struct player_t player){
     unsigned int length=sqrt(graph->t->size1);
     if(queen==-1 || queen ==UINT_MAX){
         return 0;
@@ -16,7 +16,7 @@ int position_inside(int queen, struct graph_t* graph, enum dir_t dir, struct pla
     return 0;
 }
 
-unsigned int *dir_in_board(int pos, struct graph_t* graph, struct player player){
+unsigned int *dir_in_board(int pos, struct graph_t* graph, struct player_t player){
     enum dir_t dir=1;
     unsigned int* all=(unsigned int *)malloc(sizeof(unsigned int)*9 );
     all[0]=0;
@@ -32,7 +32,7 @@ unsigned int *dir_in_board(int pos, struct graph_t* graph, struct player player)
     return all;
 }
 
-unsigned int *all_opening(struct graph_t* graph, enum dir_t dir, int pos, struct player player){
+unsigned int *all_opening(struct graph_t* graph, enum dir_t dir, int pos, struct player_t player){
     unsigned int *t=available_dst(graph, dir, pos,player);
     unsigned int length=sqrt(graph->t->size1);
     unsigned int* t_in=(unsigned int *)malloc(sizeof(unsigned int)*(length*2+1));
@@ -47,7 +47,7 @@ unsigned int *all_opening(struct graph_t* graph, enum dir_t dir, int pos, struct
     return t_in;
 }
 
-enum dir_t random_dir_in(int queen, struct graph_t* graph, struct player player){
+enum dir_t random_dir_in(int queen, struct graph_t* graph, struct player_t player){
     unsigned int* all=dir_in_board(queen, graph, player);
     if(all[0]==0){
         return NO_DIR;
@@ -57,7 +57,7 @@ enum dir_t random_dir_in(int queen, struct graph_t* graph, struct player player)
     return dir;
 }
 
-int opening_dst(struct graph_t* graph, enum dir_t dir, int pos, struct player player){
+int opening_dst(struct graph_t* graph, enum dir_t dir, int pos, struct player_t player){
     unsigned int *t=all_opening(graph, dir, pos,player);
     if(t[0]==0){
         return UINT_MAX;

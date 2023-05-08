@@ -21,13 +21,96 @@ void print__array(int* t){
     }
     printf("]\n");
 }
+/* this is a test function for getting the neighbor of a queen in a direction */
+void test_get_neighbor_queens() {
+    printf("-----Started Testing get_neighbor_queens ---------- \n");
+    const unsigned int length = 8; // example board size
+    struct graph_t* graph = initialize_graph(length);
+
+    // Set up example arrays of current and other queens
+    unsigned int curr_queens[] = {10, 25, 40};
+    unsigned int other_queens[] = {12, 28, 44};
+
+    // Test 1: Check that the function returns a valid neighbor position in the given direction
+    unsigned int pos = 17; // example position
+    enum dir_t direction = DIR_NORTH; // example direction
+    unsigned int neighbor = get_neighbor_queens(pos, direction, graph, curr_queens, other_queens, length);
+    assert(neighbor != UINT_MAX);
+    assert(neighbor < length*length);
+    printf("\033[32mTest 1/3 PASSED\033[0m\n");
+
+    // Test 2: Check that the function returns UINT_MAX when there is no valid neighbor in the given direction
+    pos = 0; // example position on edge of board
+    direction = DIR_WEST; // example direction
+    neighbor = get_neighbor_queens(pos, direction, graph, curr_queens, other_queens, length);
+    assert(neighbor == UINT_MAX);
+    printf("\033[32mTest 2/3 PASSED\033[0m\n");
+
+    // Test 3: Check that the function skips over other and current queens in its search for neighbors
+    pos = 33; // example position
+    direction = DIR_SE; // example direction
+    neighbor = get_neighbor_queens(pos, direction, graph, curr_queens, other_queens, length);
+    assert(neighbor != UINT_MAX);
+    assert(neighbor != 28); // other queen in the way
+    assert(neighbor != 34); // current queen in the way
+    printf("\033[32mTest 3/3 PASSED\033[0m\n");
+    free_graph(graph);
+    printf("-----Started Testing get_neighbor_queens---------- \n");
+
+}
+
+
+/*this is a functionnal teest for begining_position in the grid for both players*/
+void test_begining_position() {
+    printf("-----Started Testing begining_position---------- \n");
+    unsigned int size=8;
+    struct graph_t* graph = initialize_graph(size);
+    // enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
+    unsigned int MAX_QUEENS = 4;
+    unsigned int m=((size/10)+1)*4;
+    unsigned int white_queens[m];
+    unsigned int black_queens[m];
+    unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
+    // Check that the function initializes the positions of both players' queens
+    begining_position(queens, size);
+    for (int player = 0; player < NUM_PLAYERS; player++) {
+        for (int i = 0; i < MAX_QUEENS; i++) {
+            assert(queens[player][i] != 0);
+        }
+    }
+    printf("\033[32mTest 1/3 PASSED\033[0m\n");
+    // Test 2: Check that the function initializes the correct number of queens
+    int expected_queens = ((size/10)+1)*4;
+    int actual_queens = 0;
+    for (int player = 0; player < NUM_PLAYERS; player++) {
+        for (int i = 0; i < MAX_QUEENS; i++) {
+            if (queens[player][i] >= 0) {
+                actual_queens++;
+            }
+        }
+    }
+    assert(actual_queens == 2*expected_queens);
+    printf("\033[32mTest 2/3 PASSED\033[0m\n");
+    unsigned int length =size;
+    // Test 3: Check that the function initializes the queens in valid positions
+    for (int player = 0; player < NUM_PLAYERS; player++) {
+        for (int i = 0; i < MAX_QUEENS; i++) {
+            unsigned int q = queens[player][i];
+            if (q != 0) {
+                assert(q < length*length);
+                assert(q % length < length);
+                assert(q / length < length);
+            }
+        }
+    }
+    free_graph(graph);
+    printf("\033[32mTest 3/3 PASSED\033[0m\n");
+    printf("-----Finiched Testing begining_position---------- \n");
+}
 
 
 
-
-
-
-
+/*this is a test for the function available_dst */
 void test__available_dst(){
     printf("-----Started Testing available_dst---------- \n");
     unsigned int size=8;
@@ -79,7 +162,7 @@ void test__available_dst(){
     printf("\033[32mTest 8/8 PASSED\033[0m\n");
     free(t);
     free_graph(graph);
-    printf("-----Finished Testing available_dst---------- \n");
+    printf("-----Finished Testing available_dst---------- \n\n");
 }
 
 void test__delete_element(){
@@ -91,11 +174,14 @@ void test__put_arrow(){
     printf("-----Started Testing put_arrow---------- \n");
     unsigned int size=4;
     struct graph_t* graph = initialize_graph(size);    // enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
-    
-   // unsigned int position=0;
+    put_arrow(graph, 6 );
+    for(int i=0; i < graph->t->size1; ++i){
+        assert(gsl_spmatrix_uint_get(graph->t, 6, i) == 0);
+        assert(gsl_spmatrix_uint_get(graph->t, i, 6) == 0);
+    }
     printf("\033[32mTest 1/1 PASSED\033[0m\n");
     free_graph(graph);
-    printf("-----Finished Testing put_arrow---------- \n");
+    printf("-----Finished Testing put_arrow---------- \n\n");
 }
 
 void test__begining_position_size_5(){
@@ -118,7 +204,7 @@ void test__begining_position_size_5(){
     assert(white_queens[2]==15);
     assert(white_queens[3]==19);
     printf("\033[32mTest 1/1 PASSED\033[0m\n");
-    printf("-----Finished Testing begining_position_size_5---------- \n");
+    printf("-----Finished Testing begining_position_size_5---------- \n\n");
     free_graph(graph);
 }
 
@@ -142,7 +228,7 @@ void test__begining_position_size_8(){
     assert(white_queens[2]==40);
     assert(white_queens[3]==47);
     printf("\033[32mTest 1/1 PASSED\033[0m\n");
-    printf("-----Finished Testing begining_position_size_8---------- \n");
+    printf("-----Finished Testing begining_position_size_8---------- \n\n");
 
     free_graph(graph);
 }
@@ -168,7 +254,7 @@ void test__begining_position_size_9(){
     assert(white_queens[2]==54);
     assert(white_queens[3]==62);
     printf("\033[32mTest 1/1 PASSED\033[0m\n");
-    printf("-----Finished Testing begining_position_size_9---------- \n");
+    printf("-----Finished Testing begining_position_size_9---------- \n\n");
     free_graph(graph);
 }
 
@@ -192,7 +278,7 @@ void test__begining_position_size_12(){
     assert(white_queens[2]==136);
     assert(white_queens[3]==139);
     printf("\033[32mTest 1/1 PASSED\033[0m\n");
-    printf("-----Finished Testing begining_position_size_12---------- \n");
+    printf("-----Finished Testing begining_position_size_12---------- \n\n");
     free_graph(graph);
 }
 
@@ -218,6 +304,6 @@ void test__execute_move(){
     execute_move(move2, graph, queens[0]);
     assert(queens[0][1]==63);
     printf("\033[32mTest 2/2 PASSED\033[0m\n");
-    printf("-----Finished Testing execute_move---------- \n");
+    printf("-----Finished Testing execute_move---------- \n\n");
     free_graph(graph);
 }

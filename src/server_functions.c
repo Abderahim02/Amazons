@@ -78,15 +78,25 @@ void sdl_display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int qu
     int n=0;
     int b=16777215;
     int bh=65536*255+140;
-    int nh=65536*80+100;
+    int nh=255*110;//50+255*30+65536*15;
+    int c0=160*65536+100*255+19;
+    int c1=65536*80+100;
+//160*65536+100*255+19;
+
+//65536*80+100;
+int tmp=0;
     int *t=graph_table(graph);
     table(queens,t,queens_number);
     for(int i=0;i<size*size;i++){
         if(i%size==0 && i!=0) printf("\n");
-        if(t[i]==0) printf("%d ",nh );
-        if(t[i]==-1) printf("%d ",bh);
+        if(t[i]==-1) printf("%d ",nh);
         if(t[i]==1) printf("%d ",b);
         if(t[i]==2) printf("%d ", n);
+        if(t[i]==0){
+            if(tmp==0) printf("%d ", c0);
+            if(tmp==1) printf("%d ",c1 );
+        }
+        if((i+1)%size!=0 ) tmp=(tmp+1)%2;
     }
     free(t);
     printf("\n");

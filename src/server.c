@@ -68,7 +68,8 @@ int main(int argc, char* argv[]){
         get_player2_name = dlsym(lib2,"get_player_name");
         char *white_player = get_player1_name();
         char *black_player = get_player2_name();
-        
+        (void) white_player;
+        (void) black_player;
         //Initialize player functions.
         initialize_player1 = dlsym(lib1,"initialize");
         initialize_player2 = dlsym(lib2,"initialize");

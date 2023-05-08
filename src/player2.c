@@ -11,12 +11,12 @@
 struct player player_black;
 
 
-
 char const* get_player_name(){
     player_black.name = "seeer_seeeer";
     return player_black.name;
 }
 
+/*this function initializes inforamtions of the player and queens positions*/
 void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_queens, unsigned int* queens[NUM_PLAYERS]){
     player_black.id=player_id;
     player_black.graph=graph;
@@ -27,8 +27,9 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
 }
 
 
-
+/*this function selects a random move for the player*/
 struct move_t random_move(struct move_t move, enum dir_t dir, unsigned int queen_index, struct player player){
+    (void) player;
     move.queen_src=player_black.current_queens[queen_index];
     move.queen_dst=random_dst(player_black.graph,dir,player_black.current_queens[queen_index], player_black);
     player_black.current_queens[queen_index]=move.queen_dst;
@@ -43,7 +44,7 @@ struct move_t random_move(struct move_t move, enum dir_t dir, unsigned int queen
     return move;
 }
 
-
+/*the play function it exectus the previous move and returns a new move for the player*/
 struct move_t play(struct move_t previous_move){
     if(previous_move.queen_dst!= (unsigned int) -1 && previous_move.queen_dst!= (unsigned int) -1 )
         execute_move(previous_move,player_black.graph,player_black.other_queens);
@@ -69,11 +70,13 @@ struct move_t play(struct move_t previous_move){
     return move;  
 }
 
-
+/*this function returns the neighbor of a position pos in the grid */
 int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
     return get_neighbor_gen(pos, dir, graph, player_black);
 }
 
+/*this function frees all allocated memory for the player from the start of the game intil the end
+ it frees the graph and quuens positions*/
 void finalize(){
     free(player_black.current_queens);
     free(player_black.other_queens);    

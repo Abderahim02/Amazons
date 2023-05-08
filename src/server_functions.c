@@ -78,6 +78,7 @@ void sdl_display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int qu
     int n=0;
     int b=16777215;
     int bh=65536*255+140;
+    (void) bh;
     int nh=255*110;//50+255*30+65536*15;
     int c0=160*65536+100*255+19;
     int c1=65536*80+100;

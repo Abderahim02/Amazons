@@ -31,9 +31,8 @@ extern void test_graph_table(void);
 extern void test_table(void);
 extern void start_next(void);
 extern void test_copy_queens(void);
-
-
-
+extern void test_begining_position();
+extern void test_get_neighbor_queens();
 
 int main(){
     test__available_dst();
@@ -51,6 +50,8 @@ int main(){
     test_table();
     start_next();
     test_copy_queens();
+    test_begining_position();
+    test_get_neighbor_queens();
     printf("OK all__tests\n");
 
 }

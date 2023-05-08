@@ -38,6 +38,9 @@ player2.o:  ${SRC}/player2.c
 player1.o: ${SRC}/player1.c 
 	${CC} $(CFLAGS) -I${SRC} -c  $<
 
+player3.o: ${SRC}/player3.c 
+	${CC} $(CFLAGS) -I${SRC} -c  $<
+
 server_functions.o: src/server_functions.c src/hole.h src/moteur.h src/server_functions.h src/strategyplayer2.h
 	${CC} $(CFLAGS) -I${SRC} -c  $<
 
@@ -83,9 +86,10 @@ test: test.o test_execute_move.o test__moves.o test_get_neighbor.o  graph.o src/
 
 ######################################################### Début libraries ##########################################################
 
-libraries:player1.o player2.o moteur.o strategyplayer2.o
-	${CC} -shared player2.o moteur.o strategyplayer2.o -o libplayer2.so
-	${CC} -shared player1.o moteur.o -o libplayer1.so
+libraries:player1.o player2.o moteur.o server_functions.o #strategyplayer2.o player3.o
+	#${CC} -shared player3.o moteur.o  strategyplayer2.o -o libplayer3.so
+	${CC} -shared player2.o moteur.o  -o libplayer2.so
+	${CC} -shared player1.o moteur.o server_functions.o -o libplayer1.so
 
 ######################################################### Fin libraries #########################################################
 

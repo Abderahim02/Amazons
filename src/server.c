@@ -1,8 +1,4 @@
-#include <time.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <string.h>
+
 #include "server_functions.h"
 
 
@@ -23,7 +19,7 @@ extern void free_graph(struct graph_t* g);
 extern void make_graph(struct graph_t * g, unsigned int m ,char s );
 
 
-extern struct graph_t *graph_cpy(const struct graph_t *graph, int size);
+extern struct graph_t *graph_cpy(const struct graph_t *graph);
 
 extern int empty_cell(struct graph_t *graph, int x, unsigned int size);
 
@@ -55,10 +51,10 @@ int main(int argc, char* argv[]){
     unsigned int length=8;
     unsigned int turns=200;
     char graph_type='c';
-    //get_opt(argc, argv, &graph_type, &length, &turns);
+    get_opt(argc, argv, &graph_type, &length, &turns);
     // printf("turns = %d\n", turns);
-    // printf("%d %d \n",length, length);
-    // printf("#\n");
+     printf("%d %d \n",length, length);
+     printf("#\n");
     if (argc > 1) {
         void * lib1 = dlopen(argv[argc-2], RTLD_LAZY); 
         void * lib2 = dlopen(argv[argc-1], RTLD_LAZY); 
@@ -72,7 +68,8 @@ int main(int argc, char* argv[]){
         get_player2_name = dlsym(lib2,"get_player_name");
         char *white_player = get_player1_name();
         char *black_player = get_player2_name();
-        
+        (void) white_player;
+        (void) black_player;
         //Initialize player functions.
         initialize_player1 = dlsym(lib1,"initialize");
         initialize_player2 = dlsym(lib2,"initialize");
@@ -89,8 +86,8 @@ int main(int argc, char* argv[]){
         //Initialize graphs
         struct graph_t* graph = initialize_graph(length);
         make_graph(graph, length, graph_type);
-        struct graph_t* white_graph = graph_cpy(graph, length);
-        struct graph_t* black_graph = graph_cpy(graph, length);
+        struct graph_t* white_graph = graph_cpy(graph);
+        struct graph_t* black_graph = graph_cpy(graph);
 
         //Initialize queens for each player
         unsigned int m=((length/10)+1)*4;
@@ -110,7 +107,7 @@ int main(int argc, char* argv[]){
         initialize_player1(0,white_graph,m,queens1);
         initialize_player2(1,black_graph,m,queens2);
         //The starting board
-        // sdl_display(graph,queens,m,length);
+         sdl_display(graph,queens,m,length);
         //display(graph,queens,m);
 
         struct move_t move={-1,-1,-1};
@@ -127,9 +124,9 @@ int main(int argc, char* argv[]){
                 execute_move(move, graph, queens[0]);
             }
             if(move.queen_dst==UINT_MAX){
-                // if(i==length*length) printf("eqalité\n");
-                // else printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
-                // // sdl_display(graph,queens,m,length);
+                //if(i==length*length) printf("eqalité\n");
+                //printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
+             sdl_display(graph,queens,m,length);
                 //display(graph,queens,m);
                 printf("%d\n" , (player+1)%2);
                 free_graph(graph);
@@ -141,7 +138,7 @@ int main(int argc, char* argv[]){
             
             }
             player=next_player(player);
-            // sdl_display(graph,queens,m,length);
+             sdl_display(graph,queens,m,length);
             //display(graph,queens,m);
 
         }

@@ -47,7 +47,7 @@ struct move_t play(struct move_t previous_move){
         player_brown.turn++;
     }
     printf("player_brown queens befoe move are :");
-    for(int i=0; i<player_brown.num_queens; ++i){
+    for(unsigned int i=0; i<player_brown.num_queens; ++i){
         printf(" %d ", player_brown.current_queens[i]);
     }
     printf("\n");
@@ -105,7 +105,7 @@ struct move_t play(struct move_t previous_move){
     execute_move(move,player_brown.graph,player_brown.current_queens);
     //printf("queen_src %d queen_dst %d arrox %d\n", move.queen_src, move.queen_dst, move.arrow_dst);
     printf("player_brown queens after move are :");
-    for(int i=0; i<player_brown.num_queens; ++i){
+    for(unsigned int i=0; i<player_brown.num_queens; ++i){
         printf(" %d ", player_brown.current_queens[i]);
     }
     printf("\n");

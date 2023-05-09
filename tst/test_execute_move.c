@@ -6,13 +6,12 @@
 #include "../src/server_functions.h"
 #include "../src/strategyplayer3.h"
 #include <assert.h>
-#include "../src/strategyplayer2.h"
 
 void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],unsigned int queens_number);
 extern struct graph_t * initialize_graph(unsigned int length);
 extern void free_graph(struct graph_t* g);
 extern void make_graph(struct graph_t * g, unsigned int m ,char s );
-extern int position_inside(int queen, struct graph_t* graph, enum dir_t dir, struct player player);
+extern int position_inside(int queen, struct graph_t* graph, enum dir_t dir, struct player_t player);
 void test_graph_table(void){
     printf("-----Started Testing graph_table---------- \n");
     struct graph_t* graph=initialize_graph(4);
@@ -97,7 +96,11 @@ void test_inside_position(){
     printf("-----Started Testing inside_position---------- \n");
     unsigned int size=8;
     struct graph_t* graph = initialize_graph(size);
-    struct player p;
+    struct player_t p;
+    unsigned int m=((size/10)+1)*4;
+    unsigned int white_queens[m];
+    unsigned int black_queens[m];
+    unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
     begining_position(queens, size);
     display(graph,queens,m);
     assert(position_inside(0, graph, DIR_NW, p ) == 0);

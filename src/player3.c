@@ -46,6 +46,11 @@ struct move_t play(struct move_t previous_move){
         execute_move(previous_move,player_brown.graph,player_brown.other_queens);
         player_brown.turn++;
     }
+    printf("player_brown queens befoe move are :");
+    for(int i=0; i<player_brown.num_queens; ++i){
+        printf(" %d ", player_brown.current_queens[i]);
+    }
+    printf("\n");
     struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
     
     int r=rand()%player_brown.num_queens;
@@ -74,10 +79,12 @@ struct move_t play(struct move_t previous_move){
         }
     }
     if(player_brown.turn<4){
+        printf("opening\n");
         move.queen_src=queen;
         move.queen_dst=opening_dst(player_brown.graph, dir, queen,player_brown);
     }
-    if(player_brown.turn>=4 || move.queen_dst==UINT_MAX){
+    else if(player_brown.turn>=4 || move.queen_dst==UINT_MAX){
+        printf("choise dsr\n");
         move.queen_src=queen;
         move.queen_dst=choise_dsr(queen,player_brown,player_brown.graph);
      
@@ -94,7 +101,14 @@ struct move_t play(struct move_t previous_move){
     else {
         move.arrow_dst=choice_block_random_arrow(queen, player_brown, player_brown.graph);
     }
+    printf("queen_src %d queen_dst %d arrox %d\n", move.queen_src, move.queen_dst, move.arrow_dst);
     execute_move(move,player_brown.graph,player_brown.current_queens);
+    //printf("queen_src %d queen_dst %d arrox %d\n", move.queen_src, move.queen_dst, move.arrow_dst);
+    printf("player_brown queens after move are :");
+    for(int i=0; i<player_brown.num_queens; ++i){
+        printf(" %d ", player_brown.current_queens[i]);
+    }
+    printf("\n");
     return move;  
 }
 

@@ -10,7 +10,7 @@ int position_inside(int queen, struct graph_t* graph, enum dir_t dir, struct pla
     if(queen==-1 || queen ==UINT_MAX){
         return 0;
     }
-    else if(queen>length && queen<length*length-length && queen!=0 && queen%length!=length-1){
+    else if(queen>length && queen<length*length-length && queen%length!=0 && queen%length!=length-1){
         return 1;
     }
     return 0;
@@ -19,7 +19,9 @@ int position_inside(int queen, struct graph_t* graph, enum dir_t dir, struct pla
 unsigned int *dir_in_board(int pos, struct graph_t* graph, struct player_t player){
     enum dir_t dir=1;
     unsigned int* all=(unsigned int *)malloc(sizeof(unsigned int)*9 );
-    all[0]=0;
+    for(int i=0; i<9; i++){
+        all[i]=0;
+    }
     int count=1;
     for(int i=1; i<9; i++){
         if(position_inside(get_neighbor_gen(pos, dir, graph, player), graph, dir, player)==1){
@@ -37,10 +39,12 @@ unsigned int *all_opening(struct graph_t* graph, enum dir_t dir, int pos, struct
     unsigned int length=sqrt(graph->t->size1);
     unsigned int* t_in=(unsigned int *)malloc(sizeof(unsigned int)*(length*2+1));
     t_in[0]=0;
-    for(int i=0; i<t[0]; i++){
-        if(position_inside(t[i+1], graph, dir, player)==1){
-            t_in[i+1]=t[i+1];
+    int count=1;
+    for(int i=1; i<t[0]+1; i++){
+        if(position_inside(t[i], graph, dir, player)==1){
+            t_in[count]=t[i];
             t_in[0]++;
+            count++;
         }
     }
     free(t);

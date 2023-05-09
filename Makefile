@@ -73,7 +73,7 @@ strategy: strategy.o graph.o moteur.o hole.o strategyplayer3.o server_functions.
 
 test.o: tst/test.c
 	gcc -c -I$(GSL_PATH)/include tst/test.c
-test: test.o test_execute_move.o test__moves.o test_get_neighbor.o  graph.o src/moteur.c hole.o src/server_functions.c
+test: test.o test_execute_move.o test__moves.o strategyplayer3.o test_get_neighbor.o  graph.o src/moteur.c hole.o src/server_functions.c
 	${CC} -L${GSL_PATH}/lib -I$(GSL_PATH)/include -fprofile-arcs -ftest-coverage $^ -lgsl -lgslcblas -lm -ldl -o alltests -ldl
 
 ######################################################### Fin tests ###########################################################
@@ -86,8 +86,8 @@ test: test.o test_execute_move.o test__moves.o test_get_neighbor.o  graph.o src/
 
 ######################################################### Début libraries ##########################################################
 
-libraries:player1.o player2.o moteur.o server_functions.o #strategyplayer3.o player3.o
-	#${CC} -shared player3.o moteur.o  strategyplayer3.o -o libplayer3.so
+libraries:player1.o player2.o moteur.o server_functions.o strategyplayer3.o player3.o
+	${CC} -shared player3.o moteur.o  strategyplayer3.o -o libplayer3.so
 	${CC} -shared player2.o moteur.o  -o libplayer2.so
 	${CC} -shared player1.o moteur.o server_functions.o -o libplayer1.so
 

@@ -4,6 +4,7 @@
 #include <dlfcn.h>
 #include "../src/graph.h"
 #include "../src/server_functions.h"
+#include "../src/strategyplayer3.h"
 #include <assert.h>
 
 extern struct graph_t * initialize_graph(unsigned int length);
@@ -90,3 +91,49 @@ void test_display(void){
     free_graph(graph2);
 
 }
+
+void test_dir_in_board(){
+    printf("-----Started Testing dir_in_board---------- \n");
+    unsigned int size=8;
+    struct graph_t* graph = initialize_graph(size);
+    // enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
+    unsigned int MAX_QUEENS = 4;
+    unsigned int m=((size/10)+1)*4;
+    unsigned int white_queens[m];
+    unsigned int black_queens[m];
+    unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
+    // Check that the function initializes the positions of both players' queens
+    begining_position(queens, size);
+    struct player_t p;
+    p.num_queens=m;
+    p.current_queens=white_queens;
+    p.other_queens=black_queens;
+    display(graph, queens, MAX_QUEENS);
+    unsigned int* t=dir_in_board(2, graph, p);
+    assert(t[0]==3);
+    assert(t[1]==4);
+    assert(t[2]==5);
+    assert(t[3]==6);
+
+    t=dir_in_board(5, graph, p);
+    assert(t[0]==3);
+    assert(t[1]==4);
+    assert(t[2]==5);
+    assert(t[3]==6);
+
+    t=dir_in_board(16, graph, p);
+    assert(t[0]==3);
+    assert(t[1]==2);
+    assert(t[2]==4);
+    assert(t[3]==7);
+    t=dir_in_board(23, graph, p);
+    assert(t[0]==3);
+    assert(t[1]==3);
+    assert(t[2]==6);
+    assert(t[3]==8);
+    free(t);
+    free_graph(graph);
+    printf("-----Finished Testing dir_in_board---------- \n");
+}
+
+

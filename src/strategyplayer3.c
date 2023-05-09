@@ -253,8 +253,7 @@ unsigned int choice_block_random_arrow(int pos, struct player_t p, struct graph_
     if(dst!=UINT_MAX){
         return dst;
     }   
-    enum dir_t dir=NO_DIR;
-    dir=available_dir(pos, g, dir, p);
+    enum dir_t dir=available_dir(pos, g, p);
     dst=random_dst(g, dir, pos, p);
     return dst;
 }
@@ -264,8 +263,7 @@ unsigned int choise_dsr(int queen, struct player_t p, struct graph_t* g){
     if(dst!=UINT_MAX){
         return dst;
     }
-    enum dir_t dir=NO_DIR;
-    dir=available_dir(queen, g, dir, p);
+    enum dir_t dir=available_dir(queen, g, p);
     dst=random_dst(g, dir, queen, p);
     return dst;
 }

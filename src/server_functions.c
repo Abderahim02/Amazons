@@ -1,6 +1,17 @@
 
 #include "server_functions.h"
 
+#define ANSI_COLOR_RED     "\e[41m"
+#define ANSI_COLOR_GREEN   "\e[42m"
+#define ANSI_COLOR_ORANGE  "\e[43m"
+#define ANSI_COLOR_YELLOW  "\e[0;103m"
+#define ANSI_COLOR_BLUE    "\e[44m"
+#define ANSI_COLOR_PINK    "\e[0;105m"
+#define ANSI_COLOR_CYAN    "\e[46m"
+#define ANSI_COLOR_VIOLET  "\e[45m"
+#define ANSI_COLOR_BLACK  "\e[40m"
+#define ANSI_COLOR_RESET   "\e[0m"
+
 
 
 extern int empty_cell(struct graph_t *graph, int x, unsigned int size);
@@ -112,12 +123,19 @@ void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],unsigned i
     unsigned int length=sqrt(graph->t->size1);
     int *t = graph_table(graph);
     table(queens,t,queens_number);
+    int tmp=0;
     for(unsigned int i=0;i<length*length;i++){
-        if(i!=0 && i%length==0) printf("\n");
-        if(t[i]==-1) printf("  ");
-    else printf("%d ",t[i] );
+            if(i%length==0 && i!=0) printf("\n");
+        if(t[i]==-1) printf(ANSI_COLOR_BLACK "  " ANSI_COLOR_RESET);
+        if(t[i]==1) printf(ANSI_COLOR_GREEN "♕ " ANSI_COLOR_RESET);
+        if(t[i]==2) printf(ANSI_COLOR_BLUE "♕ " ANSI_COLOR_RESET);
+        if(t[i]==0){
+            if(tmp==0) printf(ANSI_COLOR_PINK "  " ANSI_COLOR_RESET);
+            if(tmp==1) printf(ANSI_COLOR_VIOLET "  " ANSI_COLOR_RESET);
+        }
+        if((i+1)%length!=0 ) tmp=(tmp+1)%2;
     }
-    printf("\n \n");
+    printf(" \n \n");
     
     free(t);
 }

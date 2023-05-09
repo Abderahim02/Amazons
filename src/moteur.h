@@ -23,7 +23,7 @@ struct player_t {
     unsigned int* other_queens;
     unsigned int turn;
 };
-
+struct move_t random_move(struct move_t move, enum dir_t dir, unsigned int queen_index, struct player_t player);
 /*this function puts an arrow in the position idx in the graph, it puts NO_DIT with all of its neighbors*/
 void put_arrow(struct graph_t* graph, unsigned int idx);
 

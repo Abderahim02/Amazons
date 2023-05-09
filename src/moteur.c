@@ -115,6 +115,7 @@ enum dir_t available_dir(unsigned int queen, struct graph_t *graph, struct playe
     return dir;
 }
 
+
 /*a function that returns an array of available destinations for a player given a 
 direction of movement.*/
 unsigned int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player_t player){
@@ -161,6 +162,20 @@ unsigned int get_neighbor_gen(unsigned int pos, enum dir_t direction, struct gra
 
 }
 
+struct move_t random_move(struct move_t move, enum dir_t dir, unsigned int queen_index, struct player_t player){
+    move.queen_src=player.current_queens[queen_index];
+    move.queen_dst=random_dst(player.graph,dir,player.current_queens[queen_index], player);
+    player.current_queens[queen_index]=move.queen_dst;
+    unsigned int queen=move.queen_dst;
+    enum dir_t dir2=available_dir(queen,player.graph,player);
+    if(dir2==NO_DIR){
+        move.arrow_dst=move.queen_src;
+    }
+    else {
+        move.arrow_dst=random_dst(player.graph,dir2,move.queen_dst,player);
+    }
+    return move;
+}
 //this function beging positions of the queen for both players 
 void begining_position(unsigned int* queens[NUM_PLAYERS], unsigned int length){
     unsigned int *t=queens[0];

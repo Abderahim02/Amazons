@@ -147,13 +147,13 @@ int heuristic(struct graph_t *graph, struct move_t move, struct player_t player)
 /* 
    functions that choses a random move from the list of possible moves 
 */
-struct move_t random_move(unsigned int queen,unsigned int t[]){
+/* struct move_t random_move(unsigned int queen,unsigned int t[]){
   struct move_t move;
   move.queen_src = queen;
   move.queen_dst = random_queen_dst(t);
   move.arrow_dst = random_arrow_dst(t,move.queen_src);
   return move;
-}
+} */
 
 
 
@@ -212,25 +212,23 @@ struct move_t best_move(struct graph_t * graph, const unsigned int* queens , int
     move = moves[max_pos];
   }
   else{
-    int move_found = 0;
-    int copy_num_queens = num_queens;
-    // loop until a valid move is found or all queens have been checked
-    while (!move_found && copy_num_queens > 0) {
-      srand((unsigned int)time(NULL));
-      int random_queen = rand() % copy_num_queens;
-      unsigned int * t = available_dst_all(graph, queens[random_queen], player_blanc);  
-      // if no valid move was found, decrement the number of queens and try again
-      if(t[0]==0){
-	copy_num_queens--;
-	free(t);
-      }
-      else if (t[0] != 0) {
-	move_found = 1;
-	move = random_move(queens[random_queen], t);
-	free(t);
-	break;
-      }  
+    printf("we are the else?!!!!!\n");
+        int r=rand()%player_blanc.num_queens;
+    unsigned int queen_index=r;
+    int queen=player_blanc.current_queens[r];
+    enum dir_t dir=NO_DIR;
+    unsigned int cmp=0;
+    while(dir==NO_DIR && cmp<player_blanc.num_queens){
+        cmp++;
+        queen_index=r;
+        queen=player_blanc.current_queens[queen_index];
+        dir=available_dir(queen,player_blanc.graph,player_blanc);
+        r=(r+1)%player_blanc.num_queens;
     }
+    if(dir==NO_DIR){
+        return move;
+    }
+    move=random_move(move, dir, queen_index, player_blanc);
   } 
   return move;
 

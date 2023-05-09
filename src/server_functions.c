@@ -32,9 +32,9 @@ void get_opt(int argc, char* argv[], char* type, unsigned int *length, unsigned 
                 break;
             case 's':
                 if(optarg!=NULL){
-                    printf("turns = %d\n", *turns);
+                    //printf("turns = %d\n", *turns);
                     *turns=atoi(optarg); // update the value of turns
-                    printf("turns = %d\n", *turns);
+                    //printf("turns = %d\n", *turns);
                 }
                 break;
             case 't':

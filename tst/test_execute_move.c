@@ -4,12 +4,14 @@
 #include <dlfcn.h>
 #include "../src/graph.h"
 #include "../src/server_functions.h"
+#include "../src/strategyplayer3.h"
 #include <assert.h>
 
+void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],unsigned int queens_number);
 extern struct graph_t * initialize_graph(unsigned int length);
 extern void free_graph(struct graph_t* g);
 extern void make_graph(struct graph_t * g, unsigned int m ,char s );
-
+extern int position_inside(int queen, struct graph_t* graph, enum dir_t dir, struct player_t player);
 void test_graph_table(void){
     printf("-----Started Testing graph_table---------- \n");
     struct graph_t* graph=initialize_graph(4);
@@ -75,7 +77,6 @@ void test_copy_queens(void){
     printf("-----Finished Testing copy_queens---------- \n");
 
 }
-
 void test_display(void){
      struct graph_t* graph=initialize_graph(4);
     make_graph(graph,4,'c');
@@ -89,4 +90,73 @@ void test_display(void){
     free_graph(graph);
     free_graph(graph2);
 
+}
+
+void test_inside_position(){
+    printf("-----Started Testing inside_position---------- \n");
+    unsigned int size=8;
+    struct graph_t* graph = initialize_graph(size);
+    struct player_t p;
+    unsigned int m=((size/10)+1)*4;
+    unsigned int white_queens[m];
+    unsigned int black_queens[m];
+    unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
+    begining_position(queens, size);
+    display(graph,queens,m);
+    assert(position_inside(0, graph, DIR_NW, p ) == 0);
+    assert(position_inside(6, graph, DIR_NW, p ) == 0);
+    assert(position_inside(7, graph, DIR_NW, p ) == 0);
+    printf("\033[32mTest 1/2 PASSED\033[0m\n");
+
+    assert(position_inside(25, graph, DIR_NW, p ) == 1);
+    assert(position_inside(21, graph, DIR_NW, p ) == 1);
+    assert(position_inside(35, graph, DIR_NW, p ) == 1);
+    printf("\033[32mTest 2/2 PASSED\033[0m\n");
+    printf("-----Finished Testing indie position---------- \n\n");
+    free_graph(graph);
+}
+void test_dir_in_board(){
+    printf("-----Started Testing dir_in_board---------- \n");
+    unsigned int size=8;
+    struct graph_t* graph = initialize_graph(size);
+    // enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
+    unsigned int MAX_QUEENS = 4;
+
+    unsigned int m=((size/10)+1)*4;
+    unsigned int white_queens[m];
+    unsigned int black_queens[m];
+    unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};
+    // Check that the function initializes the positions of both players' queens
+    begining_position(queens, size);
+    struct player_t p;
+    p.num_queens=m;
+    p.current_queens=white_queens;
+    p.other_queens=black_queens;
+    display(graph, queens, MAX_QUEENS);
+    unsigned int* t=dir_in_board(2, graph, p);
+    assert(t[0]==3);
+    assert(t[1]==4);
+    assert(t[2]==5);
+    assert(t[3]==6);
+    free(t);
+    t=dir_in_board(5, graph, p);
+    assert(t[0]==3);
+    assert(t[1]==4);
+    assert(t[2]==5);
+    assert(t[3]==6);
+    free(t);
+    t=dir_in_board(16, graph, p);
+    assert(t[0]==3);
+    assert(t[1]==2);
+    assert(t[2]==4);
+    assert(t[3]==7);
+    free(t);
+    t=dir_in_board(23, graph, p);
+    assert(t[0]==3);
+    assert(t[1]==3);
+    assert(t[2]==6);
+    assert(t[3]==8);
+    free(t);
+    free_graph(graph);
+    printf("-----Finished Testing dir_in_board---------- \n");
 }

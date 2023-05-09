@@ -50,6 +50,7 @@ unsigned int *all_opening(struct graph_t* graph, enum dir_t dir, int pos, struct
 enum dir_t random_dir_in(int queen, struct graph_t* graph, struct player_t player){
     unsigned int* all=dir_in_board(queen, graph, player);
     if(all[0]==0){
+        free(all);
         return NO_DIR;
     }
     enum dir_t dir=all[rand()%all[0]+1];
@@ -60,6 +61,7 @@ enum dir_t random_dir_in(int queen, struct graph_t* graph, struct player_t playe
 int opening_dst(struct graph_t* graph, enum dir_t dir, int pos, struct player_t player){
     unsigned int *t=all_opening(graph, dir, pos,player);
     if(t[0]==0){
+        free(t);
         return UINT_MAX;
     }
     int dst=t[(rand()%t[0])+1];
@@ -70,7 +72,7 @@ int opening_dst(struct graph_t* graph, enum dir_t dir, int pos, struct player_t 
 unsigned int *liberté_queen(int queen, struct graph_t* graph, struct player_t player){
     enum dir_t dir=0;
     unsigned int degre=0;
-    unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*9);
+    unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*10);
     t[0]=0;
     for(int i=1; i<9; i++){
         if(get_neighbor_gen(queen, dir, graph, player)!=UINT_MAX){
@@ -155,7 +157,7 @@ unsigned int perfect_dst_for_a_queen(unsigned int queen, struct graph_t* g, stru
 unsigned int least_queen_range(struct graph_t* g, struct player_t p){
     unsigned int queen_index=rand()%p.num_queens;
     for(unsigned int i=1; i<p.num_queens; i++){
-        if(perfect_dst_for_a_queen(p.current_queens[queen_index], g, p)<perfect_dst_for_a_queen(p.current_queens[i], g, p)){
+        if(perfect_dst_for_a_queen(p.other_queens[queen_index], g, p)<perfect_dst_for_a_queen(p.other_queens[i], g, p)){
             queen_index=i;
         }
     }
@@ -173,7 +175,7 @@ unsigned int least_queen_move(struct graph_t* g, struct player_t p){
         free(t);
     }
     queen_index=0;
-    for(unsigned int i=1; i<p.num_queens; i++){
+    for(unsigned int i=0; i<p.num_queens; i++){
         if(res[queen_index]==0){
             queen_index=i;
         }
@@ -183,8 +185,11 @@ unsigned int least_queen_move(struct graph_t* g, struct player_t p){
     }
     unsigned int* t=liberté_queen(p.other_queens[queen_index], g, p);
     if(t[0]==0){
+        free(res);
+        free(t);
         return UINT_MAX;
     }
+    free(t);
     free(res);
     return queen_index;
 }

@@ -100,10 +100,10 @@ int element_in_array(unsigned int *array, unsigned int size, unsigned int elemen
     return 0;
 }
 
-enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t direction,struct player_t player){
+enum dir_t available_dir(unsigned int queen, struct graph_t *graph, struct player_t player){
     enum dir_t dir=rand()%8+1;
     int cmp=0;
-    while((get_neighbor_gen(queen,dir,graph,player)==UINT_MAX || dir==direction) && cmp<9){
+    while(get_neighbor_gen(queen,dir,graph,player)==UINT_MAX  && cmp<9){
         dir++;
         dir=dir%9;
         if(dir==0) dir++;

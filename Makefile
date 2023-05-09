@@ -27,8 +27,8 @@ hole.o: ${SRC}/hole.c  ${SRC}/graph.h
 moteur.o: ${SRC}/moteur.c ${SRC}/graph.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -c ${SRC}/moteur.c -lgcov
 
-strategyplayer2.o: ${SRC}/strategyplayer2.c ${SRC}/graph.h ${SRC}/strategyplayer2.h
-	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -c ${SRC}/strategyplayer2.c -lgcov
+strategyplayer3.o: ${SRC}/strategyplayer3.c ${SRC}/graph.h ${SRC}/strategyplayer3.h
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -c ${SRC}/strategyplayer3.c -lgcov
 
 
 
@@ -41,7 +41,7 @@ player1.o: ${SRC}/player1.c
 player3.o: ${SRC}/player3.c 
 	${CC} $(CFLAGS) -I${SRC} -c  $<
 
-server_functions.o: src/server_functions.c src/hole.h src/moteur.h src/server_functions.h src/strategyplayer2.h
+server_functions.o: src/server_functions.c src/hole.h src/moteur.h src/server_functions.h src/strategyplayer3.h
 	${CC} $(CFLAGS) -I${SRC} -c  $<
 
 server.o: ${SRC}/server.c  ${SRC}/player.h graph.o ${SRC}/hole.h
@@ -64,8 +64,8 @@ strategy.o: ${TST}/strategy.c graph.o ${SRC}/graph.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/strategy.c
 
 
-strategy: strategy.o graph.o moteur.o hole.o strategyplayer2.o server_functions.o
-	${CC} -fprofile-arcs -ftest-coverage -L${GSL_PATH}/lib strategy.o graph.o moteur.o hole.o strategyplayer2.o server_functions.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
+strategy: strategy.o graph.o moteur.o hole.o strategyplayer3.o server_functions.o
+	${CC} -fprofile-arcs -ftest-coverage -L${GSL_PATH}/lib strategy.o graph.o moteur.o hole.o strategyplayer3.o server_functions.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
 
 
 #test_execute_move: test_execute_move.o server_functions.o graph.o hole.o
@@ -73,7 +73,7 @@ strategy: strategy.o graph.o moteur.o hole.o strategyplayer2.o server_functions.
 
 test.o: tst/test.c
 	gcc -c -I$(GSL_PATH)/include tst/test.c
-test: test.o test_execute_move.o test__moves.o test_get_neighbor.o  graph.o src/moteur.c hole.o src/server_functions.c
+test: test.o test_execute_move.o test__moves.o strategyplayer3.o test_get_neighbor.o  graph.o src/moteur.c hole.o src/server_functions.c
 	${CC} -L${GSL_PATH}/lib -I$(GSL_PATH)/include -fprofile-arcs -ftest-coverage $^ -lgsl -lgslcblas -lm -ldl -o alltests -ldl
 
 ######################################################### Fin tests ###########################################################
@@ -86,8 +86,8 @@ test: test.o test_execute_move.o test__moves.o test_get_neighbor.o  graph.o src/
 
 ######################################################### Début libraries ##########################################################
 
-libraries:player1.o player2.o moteur.o server_functions.o #strategyplayer2.o player3.o
-	#${CC} -shared player3.o moteur.o  strategyplayer2.o -o libplayer3.so
+libraries:player1.o player2.o moteur.o server_functions.o strategyplayer3.o player3.o
+	${CC} -shared player3.o moteur.o  strategyplayer3.o -o libplayer3.so
 	${CC} -shared player2.o moteur.o  -o libplayer2.so
 	${CC} -shared player1.o moteur.o server_functions.o -o libplayer1.so
 

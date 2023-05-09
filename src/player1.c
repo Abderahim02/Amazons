@@ -20,7 +20,7 @@ void free_graph2(struct graph_t* g){
 
 
 
-struct player player_blanc;
+struct player_t player_blanc;
 /* Access to player informations
  * RETURNS:
  * - the player name as an [a-zA-Z0-9 -_]* string
@@ -77,7 +77,7 @@ unsigned int random_queen_dst(unsigned int positions_possible[]) {
    function best_arrow  that returns the best arrow position to play
    prioritazing the positions that contain the most enemy queens neighbors
 */
-unsigned int best_arrow(struct graph_t *graph, unsigned int pos, unsigned int src, struct player player, unsigned int enemy_queens_neighbors[], int num_enemy_queens){
+unsigned int best_arrow(struct graph_t *graph, unsigned int pos, unsigned int src, struct player_t player, unsigned int enemy_queens_neighbors[], int num_enemy_queens){
   // printf("best arrow is caling it \n");
   unsigned int *t = available_dst_all(graph, pos, player);
   unsigned int best_arrow_pos = UINT_MAX;
@@ -119,7 +119,7 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
 /*  function that calculates the heuristic whcich is the difference between the number of neighbors of the player and the number of neighbors of the adversary
     the higher the heuristic the better for this player
 */
-int heuristic(struct graph_t *graph, struct move_t move, struct player player) {
+int heuristic(struct graph_t *graph, struct move_t move, struct player_t player) {
   int h = 0;
   unsigned int length = sqrt(graph->t->size1);
   unsigned int m=((length/10)+1)*4;

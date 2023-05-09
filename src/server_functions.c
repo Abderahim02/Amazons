@@ -1,6 +1,17 @@
 
 #include "server_functions.h"
 
+#define ANSI_COLOR_RED     "\e[41m"
+#define ANSI_COLOR_GREEN   "\e[42m"
+#define ANSI_COLOR_ORANGE  "\e[43m"
+#define ANSI_COLOR_YELLOW  "\e[0;103m"
+#define ANSI_COLOR_BLUE    "\e[44m"
+#define ANSI_COLOR_PINK    "\e[0;105m"
+#define ANSI_COLOR_CYAN    "\e[46m"
+#define ANSI_COLOR_VIOLET  "\e[45m"
+#define ANSI_COLOR_BLACK  "\e[40m"
+#define ANSI_COLOR_RESET   "\e[0m"
+
 
 
 extern int empty_cell(struct graph_t *graph, int x, unsigned int size);
@@ -21,9 +32,9 @@ void get_opt(int argc, char* argv[], char* type, unsigned int *length, unsigned 
                 break;
             case 's':
                 if(optarg!=NULL){
-                    printf("turns = %d\n", *turns);
+                    //printf("turns = %d\n", *turns);
                     *turns=atoi(optarg); // update the value of turns
-                    printf("turns = %d\n", *turns);
+                    //printf("turns = %d\n", *turns);
                 }
                 break;
             case 't':
@@ -75,14 +86,14 @@ as parameters. It then displays the game board and the queen
 positions on the screen.*/
 void sdl_display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number, int size){
 
-    int n=0;
-    int b=16777215;
+    int n=0;//green 255*255
+    int b=255+255+0;//brown \\white  16777215
     int bh=65536*255+140;
     (void) bh;
-    int nh=255*110;//50+255*30+65536*15;
-    int c0=160*65536+100*255+19;
-    int c1=65536*80+100;
-//160*65536+100*255+19;
+    int nh=5165;//50+255*30+65536*15;
+    int c0=205*205;
+    int c1=16777215;
+//160*65536+100*255+19; red: 255+255+0;
 
 //65536*80+100;
 int tmp=0;
@@ -112,12 +123,19 @@ void display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],unsigned i
     unsigned int length=sqrt(graph->t->size1);
     int *t = graph_table(graph);
     table(queens,t,queens_number);
+    int tmp=0;
     for(unsigned int i=0;i<length*length;i++){
-        if(i!=0 && i%length==0) printf("\n");
-        if(t[i]==-1) printf("  ");
-    else printf("%d ",t[i] );
+            if(i%length==0 && i!=0) printf("\n");
+        if(t[i]==-1) printf(ANSI_COLOR_BLACK "  " ANSI_COLOR_RESET);
+        if(t[i]==1) printf(ANSI_COLOR_GREEN "♕ " ANSI_COLOR_RESET);
+        if(t[i]==2) printf(ANSI_COLOR_BLUE "♕ " ANSI_COLOR_RESET);
+        if(t[i]==0){
+            if(tmp==0) printf(ANSI_COLOR_PINK "  " ANSI_COLOR_RESET);
+            if(tmp==1) printf(ANSI_COLOR_VIOLET "  " ANSI_COLOR_RESET);
+        }
+        if((i+1)%length!=0 ) tmp=(tmp+1)%2;
     }
-    printf("\n \n");
+    printf(" \n \n");
     
     free(t);
 }

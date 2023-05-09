@@ -25,7 +25,7 @@ void test__dir_in_board(){
     unsigned int m=((size/10)+1)*4;
     unsigned int white_queens[m];
     unsigned int black_queens[m];
-    struct player player;
+    struct player_t player;
     player.current_queens=black_queens;
     player.other_queens=white_queens;
     unsigned int *queens[NUM_PLAYERS] = {white_queens,black_queens};

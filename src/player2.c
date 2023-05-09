@@ -8,7 +8,7 @@
 #include <time.h>
 
 
-struct player player_black;
+struct player_t player_black;
 
 
 char const* get_player_name(){
@@ -28,19 +28,26 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
 
 
 /*this function selects a random move for the player*/
-struct move_t random_move(struct move_t move, enum dir_t dir, unsigned int queen_index, struct player player){
+struct move_t random_move(struct move_t move, enum dir_t dir, unsigned int queen_index, struct player_t player){
     (void) player;
-    move.queen_src=player_black.current_queens[queen_index];
-    move.queen_dst=random_dst(player_black.graph,dir,player_black.current_queens[queen_index], player_black);
+
+    move.queen_dst=random_dst(player_black.graph,dir,move.queen_src, player_black);
+
     player_black.current_queens[queen_index]=move.queen_dst;
+
     unsigned int queen=move.queen_dst;
-    enum dir_t dir2=available_dir(queen,player_black.graph,dir,player_black);
+
+    enum dir_t dir2=available_dir(queen,player_black.graph,player_black);
+    
     if(dir2==NO_DIR){
         move.arrow_dst=move.queen_src;
     }
+    
+    
     else {
         move.arrow_dst=random_dst(player_black.graph,dir2,move.queen_dst,player_black);
     }
+    
     return move;
 }
 
@@ -48,25 +55,37 @@ struct move_t random_move(struct move_t move, enum dir_t dir, unsigned int queen
 struct move_t play(struct move_t previous_move){
     if(previous_move.queen_dst!= (unsigned int) -1 && previous_move.queen_dst!= (unsigned int) -1 )
         execute_move(previous_move,player_black.graph,player_black.other_queens);
+    
     struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
+    
     int r=rand()%player_black.num_queens;
+    
     unsigned int queen_index=r;
+    
     int queen=player_black.current_queens[r];
+    
     enum dir_t dir=NO_DIR;
+    
     unsigned int cmp=0;
+    
     while(dir==NO_DIR && cmp<player_black.num_queens){
         cmp++;
         queen_index=r;
         queen=player_black.current_queens[queen_index];
-        dir=available_dir(queen,player_black.graph,NO_DIR,player_black);
+        dir=available_dir(queen,player_black.graph, player_black);
         r=(r+1)%player_black.num_queens;
-       
-    }
+       }
+    
     if(dir==NO_DIR){
         return move;
     }
+    
+    move.queen_src=queen;
+    
     move=random_move(move, dir, queen_index, player_black);
+    
     execute_move(move,player_black.graph,player_black.current_queens);
+    
     return move;  
 }
 

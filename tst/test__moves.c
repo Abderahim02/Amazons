@@ -116,7 +116,7 @@ void test__available_dst(){
     unsigned int size=8;
     struct graph_t* graph = initialize_graph(size);
     enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
-    struct player player;
+    struct player_t player;
     player.num_queens=0;
 
     unsigned int position=0;

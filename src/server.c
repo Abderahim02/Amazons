@@ -51,10 +51,10 @@ int main(int argc, char* argv[]){
     unsigned int length=8;
     unsigned int turns=200;
     char graph_type='c';
-    get_opt(argc, argv, &graph_type, &length, &turns);
-    // printf("turns = %d\n", turns);
-     printf("%d %d \n",length, length);
-     printf("#\n");
+    //get_opt(argc, argv, &graph_type, &length, &turns);
+    //printf("turns = %d\n", turns);
+    printf("%d %d \n",length, length);
+    printf("#\n");
     if (argc > 1) {
         void * lib1 = dlopen(argv[argc-2], RTLD_LAZY); 
         void * lib2 = dlopen(argv[argc-1], RTLD_LAZY); 

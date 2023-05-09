@@ -75,14 +75,14 @@ as parameters. It then displays the game board and the queen
 positions on the screen.*/
 void sdl_display(struct graph_t* graph, unsigned int* queens[NUM_PLAYERS],int queens_number, int size){
 
-    int n=0;
-    int b=16777215;
+    int n=0;//green 255*255
+    int b=255+255+0;//brown \\white  16777215
     int bh=65536*255+140;
     (void) bh;
-    int nh=255*110;//50+255*30+65536*15;
-    int c0=160*65536+100*255+19;
-    int c1=65536*80+100;
-//160*65536+100*255+19;
+    int nh=5165;//50+255*30+65536*15;
+    int c0=205*205;
+    int c1=16777215;
+//160*65536+100*255+19; red: 255+255+0;
 
 //65536*80+100;
 int tmp=0;

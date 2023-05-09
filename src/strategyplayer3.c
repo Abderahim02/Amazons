@@ -3,7 +3,7 @@
 #include <time.h>
 #include <math.h>
 
-#include "strategyplayer2.h"
+#include "strategyplayer3.h"
 
 int position_inside(int queen, struct graph_t* graph, enum dir_t dir, struct player_t player){
     unsigned int length=sqrt(graph->t->size1);

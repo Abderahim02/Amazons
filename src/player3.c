@@ -5,7 +5,7 @@
 #include "player.h"
 #include "dir.h"
 #include "graph.h"
-#include "strategyplayer2.h"
+#include "strategyplayer3.h"
 #include <time.h>
 
 

@@ -33,9 +33,12 @@ unsigned int *dir_in_board(int pos, struct graph_t* graph, struct player player)
 }
 
 unsigned int *all_opening(struct graph_t* graph, enum dir_t dir, int pos, struct player player){
-    unsigned int *t=available_dst(graph, dir, pos,player);
+    unsigned int *t = available_dst(graph, dir, pos,player);
     unsigned int length=sqrt(graph->t->size1);
     unsigned int* t_in=(unsigned int *)malloc(sizeof(unsigned int)*(length*2+1));
+    for(int i=0; i<length*2+ 1 ; ++i){
+        t_in[i] = UINT_MAX;
+    }
     t_in[0]=0;
     for(int i=0; i<t[0]; i++){
         if(position_inside(t[i+1], graph, dir, player)==1){

@@ -76,3 +76,17 @@ void test_copy_queens(void){
 
 }
 
+void test_display(void){
+     struct graph_t* graph=initialize_graph(4);
+    make_graph(graph,4,'c');
+    struct graph_t *graph2=graph_cpy(graph);
+     unsigned int t[2]={2,4};
+    unsigned int h[2]={1,3};
+    unsigned int *queens[2]={t, h};
+    sdl_display(graph2,queens,2,4);
+    printf("\n");
+    display(graph,queens,2);
+    free_graph(graph);
+    free_graph(graph2);
+
+}

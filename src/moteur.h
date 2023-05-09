@@ -56,7 +56,7 @@ direction of movement.*/
 unsigned int* available_dst(struct graph_t *graph, enum dir_t dir, unsigned int pos,struct player_t player);
 
 //a function that returns a random direction in which a player can move.
-enum dir_t available_dir(unsigned int queen, struct graph_t *graph, enum dir_t direction,struct player_t player);
+enum dir_t available_dir(unsigned int queen, struct graph_t *graph, struct player_t player);
 
 
 //a function that returns the neighbor of a position in specific direction

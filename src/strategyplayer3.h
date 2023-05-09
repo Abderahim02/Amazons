@@ -15,7 +15,7 @@ unsigned int *all_opening(struct graph_t* graph, enum dir_t dir, int pos, struct
 enum dir_t random_dir_in(int queen, struct graph_t* graph, struct player_t player);
 
 
-unsigned int *liberté_queen(int queen, struct graph_t* graph, struct player_t player);
+unsigned int *liberty_queen(int queen, struct graph_t* graph, struct player_t player);
 
 
 unsigned int range_free_1_step(int pos, struct graph_t* g, struct player_t p);

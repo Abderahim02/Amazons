@@ -69,7 +69,7 @@ int opening_dst(struct graph_t* graph, enum dir_t dir, int pos, struct player_t 
     return dst;
 }
 
-unsigned int *liberté_queen(int queen, struct graph_t* graph, struct player_t player){
+unsigned int *liberty_queen(int queen, struct graph_t* graph, struct player_t player){
     enum dir_t dir=0;
     unsigned int degre=0;
     unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*10);
@@ -170,7 +170,7 @@ unsigned int least_queen_move(struct graph_t* g, struct player_t p){
     unsigned int queen_index=0;
     unsigned int* res=malloc(sizeof(unsigned int)*p.num_queens);
     for(unsigned int i=0; i<p.num_queens; i++){
-        unsigned int* t=liberté_queen(p.other_queens[i], g, p);
+        unsigned int* t=liberty_queen(p.other_queens[i], g, p);
         res[i]=t[0];
         free(t);
     }
@@ -183,7 +183,7 @@ unsigned int least_queen_move(struct graph_t* g, struct player_t p){
             queen_index=i;
         }
     }
-    unsigned int* t=liberté_queen(p.other_queens[queen_index], g, p);
+    unsigned int* t=liberty_queen(p.other_queens[queen_index], g, p);
     if(t[0]==0){
         free(res);
         free(t);
@@ -195,7 +195,7 @@ unsigned int least_queen_move(struct graph_t* g, struct player_t p){
 }
 
 unsigned int possible_block(int pos, int queen, struct graph_t* g, struct player_t p){
-    unsigned int* t=liberté_queen(queen, g, p);
+    unsigned int* t=liberty_queen(queen, g, p);
     for(enum dir_t i=1; i<9; i++){
         unsigned int* t2=available_dst(g, i, pos, p);
         for(unsigned int j=1; j<t[0]+1; j++){

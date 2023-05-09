@@ -138,18 +138,19 @@ void test_dir_in_board(){
     assert(t[1]==4);
     assert(t[2]==5);
     assert(t[3]==6);
-
+    free(t);
     t=dir_in_board(5, graph, p);
     assert(t[0]==3);
     assert(t[1]==4);
     assert(t[2]==5);
     assert(t[3]==6);
-
+    free(t);
     t=dir_in_board(16, graph, p);
     assert(t[0]==3);
     assert(t[1]==2);
     assert(t[2]==4);
     assert(t[3]==7);
+    free(t);
     t=dir_in_board(23, graph, p);
     assert(t[0]==3);
     assert(t[1]==3);

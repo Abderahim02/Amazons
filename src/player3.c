@@ -26,7 +26,7 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph);
 char const* get_player_name(){
     // char * pt = (char *) malloc(30 * sizeof(char));
     // strcpy(pt, "seeer_seeeer");
-    player_brown.name = "aji_aji";
+    player_brown.name = "achraf hakimi";
     return player_brown.name;
 }
 

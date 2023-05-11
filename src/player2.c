@@ -12,7 +12,7 @@ struct player_t player_black;
 
 
 char const* get_player_name(){
-    player_black.name = "seeer_seeeer";
+    player_black.name = "walid regragui";
     return player_black.name;
 }
 

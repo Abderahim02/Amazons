@@ -5,13 +5,14 @@
 #include "../src/graph.h"
 #include "../src/move.h"
 #include "../src/moteur.h"
-#include "../src/strategyplayer2.h"
+#include "../src/strategyplayer3.h"
 #include "../src/server_functions.h"
 
 extern struct graph_t * initialize_graph(unsigned int length);
 extern void initialize_graph_positions_classic(struct graph_t* g);
 // extern void print_sparse_matrix(gsl_spmatrix_uint *mat);
 extern void free_graph(struct graph_t* g);
+
 
 extern void  make_zero_i_j(struct graph_t *g, int i, int j);
 
@@ -20,7 +21,7 @@ void test__dir_in_board(){
 
     unsigned int size=5;
     struct graph_t* graph = initialize_graph(size);
-    enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
+    //enum dir_t DIR_NORTH=1, DIR_NE=2, DIR_WEST=3,  DIR_SE=4, DIR_SOUTH=5, DIR_SW=6, DIR_EAST=7,  DIR_NW=8;
     
     unsigned int m=((size/10)+1)*4;
     unsigned int white_queens[m];

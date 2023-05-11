@@ -30,6 +30,12 @@ moteur.o: ${SRC}/moteur.c ${SRC}/graph.h
 strategyplayer3.o: ${SRC}/strategyplayer3.c ${SRC}/graph.h ${SRC}/strategyplayer3.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -c ${SRC}/strategyplayer3.c -lgcov
 
+server_functions.o: src/server_functions.c src/hole.h src/moteur.h src/server_functions.h src/strategyplayer3.h
+	${CC} $(CFLAGS) -I${SRC} -c  $<
+
+server.o: ${SRC}/server.c  ${SRC}/player.h graph.o ${SRC}/hole.h
+	${CC} $(CFLAGS) -c -I${SRC} $< -o $@ -ldl -lgcov
+
 
 
 player2.o:  ${SRC}/player2.c 
@@ -40,12 +46,6 @@ player1.o: ${SRC}/player1.c
 
 player3.o: ${SRC}/player3.c 
 	${CC} $(CFLAGS) -I${SRC} -c  $<
-
-server_functions.o: src/server_functions.c src/hole.h src/moteur.h src/server_functions.h src/strategyplayer3.h
-	${CC} $(CFLAGS) -I${SRC} -c  $<
-
-server.o: ${SRC}/server.c  ${SRC}/player.h graph.o ${SRC}/hole.h
-	${CC} $(CFLAGS) -c -I${SRC} $< -o $@ -ldl -lgcov
 
 
 ######################################################### Début tests ##########################################################
@@ -69,7 +69,7 @@ test_server.o: ${TST}/test_server.c ${SRC}/server_functions.h
 
 test.o: tst/test.c
 	gcc -c -I$(GSL_PATH)/include tst/test.c
-test: test.o test_graph.o test_hole.o strategyplayer3.o test_moteur.o  test_server.o graph.o src/moteur.c hole.o src/server_functions.c
+test: test.o test_graph.o test_hole.o strategyplayer3.o test_moteur.o  test_server.o test_strategy3.o graph.o src/moteur.c hole.o src/server_functions.c
 	${CC} -L${GSL_PATH}/lib -I$(GSL_PATH)/include -fprofile-arcs -ftest-coverage $^ -lgsl -lgslcblas -lm -ldl -o alltests -ldl
 
 ######################################################### Fin tests ###########################################################

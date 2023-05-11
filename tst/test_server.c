@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dlfcn.h>
-#include "../src/graph.h"
 #include "../src/server_functions.h"
 #include "../src/strategyplayer3.h"
 #include <assert.h>
@@ -12,6 +11,9 @@ extern struct graph_t * initialize_graph(unsigned int length);
 extern void free_graph(struct graph_t* g);
 extern void make_graph(struct graph_t * g, unsigned int m ,char s );
 extern int position_inside(int queen, struct graph_t* graph, enum dir_t dir, struct player_t player);
+/*
+    a test for the graph_table function, it should return a pointer with inialized values to 0
+*/
 void test_graph_table(void){
     printf("-----Started Testing graph_table---------- \n");
     struct graph_t* graph=initialize_graph(4);
@@ -27,6 +29,10 @@ void test_graph_table(void){
 
 }
 
+/*
+    a test for the function table that fills an array of positions of the queens and positions with
+    no pawn.
+*/
 void test_table(void){
     printf("-----Started Testing table---------- \n");
     struct graph_t* graph=initialize_graph(3);
@@ -45,7 +51,9 @@ void test_table(void){
     free_graph(graph);
     printf("-----FinishedTesting table---------- \n");
 }
-
+/*
+    a function for testing gthe next and start player functions
+*/
 void start_next(void){
     printf("-----Started Testing strat_next_players---------- \n");
     assert(start_player()>=0);
@@ -60,6 +68,9 @@ void start_next(void){
 
 }
 
+/*
+    a tests for the function copying the two arrays of queens positions from the server to players 
+*/
 void test_copy_queens(void){
     printf("-----Started Testing copy_queens---------- \n");
     unsigned int t[2]={2,4};
@@ -92,6 +103,10 @@ void test_display(void){
 
 }
 
+/*
+    a test for the function checking if the position is in the missle of the grid and not in
+    boundaries.
+*/
 void test_inside_position(){
     printf("-----Started Testing inside_position---------- \n");
     unsigned int size=8;
@@ -115,6 +130,11 @@ void test_inside_position(){
     printf("-----Finished Testing indie position---------- \n\n");
     free_graph(graph);
 }
+
+/*
+    a test function for the function returning all positions of a position 
+    in the grid in one direction.
+*/
 void test_dir_in_board(){
     printf("-----Started Testing dir_in_board---------- \n");
     unsigned int size=8;

@@ -4,7 +4,6 @@
 #include <math.h> 
 
 #include "graph.h"
-#include "dir.h"
 #include "hole.h"
 
 /*this function fill an empty graph with relachionships, it means we puts the right

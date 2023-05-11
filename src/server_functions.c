@@ -1,4 +1,3 @@
-
 #include "server_functions.h"
 
 #define ANSI_COLOR_RED     "\e[41m"

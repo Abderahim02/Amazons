@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "../src/graph.h"
 #include "../src/hole.h"
 
 extern struct graph_t * initialize_graph(unsigned int length);

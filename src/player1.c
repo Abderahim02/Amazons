@@ -3,8 +3,6 @@
 #include <string.h>
 #include "moteur.h" 
 #include "player.h"
-#include "dir.h"
-#include "graph.h"
 #include <time.h>
 #include "server_functions.h"
 

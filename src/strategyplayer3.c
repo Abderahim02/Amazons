@@ -110,34 +110,7 @@ unsigned int range_free_2_step(unsigned int pos, struct graph_t* g, struct playe
     return degre;
 }
 
-//function that loops over the neighbors of a queen and returns the one that has the max neighbors in all directions
-// int best_queen_move_in_direction(struct graph_t *graph, enum dir_t dir, int pos){
-//     unsigned int length=sqrt(graph->t->size1);
-//     int t[length*2];
-//     int i=0;
-//     int tmp=pos;
-//     //fill the t array with all the neighbors of the queen in the given direction
-//     while(get_neighbor(tmp,dir,graph)!=-1){
-//         t[i]=get_neighbor(tmp,dir,graph);
-//         tmp=t[i];
-//         i++;
-//     }
-//     //calculate the queen_dst that has the max number of neigbors in all directions
-//     int max=0;
-//     int max_pos=0;
-//     for(int j=0;j<i;j++){
-//         int cmp=0;
-//         for(int k=1;k<9;k++){
-//             if(get_neighbor(t[j],k,graph)!=-1){
-//                 cmp++;
-//             }
-//         }
-//         if(cmp>max){
-//             max=cmp;
-//             max_pos=t[j];
-//         }
-//     return move;
-// }
+
 
 unsigned int perfect_dst_for_a_queen(unsigned int queen, struct graph_t* g, struct player_t p){
     unsigned int max_index=0;

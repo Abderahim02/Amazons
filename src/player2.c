@@ -30,11 +30,12 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
 
 /*the play function it exectus the previous move and returns a new move for the player*/
 struct move_t play(struct move_t previous_move){
+    // for the first iteration if the player start first
     if(previous_move.queen_dst!= (unsigned int) -1 && previous_move.queen_dst!= (unsigned int) -1 )
         execute_move(previous_move,player_black.graph,player_black.other_queens);
     
     struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
-    
+    // to choose a random queen
     int r=rand()%player_black.num_queens;
     
     unsigned int queen_index=r;
@@ -44,7 +45,7 @@ struct move_t play(struct move_t previous_move){
     enum dir_t dir=NO_DIR;
     
     unsigned int cmp=0;
-    
+    // to check all queens 
     while(dir==NO_DIR && cmp<player_black.num_queens){
         cmp++;
         queen_index=r;

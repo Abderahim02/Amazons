@@ -14,6 +14,7 @@
 
 
 
+
 extern int empty_cell(struct graph_t *graph, int x, unsigned int size);
 
 /*This function parses command-line arguments to extract the game 

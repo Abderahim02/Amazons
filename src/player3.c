@@ -18,14 +18,8 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph);
  * RETURNS:
  * - the player name as an [a-zA-Z0-9 -_]* string
  */
-// char const* get_player_name(){
-//     player_brown.name = "seeer_seeeer";
-//     return player_brown.name;
-// }
 
 char const* get_player_name(){
-    // char * pt = (char *) malloc(30 * sizeof(char));
-    // strcpy(pt, "seeer_seeeer");
     player_brown.name = "achraf hakimi";
     return player_brown.name;
 }

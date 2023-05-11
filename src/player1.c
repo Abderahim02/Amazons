@@ -144,17 +144,6 @@ int heuristic(struct graph_t *graph, struct move_t move, struct player_t player)
   cp2=NULL;
   return h;
 }
-/* 
-   functions that choses a random move from the list of possible moves 
-*/
-/* struct move_t random_move(unsigned int queen,unsigned int t[]){
-  struct move_t move;
-  move.queen_src = queen;
-  move.queen_dst = random_queen_dst(t);
-  move.arrow_dst = random_arrow_dst(t,move.queen_src);
-  return move;
-} */
-
 
 
 

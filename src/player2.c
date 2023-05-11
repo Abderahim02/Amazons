@@ -12,7 +12,7 @@ struct player_t player_black;
 
 
 char const* get_player_name(){
-    player_black.name = "seeer_seeeer";
+    player_black.name = "walid regragui";
     return player_black.name;
 }
 
@@ -27,37 +27,15 @@ void initialize(unsigned int player_id, struct graph_t* graph, unsigned int num_
 }
 
 
-/*this function selects a random move for the player*/
-struct move_t random_move(struct move_t move, enum dir_t dir, unsigned int queen_index, struct player_t player){
-    (void) player;
-
-    move.queen_dst=random_dst(player_black.graph,dir,move.queen_src, player_black);
-
-    player_black.current_queens[queen_index]=move.queen_dst;
-
-    unsigned int queen=move.queen_dst;
-
-    enum dir_t dir2=available_dir(queen,player_black.graph,player_black);
-    
-    if(dir2==NO_DIR){
-        move.arrow_dst=move.queen_src;
-    }
-    
-    
-    else {
-        move.arrow_dst=random_dst(player_black.graph,dir2,move.queen_dst,player_black);
-    }
-    
-    return move;
-}
 
 /*the play function it exectus the previous move and returns a new move for the player*/
 struct move_t play(struct move_t previous_move){
+    // for the first iteration if the player start first
     if(previous_move.queen_dst!= (unsigned int) -1 && previous_move.queen_dst!= (unsigned int) -1 )
         execute_move(previous_move,player_black.graph,player_black.other_queens);
     
     struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
-    
+    // to choose a random queen
     int r=rand()%player_black.num_queens;
     
     unsigned int queen_index=r;
@@ -67,7 +45,7 @@ struct move_t play(struct move_t previous_move){
     enum dir_t dir=NO_DIR;
     
     unsigned int cmp=0;
-    
+    // to check all queens 
     while(dir==NO_DIR && cmp<player_black.num_queens){
         cmp++;
         queen_index=r;

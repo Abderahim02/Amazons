@@ -100,6 +100,29 @@ struct graph_t * initialize_graph(unsigned int length){
     return grid;
 }
 
+void display_matrix_of_graph(struct graph_t * g){
+    for (size_t i = 0; i < g->t->size1; ++i) {
+        for (size_t j = 0; j < g->t->size2; ++j) {
+            size_t row_start = g->t->p[i];
+            size_t row_end = g->t->p[i + 1];
+            int found = 0;
+            for (size_t pos = row_start; pos < row_end; ++pos) {
+                if (g->t->i[pos] == j) {
+                    printf("%d ", g->t->data[pos]);
+                    found = 1;
+                    break;
+                }
+            }
+            if (!found) {
+                printf("0 ");
+            }
+        }
+        printf("\n");
+    }
+    printf("\n");
+
+}
+
 
 void initialize_donut_graph(struct graph_t* g, unsigned int m){
     make_hole(g, (m/3)*m + m/3 , m/3);

@@ -10,26 +10,25 @@ int position_inside(int queen, struct graph_t* graph, enum dir_t dir, struct pla
     if(queen==-1 || queen ==UINT_MAX){
         return 0;
     }
-    else if(queen>length && queen<length*length-length && queen%length!=0 && queen%length!=length-1){
+    else if(queen>=length && queen<=length*length-length && queen%length!=0 && queen%length!=length-1){
         return 1;
     }
     return 0;
 }
 
 unsigned int *dir_in_board(int pos, struct graph_t* graph, struct player_t player){
-    enum dir_t dir=1;
+    //enum dir_t dir=1;
     unsigned int* all=(unsigned int *)malloc(sizeof(unsigned int)*9 );
     for(int i=0; i<9; i++){
         all[i]=0;
     }
     int count=1;
     for(int i=1; i<9; i++){
-        if(position_inside(get_neighbor_gen(pos, dir, graph, player), graph, dir, player)==1){
-            all[count]=dir;
+        if(get_neighbor_gen(pos, i, graph, player)!=UINT_MAX && position_inside(get_neighbor_gen(pos, i, graph, player), graph, i, player)==1){
+            all[count]=i;
             count++;
             all[0]++;
         }
-        dir++;
     }
     return all;
 }
@@ -37,7 +36,7 @@ unsigned int *dir_in_board(int pos, struct graph_t* graph, struct player_t playe
 unsigned int *all_opening(struct graph_t* graph, enum dir_t dir, int pos, struct player_t player){
     unsigned int *t=available_dst(graph, dir, pos,player);
     unsigned int length=sqrt(graph->t->size1);
-    unsigned int* t_in=(unsigned int *)malloc(sizeof(unsigned int)*(length*2+1));
+    unsigned int* t_in=(unsigned int *)malloc(sizeof(unsigned int)*(length*length));
     t_in[0]=0;
     int count=1;
     for(int i=1; i<t[0]+1; i++){
@@ -57,7 +56,7 @@ enum dir_t random_dir_in(int queen, struct graph_t* graph, struct player_t playe
         free(all);
         return NO_DIR;
     }
-    enum dir_t dir=all[rand()%all[0]+1];
+    enum dir_t dir=all[(rand()%all[0])+1];
     free(all);
     return dir;
 }
@@ -91,64 +90,34 @@ unsigned int *liberty_queen(int queen, struct graph_t* graph, struct player_t pl
 
 
 unsigned int range_free_1_step(int pos, struct graph_t* g, struct player_t p){
-    enum dir_t dir=0;
     unsigned int degre=0;
     for(int i=1; i<9; i++){
-        if(get_neighbor_gen(pos, dir, g, p)!=UINT_MAX){ 
+        if(get_neighbor_gen(pos, i, g, p)!=UINT_MAX){ 
             degre++;
         }
-        dir++;
     }
     return degre;
 }
 
 unsigned int range_free_2_step(unsigned int pos, struct graph_t* g, struct player_t p){
-    enum dir_t dir=0;
+
     unsigned int degre=1;
     for(int i=1; i<9; i++){
-        if(get_neighbor_gen(pos, dir, g, p)!=UINT_MAX){
-            degre=degre+1+range_free_1_step(get_neighbor_gen(pos, dir, g, p), g, p);
+        if(get_neighbor_gen(pos, i, g, p)!=UINT_MAX){
+            degre=degre+1+range_free_1_step(get_neighbor_gen(pos, i, g, p), g, p);
         }
-        dir++;
     }
     return degre;
 }
 
-//function that loops over the neighbors of a queen and returns the one that has the max neighbors in all directions
-// int best_queen_move_in_direction(struct graph_t *graph, enum dir_t dir, int pos){
-//     unsigned int length=sqrt(graph->t->size1);
-//     int t[length*2];
-//     int i=0;
-//     int tmp=pos;
-//     //fill the t array with all the neighbors of the queen in the given direction
-//     while(get_neighbor(tmp,dir,graph)!=-1){
-//         t[i]=get_neighbor(tmp,dir,graph);
-//         tmp=t[i];
-//         i++;
-//     }
-//     //calculate the queen_dst that has the max number of neigbors in all directions
-//     int max=0;
-//     int max_pos=0;
-//     for(int j=0;j<i;j++){
-//         int cmp=0;
-//         for(int k=1;k<9;k++){
-//             if(get_neighbor(t[j],k,graph)!=-1){
-//                 cmp++;
-//             }
-//         }
-//         if(cmp>max){
-//             max=cmp;
-//             max_pos=t[j];
-//         }
-//     return move;
-// }
+
 
 unsigned int perfect_dst_for_a_queen(unsigned int queen, struct graph_t* g, struct player_t p){
-    unsigned max_index=0;
+    unsigned int max_index=0;
     for(enum dir_t i=1; i<9; i++){
         unsigned int* t=available_dst(g, i, queen, p);
-        for(unsigned int j=1; j<t[0]; j++){
-            if(range_free_1_step(max_index, g, p)>range_free_1_step(t[j+1], g, p)){
+        for(unsigned int j=1; j<t[0]+1; j++){
+            if(range_free_1_step(max_index, g, p)>=range_free_1_step(t[j+1], g, p)){
                 max_index=t[j];
             }
         }
@@ -259,11 +228,15 @@ unsigned int choice_block_random_arrow(int pos, struct player_t p, struct graph_
 }
 
 unsigned int choise_dsr(int queen, struct player_t p, struct graph_t* g){
-    unsigned int dst=perfect_dst_for_a_queen(queen, g, p);
-    if(dst!=UINT_MAX){
+    //unsigned int dst_index=perfect_dst_for_a_queen(queen, g, p);
+    unsigned int *dir=dir_in_board(queen, g, p);
+    if(dir[0]==0){
+        free(dir);
+        enum dir_t dir2=available_dir(queen, g, p);
+        unsigned int dst=random_dst(g, dir2, queen, p);
         return dst;
     }
-    enum dir_t dir=available_dir(queen, g, p);
-    dst=random_dst(g, dir, queen, p);
+    unsigned int dst=random_dst(g, dir[1], queen, p);
+    free(dir);
     return dst;
 }

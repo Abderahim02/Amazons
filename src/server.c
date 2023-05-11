@@ -114,7 +114,7 @@ int main(int argc, char* argv[]){
         for(unsigned int i=0;i<turns;i++){
             if(player==BLACK){
                 move=play2(move);
-                printf("ANA\n");
+                //printf("ANA\n");
                 execute_move(move,graph,queens[1]);
             }
             else{
@@ -123,10 +123,10 @@ int main(int argc, char* argv[]){
             }
             if(move.queen_dst==UINT_MAX){
                 //if(i==length*length) printf("eqalité\n");
-                //printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
+                printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
                 //sdl_display(graph,queens,m,length);
                 display(graph,queens,m);
-                //printf("%d\n" , (player+1)%2);
+                printf("%d\n" , (player+1)%2);
                 free_graph(graph);
                 finalize_player1();
                 finalize_player2();

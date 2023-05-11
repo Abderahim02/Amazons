@@ -212,7 +212,6 @@ struct move_t best_move(struct graph_t * graph, const unsigned int* queens , int
     move = moves[max_pos];
   }
   else{
-    printf("we are the else?!!!!!\n");
         int r=rand()%player_blanc.num_queens;
     unsigned int queen_index=r;
     int queen=player_blanc.current_queens[r];

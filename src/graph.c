@@ -117,7 +117,7 @@ void initialize_trefle_graph(struct graph_t* g, unsigned int m){
 void initialize_eight_graph(struct graph_t* g , unsigned int m){
     make_hole(g, 2*(m/4) * m + m/4, m/4 );
     make_hole(g, (m/4) * m + 2*m/4 , m/4 );
-    g->num_vertices = 21*m*m / 25 ;
+    g->num_vertices = 7*m*m / 8 ;
 }
 
 

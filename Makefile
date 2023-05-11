@@ -10,7 +10,7 @@ INSTALL = install
 
 CFLAGS = -std=c99 -Wall -lm -Wextra -fPIC -g3 -g -I$(GSL_PATH)/include -I${INSTALL} -I${SRC} 
 LDFLAGS = -lm -lgsl -lgslcblas -ldl -lgcov\	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \	-Wl,--rpath=${GSL_PATH}/lib
-TEST = test_get_neighbor test__moves
+TEST = test_moteur test_hole
 
 export LD_LIBRARY_PATH=./
 
@@ -50,30 +50,26 @@ server.o: ${SRC}/server.c  ${SRC}/player.h graph.o ${SRC}/hole.h
 
 ######################################################### Début tests ##########################################################
 
-test_get_neighbor.o: ${TST}/test_get_neighbor.c graph.o ${SRC}/graph.h
-	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test_get_neighbor.c
+test_moteur.o: ${TST}/test_moteur.c graph.o ${SRC}/graph.h
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test_moteur.c
 
 
-test__moves.o: ${TST}/test__moves.c graph.o ${SRC}/graph.h
-	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test__moves.c
+test_hole.o: ${TST}/test_hole.c graph.o ${SRC}/graph.h
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test_hole.c
 
-test_execute_move.o: ${TST}/test_execute_move.c ${SRC}/server_functions.h src/hole.h
-	${CC} -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -I ${SRC}  ${TST}/test_execute_move.c   -c
+test_graph.o: ${TST}/test_graph.c ${SRC}/server_functions.h src/hole.h
+	${CC} -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -I ${SRC}  ${TST}/test_graph.c   -c
 
-strategy.o: ${TST}/strategy.c graph.o ${SRC}/graph.h
-	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/strategy.c
+test_strategy3.o: ${TST}/test_strategy3.c graph.o ${SRC}/graph.h
+	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test_strategy3.c
 
+test_server.o: ${TST}/test_server.c ${SRC}/server_functions.h
+	${CC} -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -I ${SRC}  ${TST}/test_server.c   -c
 
-strategy: strategy.o graph.o moteur.o hole.o strategyplayer3.o server_functions.o
-	${CC} -fprofile-arcs -ftest-coverage -L${GSL_PATH}/lib strategy.o graph.o moteur.o hole.o strategyplayer3.o server_functions.o -lgsl -lgslcblas -lm -ldl -o $@ -ldl 
-
-
-#test_execute_move: test_execute_move.o server_functions.o graph.o hole.o
-#	${CC} -fprofile-arcs -ftest-coverage -L${GSL_PATH}/lib  test_execute_move.o graph.o hole.o server_functions.o  -lgsl -lgslcblas -lm -ldl -o $@ -lm
 
 test.o: tst/test.c
 	gcc -c -I$(GSL_PATH)/include tst/test.c
-test: test.o test_execute_move.o test__moves.o strategyplayer3.o test_get_neighbor.o  graph.o src/moteur.c hole.o src/server_functions.c
+test: test.o test_graph.o test_hole.o strategyplayer3.o test_moteur.o  test_server.o graph.o src/moteur.c hole.o src/server_functions.c
 	${CC} -L${GSL_PATH}/lib -I$(GSL_PATH)/include -fprofile-arcs -ftest-coverage $^ -lgsl -lgslcblas -lm -ldl -o alltests -ldl
 
 ######################################################### Fin tests ###########################################################
@@ -124,7 +120,7 @@ install: server
 
 clean:
 	@rm -f *~ *.so *.o  ${TST}/*.o  tst/*.gcno ${BIN} *~ */*~ ${SRC}/*.o server alltests ${TEST}
-	rm -f test_get_neighbor.o
+	rm -f test_moteur.o
 	rm -f *.gcda
 
 .PHONY: client install test clean

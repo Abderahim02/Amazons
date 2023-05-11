@@ -35,6 +35,7 @@ extern void test_begining_position();
 extern void test_get_neighbor_queens();
 extern void test_display();
 extern void test_dir_in_board();
+
 int main(){
     test__available_dst();
     test__put_arrow();
@@ -47,7 +48,7 @@ int main(){
     test_make_i_j();
     test_initialize_graph_positions_classic();
     test__get_neighbor_gen();
-     test_graph_table();
+    test_graph_table();
     test_table();
     start_next();
     test_copy_queens();

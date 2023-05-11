@@ -47,9 +47,3 @@ void test__dir_in_board(){
     printf("le neighbor %d\n", get_neighbor_gen(0, 7, graph, player));
     printf("QEUFH %d\n", player.current_queens[0]);
 }
-
-int main(){
-    test__dir_in_board();
-    printf("-------------all tests passed-----\n");
-    return 0;
-}

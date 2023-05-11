@@ -52,8 +52,13 @@ struct move_t play(struct move_t previous_move){
     }
     printf("\n");
     struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
-    
-    int r=rand()%player_brown.num_queens;
+    int r;
+    if(player_brown.turn<4){
+        r=player_brown.turn;
+    }
+    else{
+        r=rand()%player_brown.num_queens;
+    }
     int queen_index=r;
     int queen=player_brown.current_queens[r];
     enum dir_t dir=NO_DIR;
@@ -65,7 +70,9 @@ struct move_t play(struct move_t previous_move){
         dir=random_dir_in(queen,player_brown.graph,player_brown);
         r=(r+1)%player_brown.num_queens;
     }
+    printf("the queen that should move inside the board is %d\n", queen);
     if(dir==NO_DIR){
+        printf("y'a pas de direction inside the board\n");
         cmp=0;
         while(dir==NO_DIR && cmp<player_brown.num_queens){
             cmp++;
@@ -78,19 +85,18 @@ struct move_t play(struct move_t previous_move){
             return move;
         }
     }
+    move.queen_src=queen;
     if(player_brown.turn<4){
         printf("opening\n");
-        move.queen_src=queen;
         move.queen_dst=opening_dst(player_brown.graph, dir, queen,player_brown);
     }
-    else if(player_brown.turn>=4 || move.queen_dst==UINT_MAX){
+    if(player_brown.turn>=4 || move.queen_dst==UINT_MAX){
         printf("choise dsr\n");
-        move.queen_src=queen;
         move.queen_dst=choise_dsr(queen,player_brown,player_brown.graph);
-    
     }
-    move.queen_src=queen;
-    move.queen_dst=choise_dsr(queen,player_brown,player_brown.graph);
+    else if(move.queen_dst==UINT_MAX){
+        move.queen_dst=choise_dsr(queen,player_brown,player_brown.graph);
+    }
     player_brown.current_queens[queen_index]=move.queen_dst;
     queen=move.queen_dst;
     enum dir_t dir2=available_dir(queen,player_brown.graph,player_brown);

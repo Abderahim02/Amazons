@@ -265,6 +265,5 @@ unsigned int choise_dsr(int queen, struct player_t p, struct graph_t* g){
     }
     unsigned int dst=random_dst(g, dir[1], queen, p);
     free(dir);
-    printf("HANAAAA !!!!!!!!!!!!!!!!!!!!\n");
     return dst;
 }

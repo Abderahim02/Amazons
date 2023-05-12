@@ -10,7 +10,7 @@ INSTALL = install
 
 CFLAGS = -std=c99 -Wall -lm -Wextra -fPIC -g3 -g -I$(GSL_PATH)/include -I${INSTALL} -I${SRC} 
 LDFLAGS = -lm -lgsl -lgslcblas -ldl -lgcov\	-L$(GSL_PATH)/lib -L$(GSL_PATH)/lib64 \	-Wl,--rpath=${GSL_PATH}/lib
-TEST = test_moteur test_hole
+TEST = test_moteur test_hole test_graph test_server test_strategy3
 
 export LD_LIBRARY_PATH=./
 
@@ -57,7 +57,7 @@ test_moteur.o: ${TST}/test_moteur.c graph.o ${SRC}/graph.h
 test_hole.o: ${TST}/test_hole.c graph.o ${SRC}/graph.h
 	${CC} -Wall -I$(GSL_PATH)/include -L$(GSL_PATH)/lib -c ${TST}/test_hole.c
 
-test_graph.o: ${TST}/test_graph.c ${SRC}/server_functions.h src/hole.h
+test_graph.o: ${TST}/test_graph.c ${SRC}/server_functions.h ${SRC}/hole.h
 	${CC} -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -I ${SRC}  ${TST}/test_graph.c   -c
 
 test_strategy3.o: ${TST}/test_strategy3.c graph.o ${SRC}/graph.h
@@ -67,7 +67,7 @@ test_server.o: ${TST}/test_server.c ${SRC}/server_functions.h
 	${CC} -I$(GSL_PATH)/include -L$(GSL_PATH)/lib  -I ${SRC}  ${TST}/test_server.c   -c
 
 
-test.o: tst/test.c
+test.o: ${TST}/test.c
 	gcc -c -I$(GSL_PATH)/include tst/test.c
 test: test.o test_graph.o test_hole.o strategyplayer3.o test_moteur.o  test_server.o test_strategy3.o graph.o src/moteur.c hole.o src/server_functions.c
 	${CC} -L${GSL_PATH}/lib -I$(GSL_PATH)/include -fprofile-arcs -ftest-coverage $^ -lgsl -lgslcblas -lm -ldl -o alltests -ldl
@@ -95,9 +95,6 @@ libraries:player1.o player2.o moteur.o server_functions.o strategyplayer3.o play
 server: server.o  server_functions.o graph.o moteur.o hole.o 
 	${CC} -L${GSL_PATH}/lib server.o  server_functions.o graph.o moteur.o hole.o  -lgsl -lgslcblas -lm -ldl -o $@ -ldl -lgcov 
 
-server1: 
-	make 
-	./server libplayer1.so libplayer2.so -s 150 -m 6
 
 ######################################################### Fin Server #############################################################
 

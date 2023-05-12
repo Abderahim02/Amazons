@@ -18,7 +18,7 @@ int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph);
  */
 
 char const* get_player_name(){
-    player_brown.name = "achraf hakimi";
+    player_brown.name = "mafahmch_lconcept";
     return player_brown.name;
 }
 

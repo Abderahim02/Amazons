@@ -47,7 +47,7 @@ struct move_t(*play2)(struct move_t previous_move);
 
 int main(int argc, char* argv[]){
     unsigned int length=8;
-    unsigned int turns=70;
+    unsigned int turns=700;
     char graph_type='c';
     get_opt(argc, argv, &graph_type, &length, &turns);
     //printf("turns = %d\n", turns);
@@ -106,7 +106,7 @@ int main(int argc, char* argv[]){
         initialize_player2(1,black_graph,m,queens2);
         //The starting board
         //sdl_display(graph,queens,m,length);
-        //display(graph,queens,m);
+        display(graph,queens,m);
 
         struct move_t move={-1,-1,-1};
         int player = start_player();
@@ -125,7 +125,7 @@ int main(int argc, char* argv[]){
                 //if(i==length*length) printf("eqalité\n");
                 printf("\n game is finished: %s wins\n", (player ? black_player : white_player));
                 //sdl_display(graph,queens,m,length);
-                //display(graph,queens,m);
+                display(graph,queens,m);
                 printf("%d\n" , (player+1)%2);
                 free_graph(graph);
                 finalize_player1();
@@ -137,7 +137,7 @@ int main(int argc, char* argv[]){
             }
             player=next_player(player);
             //sdl_display(graph,queens,m,length);
-            //display(graph,queens,m);
+            display(graph,queens,m);
 
         }
         free_graph(graph);

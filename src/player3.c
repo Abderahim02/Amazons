@@ -71,10 +71,10 @@ struct move_t play(struct move_t previous_move){
         }
     }
     move.queen_src=queen;
-    if(player_brown.turn<4){
+    if(player_brown.turn<player_brown.num_queens){
         move.queen_dst=opening_dst(player_brown.graph, dir, queen,player_brown);
     }
-    if(player_brown.turn>=4 || move.queen_dst==UINT_MAX){
+    if(player_brown.turn>=player_brown.num_queens || move.queen_dst==UINT_MAX){
         move.queen_dst=choise_dsr(queen,player_brown,player_brown.graph);
     }
     else if(move.queen_dst==UINT_MAX){

@@ -39,12 +39,12 @@ void delete_element(struct graph_t* graph, unsigned int i, unsigned int j){
 current position on the board. This function takes into account the presence of 
 other players and is used to generate valid moves.*/
 unsigned int* available_dst_all(struct graph_t *graph, unsigned int pos, const struct player_t player){
-    unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*(graph->t->size1));
-    for(int i = 1 ; i<graph->t->size1 ; i++){
+    unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*(graph->t->size1-1));
+    for(int i = 0 ; i<graph->t->size1-1 ; i++){
         t[i]=UINT_MAX;
     }
     t[0]=0;
-    int i=1;
+    unsigned int i=1;
     for(enum dir_t dir = 1; dir <= 8; dir++) {
         unsigned int tmp=pos;
         while(get_neighbor_gen(tmp, dir, graph, player)!=UINT_MAX){

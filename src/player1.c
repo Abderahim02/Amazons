@@ -99,7 +99,7 @@ unsigned int best_arrow(struct graph_t *graph, unsigned int pos, unsigned int sr
 }
 
 char const* get_player_name(){
-  player_blanc.name = "the Moroccan player";
+  player_blanc.name = "bar9al";
   return player_blanc.name;
 }
 // function that initializes the player

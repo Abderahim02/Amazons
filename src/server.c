@@ -47,7 +47,7 @@ struct move_t(*play2)(struct move_t previous_move);
 
 int main(int argc, char* argv[]){
     unsigned int length=8;
-    unsigned int turns=60;
+    unsigned int turns=70;
     char graph_type='c';
     get_opt(argc, argv, &graph_type, &length, &turns);
     //printf("turns = %d\n", turns);

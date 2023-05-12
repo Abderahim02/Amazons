@@ -3,8 +3,6 @@
 #include <string.h>
 #include "moteur.h" 
 #include "player.h"
-#include "dir.h"
-#include "graph.h"
 #include <time.h>
 #include "server_functions.h"
 
@@ -81,6 +79,11 @@ unsigned int best_arrow(struct graph_t *graph, unsigned int pos, unsigned int sr
   // printf("best arrow is caling it \n");
   unsigned int *t = available_dst_all(graph, pos, player);
   unsigned int best_arrow_pos = UINT_MAX;
+  if(t[0]==0){
+    best_arrow_pos = random_arrow_dst(t, src);
+    free(t);
+    return best_arrow_pos;
+  }
   int max_occurence = -1;
 
   // Find the arrow position that hits the most enemy queen neighbors
@@ -101,7 +104,7 @@ unsigned int best_arrow(struct graph_t *graph, unsigned int pos, unsigned int sr
 }
 
 char const* get_player_name(){
-  player_blanc.name = "the Moroccan player";
+  player_blanc.name = "bar9al";
   return player_blanc.name;
 }
 // function that initializes the player
@@ -177,12 +180,12 @@ struct move_t best_move(struct graph_t * graph, const unsigned int* queens , int
     }
     else{
       for (unsigned int j = 1 ; j<t[0]+1; j++){
-	if (element_in_array(enemy_queens_neighbors, num_enemy_queens, t[j])){
-	  moves[moves_counter].queen_src = queens[i];
-	  moves[moves_counter].queen_dst = t[j];
-	  moves[moves_counter].arrow_dst = best_arrow(graph,t[j],queens[i],player_blanc,enemy_queens_neighbors,num_enemy_queens); 
-	  moves_counter++;
-	}
+	      if (element_in_array(enemy_queens_neighbors, num_enemy_queens, t[j])){
+	        moves[moves_counter].queen_src = queens[i];
+	        moves[moves_counter].queen_dst = t[j];
+	        moves[moves_counter].arrow_dst = best_arrow(graph,t[j],queens[i],player_blanc,enemy_queens_neighbors,num_enemy_queens); 
+	        moves_counter++;
+	      }
       }
       free(t);
     }

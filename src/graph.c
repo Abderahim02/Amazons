@@ -4,8 +4,9 @@
 #include <math.h> 
 
 #include "graph.h"
-#include "dir.h"
 #include "hole.h"
+
+
 
 /*this function fill an empty graph with relachionships, it means we puts the right
 values in the matrix representing the graph (la matrice d'adjacence)we consider that 
@@ -100,6 +101,7 @@ struct graph_t * initialize_graph(unsigned int length){
     return grid;
 }
 
+
 void display_matrix_of_graph(struct graph_t * g){
     for (size_t i = 0; i < g->t->size1; ++i) {
         for (size_t j = 0; j < g->t->size2; ++j) {
@@ -140,8 +142,9 @@ void initialize_trefle_graph(struct graph_t* g, unsigned int m){
 void initialize_eight_graph(struct graph_t* g , unsigned int m){
     make_hole(g, 2*(m/4) * m + m/4, m/4 );
     make_hole(g, (m/4) * m + 2*m/4 , m/4 );
-    g->num_vertices = 21*m*m / 25 ;
+    g->num_vertices = 7*m*m / 8 ;
 }
+
 
 
 /*this function makes a graph depending on the type of graph taken as argument
@@ -164,6 +167,7 @@ void make_graph(struct graph_t * g, unsigned int m ,char s ){
             break;
   }
 }
+
 
 gsl_spmatrix_uint* copy_matrix(struct graph_t *graph,int size) {
   gsl_spmatrix_uint *graph_copy=gsl_spmatrix_uint_alloc(graph->t->size1,graph->t->size2);

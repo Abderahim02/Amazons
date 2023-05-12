@@ -2,9 +2,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "../src/graph.h"
 #include "../src/move.h"
-#include "../src/moteur.h"
 #include "../src/strategyplayer3.h"
 #include "../src/server_functions.h"
 
@@ -16,8 +14,8 @@ extern void free_graph(struct graph_t* g);
 
 extern void  make_zero_i_j(struct graph_t *g, int i, int j);
 
-void test__dir_in_board(){
-    printf("-----Started Testing dir_in_board---------- \n");
+void test_all_opening(){
+    printf("-----Started Testing all_opening---------- \n");
 
     unsigned int size=5;
     struct graph_t* graph = initialize_graph(size);
@@ -33,18 +31,21 @@ void test__dir_in_board(){
     begining_position(queens, size);
     
     display(graph, queens, m);
-    unsigned int *all=dir_in_board(22, graph, player);
-    printf("%d \n", all[0]);
-    printf("%d \n", all[1]);
-    printf("%d \n", all[2]);
-    unsigned int *op=all_opening(graph, 7, 11, player);
-    printf("%d \n", op[0]);
-    enum dir_t dir=random_dir_in(1, graph, player);
-    printf("la direction est %d\n", dir);
+    // unsigned int *all=dir_in_board(22, graph, player);
+    // printf("%d \n", all[0]);
+    // printf("%d \n", all[1]);
+    // printf("%d \n", all[2]);
+    // unsigned int *op=all_opening(graph, 7, 11, player);
+    // printf("%d \n", op[0]);
+    // enum dir_t dir=random_dir_in(1, graph, player);
+    // printf("la direction est %d\n", dir);
     delete_element(graph, 0, 1);
-    unsigned int degre=range_free_1_step(4, graph, player);
-    printf("le degre est %d\n", degre);
+    // unsigned int degre=range_free_1_step(4, graph, player);
+    // printf("le degre est %d\n", degre);
     //delete_element(graph, 0, 1);
-    printf("le neighbor %d\n", get_neighbor_gen(0, 7, graph, player));
+    // printf("le neighbor %d\n", get_neighbor_gen(0, 7, graph, player));
     printf("QEUFH %d\n", player.current_queens[0]);
+    // free(op);
+    // free(all);
+    free_graph(graph);
 }

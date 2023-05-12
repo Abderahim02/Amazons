@@ -35,7 +35,7 @@ extern void test_begining_position();
 extern void test_get_neighbor_queens();
 extern void test_display();
 extern void test_dir_in_board();
-
+extern void test_all_opening();
 int main(){
     test__available_dst();
     test__put_arrow();
@@ -57,6 +57,7 @@ int main(){
     test_inside_position();
     test_display();
     test_dir_in_board();
+    test_all_opening();
     printf("OK all__tests\n");
 
 }

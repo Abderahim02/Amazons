@@ -75,7 +75,7 @@ int opening_dst(struct graph_t* graph, enum dir_t dir, int pos, struct player_t 
 unsigned int *liberty_queen(int queen, struct graph_t* graph, struct player_t player){
     enum dir_t dir=0;
     unsigned int degre=0;
-    unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*10);
+    unsigned int* t=(unsigned int *)malloc(sizeof(unsigned int)*graph->t->size1);
     t[0]=0;
     for(int i=1; i<9; i++){
         if(get_neighbor_gen(queen, dir, graph, player)!=UINT_MAX){
@@ -169,8 +169,16 @@ unsigned int least_queen_move(struct graph_t* g, struct player_t p){
 
 unsigned int possible_block(int pos, int queen, struct graph_t* g, struct player_t p){
     unsigned int* t=liberty_queen(queen, g, p);
+    if(t[0]==0){
+        free(t);
+        return UINT_MAX;
+    }
     for(enum dir_t i=1; i<9; i++){
         unsigned int* t2=available_dst(g, i, pos, p);
+        if(t2[0]==0){
+            free(t2);
+            return UINT_MAX;
+        }
         for(unsigned int j=1; j<t[0]+1; j++){
             for(unsigned int k=1; k<t2[0]+1; k++){
                 if(t2[k]==t[j]){
@@ -192,17 +200,7 @@ unsigned int possible_block(int pos, int queen, struct graph_t* g, struct player
 unsigned int block_arrow(int pos, struct graph_t* g, struct player_t p){
     unsigned int possible=0;
     unsigned int least=least_queen_move(g, p);
-    if(least==UINT_MAX){
-        int i=0;
-        while(i<p.num_queens && possible==UINT_MAX){
-            possible=possible_block(pos, p.other_queens[i], g, p);
-            i++;
-        }
-        if(possible!=UINT_MAX){
-            return possible;
-        }
-    }
-    else{
+    if(least!=UINT_MAX){
         possible=possible_block(pos, p.other_queens[least], g, p);
         if(possible!=UINT_MAX){
             return possible;

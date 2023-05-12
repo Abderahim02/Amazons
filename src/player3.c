@@ -3,8 +3,6 @@
 #include <string.h>
 #include "moteur.h"
 #include "player.h"
-#include "dir.h"
-#include "graph.h"
 #include "strategyplayer3.h"
 #include <time.h>
 
@@ -73,10 +71,10 @@ struct move_t play(struct move_t previous_move){
         }
     }
     move.queen_src=queen;
-    if(player_brown.turn<4){
+    if(player_brown.turn<player_brown.num_queens){
         move.queen_dst=opening_dst(player_brown.graph, dir, queen,player_brown);
     }
-    if(player_brown.turn>=4 || move.queen_dst==UINT_MAX){
+    if(player_brown.turn>=player_brown.num_queens || move.queen_dst==UINT_MAX){
         move.queen_dst=choise_dsr(queen,player_brown,player_brown.graph);
     }
     else if(move.queen_dst==UINT_MAX){
@@ -95,45 +93,6 @@ struct move_t play(struct move_t previous_move){
     execute_move(move,player_brown.graph,player_brown.current_queens);
     return move;  
 }
-
-
-
-struct move_t play2(struct move_t previous_move){
-    if(previous_move.queen_dst!= (unsigned int) -1 && previous_move.queen_dst!= (unsigned int) -1 )
-        execute_move(previous_move,player_brown.graph,player_brown.other_queens);
-    struct move_t move={UINT_MAX,UINT_MAX,UINT_MAX};
-    int r=rand()%player_brown.num_queens;
-    int queen_index=r;
-    int queen=player_brown.current_queens[r];
-    enum dir_t dir=NO_DIR;
-    unsigned int cmp=0;
-    while(dir==NO_DIR && cmp<player_brown.num_queens){
-        cmp++;
-        queen_index=r;
-        queen=player_brown.current_queens[queen_index];
-        dir=available_dir(queen,player_brown.graph,player_brown);
-        r=(r+1)%player_brown.num_queens;
-      
-    }
-    if(dir==NO_DIR){
-        return move;
-    }
-     move.queen_src=queen;
-     move.queen_dst=random_dst(player_brown.graph,dir,move.queen_src, player_brown);
-     player_brown.current_queens[queen_index]=move.queen_dst;
-     queen=move.queen_dst;
-     enum dir_t dir2=available_dir(queen,player_brown.graph,player_brown);
-
-     if(dir2==NO_DIR){
-        move.arrow_dst=move.queen_src;
-     }
-     else {
-         move.arrow_dst=random_dst(player_brown.graph,dir2,move.queen_dst,player_brown);
-     }
-    execute_move(move,player_brown.graph,player_brown.current_queens);
-    return move;  
-}
-
 
 int get_neighbor(int pos, enum dir_t dir, struct graph_t* graph){
     return get_neighbor_gen(pos, dir, graph, player_brown);

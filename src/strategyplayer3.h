@@ -1,8 +1,7 @@
-#ifndef _STRATEGYPLAYER2_H_
-#define _STRATEGYPLAYER2_H_
+#ifndef _STRATEGYPLAYER3_H_
+#define _STRATEGYPLAYER3_H_
 
 #include "moteur.h"
-#include "dir.h"
 
 int position_inside(int queen, struct graph_t* graph, enum dir_t dir, struct player_t player);
 
